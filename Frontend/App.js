@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native/types";
+import { StyleSheet, Text, View } from "react-native";
 import { Router, Route, Link } from "./react-router";
 
 const Home = () => <Text>Home</Text>;
