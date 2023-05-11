@@ -1,0 +1,82 @@
+version: '3'
+services:
+  gateway:
+    build: ./gateway
+    restart: always
+    hostname: gateway
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+      - frontend
+  task:
+    build: ./task
+    restart: always
+    hostname: task
+    env_file:
+      - .env
+    networks:
+      - backend
+    links:
+      - db
+  token:
+    build: ./token
+    restart: always
+    hostname: token
+    env_file:
+      - .env
+    networks:
+      - backend
+    links:
+      - db
+  mailer:
+    build: ./mailer
+    restart: always
+    hostname: mailer
+    env_file:
+      - .env
+    networks:
+      - backend
+  permission:
+    build: ./permission
+    restart: always
+    hostname: permission
+    env_file:
+      - .env
+    networks:
+      - backend
+  user:
+    build: ./user
+    restart: always
+    hostname: user
+    env_file:
+      - .env
+    networks:
+      - backend
+    links:
+      - mailer
+      - db
+  db:
+    image: postgres:14
+    container_name: postgres
+    environment:
+      - ${POSTGRES_USER}:${POSTGRES_USER}
+      - ${POSTGRES_PASSWORD}:${POSTGRES_PASSWORD}
+      - ${POSTGRES_DB}:${POSTGRES_DB}
+    networks:
+      - backend
+    env_file:
+      - .env
+    expose:
+      - "5432"
+    ports:
+      - 5432:5432
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure

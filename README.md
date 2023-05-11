@@ -13,8 +13,8 @@ Challenge ApiPlatform
 Make a git clone of this repository and in the created folder, run this command line :
 
 ```bash
-git https://github.com/ronantr/Challenge-Semestriel-2.git
-cd Challenge-Semestriel-2/Backend
+git https://github.com/MonBudget-S2/Monbuget.git
+cd MonBuget/Nest
 docker-compose build --pull --no-cache
 docker-compose up -d
 cd ..
