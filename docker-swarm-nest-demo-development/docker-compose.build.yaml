@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  challange-gateway-service:
+    image: ronantr/challange-gateway-service:0.1.0 
+    build:
+      context: services/gateway
+      dockerfile: Dockerfile
+      target: production
+
+  posts-service:
+    image: aminnairi/posts-service:0.1.0
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: production
+
+  challange-database:
+    image: ronantr/challange-database:0.1.2
+    build:
+      context: services/database
+      dockerfile: Dockerfile

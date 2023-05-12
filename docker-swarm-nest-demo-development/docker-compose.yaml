@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  challange-gateway-service:
+    build:
+      context: services/gateway
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./services/gateway:/home/node
+
+  posts-service:
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/posts:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challange-database:
+    build:
+      context: services/database
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: *challangeDatabaseName
+      POSTGRES_USER: *challangeDatabaseUser
+      POSTGRES_PASSWORD: *challangeDatabasePassword
