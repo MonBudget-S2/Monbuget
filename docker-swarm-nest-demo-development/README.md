@@ -15,11 +15,61 @@ docker compose exec challange-gateway-service npm install
 docker compose exec challange-gateway-service npm run start:dev
 ```
 
-### Posts
+### Users
 
 ```bash
-docker compose exec posts-service npm install
-docker compose exec posts-service npm run start:dev
+docker compose exec challenge-users-service npm install
+docker compose exec challenge-users-service start:dev
+```
+
+### Incomes
+
+```bash
+docker compose exec challenge-incomes-service npm install
+docker compose exec challenge-incomes-service npm run start:dev
+```
+
+
+### Categorys
+
+```bash
+docker compose exec challenge-categorys-service npm install
+docker compose exec challenge-categorys-service npm run start:dev
+```
+
+### Expenses
+
+```bash
+docker compose exec challenge-expenses-service npm install
+docker compose exec challenge-expenses-service npm run start:dev
+```
+
+### Events
+
+```bash
+docker compose exec challenge-events-service npm install
+docker compose exec challenge-events-service npm run start:dev
+```
+
+### Debts
+
+```bash
+docker compose exec challenge-debts-service npm install
+docker compose exec challenge-debts-service npm run start:dev
+```
+
+### Alerts
+
+```bash
+docker compose exec challenge-alerts-service npm install
+docker compose exec challenge-alerts-service npm run start:dev
+```
+
+### Budgets
+
+```bash
+docker compose exec challenge-budgets-service npm install
+docker compose exec challenge-budgets-service npm run start:dev
 ```
 
 ### Shutdown

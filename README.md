@@ -1,6 +1,8 @@
 # Challenge-Semestriel-2
 
-Challenge ApiPlatform
+Challenge Semestriel 2 
+
+Nest.js
 
 
 

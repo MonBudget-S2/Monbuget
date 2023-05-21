@@ -13,15 +13,99 @@ services:
     volumes:
       - ./services/gateway:/home/node
 
-  posts-service:
+  challenge-alerts-service:
     build:
-      context: services/posts
+      context: services/alerts
       dockerfile: Dockerfile
       target: development
     tty: true
     stdin_open: true
     volumes:
-      - ./services/posts:/home/node
+      - ./services/alerts:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-categorys-service:
+    build:
+      context: services/categorys
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/alerts:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-events-service:
+    build:
+      context: services/events
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/events:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-debts-service:
+    build:
+      context: services/debts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/debts:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-expenses-service:
+    build:
+      context: services/expenses
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/expenses:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-incomes-service:
+    build:
+      context: services/incomes
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/incomes:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+
+  challenge-users-service:
+    build:
+      context: services/users
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/users:/home/node
     environment:
       DATABASE_NAME: &challangeDatabaseName challange
       DATABASE_USER: &challangeDatabaseUser challangeuser
@@ -35,3 +119,17 @@ services:
       POSTGRES_DB: *challangeDatabaseName
       POSTGRES_USER: *challangeDatabaseUser
       POSTGRES_PASSWORD: *challangeDatabasePassword
+
+  posts-service:
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/posts:/home/node
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass

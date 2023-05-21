@@ -8,8 +8,71 @@ services:
     deploy:
       replicas: 5
 
-  posts-service:
-    image: aminnairi/posts-service:0.1.0
+  challenge-alerts-service:
+    image: ronantr/challenge-alerts-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-budgets-service:
+    image: ronantr/challenge-budgets-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-debts-service:
+    image: ronantr/debts-challenge-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-events-service:
+    image: ronantr/events-challenge-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-expenses-service:
+    image: ronantr/challenge-expenses-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-incomes-service:
+    image: ronantr/challenge-incomes-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-users-service:
+    image: ronantr/challenge-users-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
+
+  challenge-categorys-service:
+    image: ronantr/challenge-categorys-service:0.1.0
     environment:
       DATABASE_NAME: &challangeDatabaseName challange
       DATABASE_USER: &challangeDatabaseUser challangeuser
@@ -25,3 +88,12 @@ services:
       POSTGRES_PASSWORD: *challangeDatabasePassword
     deploy:
       replicas: 1
+
+  posts-service:
+    image: aminnairi/posts-service:0.1.0
+    environment:
+      DATABASE_NAME: &challangeDatabaseName challange
+      DATABASE_USER: &challangeDatabaseUser challangeuser
+      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+    deploy:
+      replicas: 5
