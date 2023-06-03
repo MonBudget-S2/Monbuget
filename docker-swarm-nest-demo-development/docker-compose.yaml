@@ -40,6 +40,20 @@ services:
       POSTGRES_DB: *challangeDatabaseName
       POSTGRES_USER: *challangeDatabaseUser
       POSTGRES_PASSWORD: *challangeDatabasePassword
+      
+  challenge-budgets-service:
+    build:
+      context: services/budgets
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/alerts:/home/node
+    environment:
+      POSTGRES_DB: *challangeDatabaseName
+      POSTGRES_USER: *challangeDatabaseUser
+      POSTGRES_PASSWORD: *challangeDatabasePassword
 
   challenge-events-service:
     build:
