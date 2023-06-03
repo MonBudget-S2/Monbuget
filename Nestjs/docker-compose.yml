@@ -58,7 +58,7 @@ services:
     links:
       - mailer
       - db
-      -
+
   income:
     build: ./income
     restart: always
