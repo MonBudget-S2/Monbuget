@@ -4,8 +4,9 @@ export class PostsExceptionFilter implements ExceptionFilter {
   public catch(exception: any, host: ArgumentsHost) {
     const response = host.switchToHttp().getResponse();
 
-    response.status(400).json({
-      error: exception.response.data.message[0]
-    });
+    // response.status(400).json({
+    //   error: exception.response?.data?.message[0],
+    //   // error: exception.response,
+    // });
   }
 }
