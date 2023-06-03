@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  challange-gateway-service:
+  challenge-gateway-service:
     build:
       context: services/gateway
       dockerfile: Dockerfile
@@ -23,9 +23,9 @@ services:
     volumes:
       - ./services/alerts:/home/node
     environment:
-      DATABASE_NAME: &challangeDatabaseName challange
-      DATABASE_USER: &challangeDatabaseUser challangeuser
-      DATABASE_PASSWORD: &challangeDatabasePassword challangepass
+      POSTGRES_DB: &challengeDatabaseName challenge
+      POSTGRES_USER: &challengeDatabaseUser challengeuser
+      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
 
   challenge-categorys-service:
     build:
@@ -37,23 +37,9 @@ services:
     volumes:
       - ./services/alerts:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
-      
-  challenge-budgets-service:
-    build:
-      context: services/budgets
-      dockerfile: Dockerfile
-      target: development
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./services/alerts:/home/node
-    environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: &challengeDatabaseName challenge
+      POSTGRES_USER: &challengeDatabaseUser challengeuser
+      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
 
   challenge-events-service:
     build:
@@ -65,9 +51,9 @@ services:
     volumes:
       - ./services/events:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: &challengeDatabaseName challenge
+      POSTGRES_USER: &challengeDatabaseUser challengeuser
+      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
 
   challenge-debts-service:
     build:
@@ -79,9 +65,9 @@ services:
     volumes:
       - ./services/debts:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
 
   challenge-expenses-service:
     build:
@@ -93,9 +79,9 @@ services:
     volumes:
       - ./services/expenses:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword
 
   challenge-incomes-service:
     build:
@@ -107,9 +93,9 @@ services:
     volumes:
       - ./services/incomes:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
 
   challenge-users-service:
     build:
@@ -121,18 +107,21 @@ services:
     volumes:
       - ./services/users:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword
+      
+    depends_on:
+      - challenge-database
 
-  challange-database:
+  challenge-database:
     build:
       context: services/database
       dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName
+      POSTGRES_USER: *challengeDatabaseUser
+      POSTGRES_PASSWORD: *challengeDatabasePassword
 
   posts-service:
     build:
@@ -144,6 +133,15 @@ services:
     volumes:
       - ./services/posts:/home/node
     environment:
-      POSTGRES_DB: *challangeDatabaseName
-      POSTGRES_USER: *challangeDatabaseUser
-      POSTGRES_PASSWORD: *challangeDatabasePassword
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  adminer:
+      image: adminer:latest
+      ports:
+        - 8080:8080
+      environment:
+        - ADMINER_DESIGN=dracula
+      depends_on:
+        - challenge-database

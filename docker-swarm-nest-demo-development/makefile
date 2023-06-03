@@ -1,6 +1,7 @@
 .PHONY: start down restart
 
 start:
+	docker compose up -d
 	docker-compose up -d
 	docker compose exec -d challange-gateway-service npm install 
 	docker compose exec -d challange-gateway-service npm run start:dev 
@@ -22,6 +23,7 @@ start:
 	docker compose exec -d challenge-budgets-service npm run start:dev 
 
 down:
+	docker compose down
 	docker-compose down
 
 restart:
