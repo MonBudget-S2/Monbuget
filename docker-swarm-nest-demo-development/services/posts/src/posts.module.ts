@@ -8,7 +8,7 @@ import { PostsService } from './posts.service';
   imports: [
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: "challange-database",
+      host: "challenge-database",
       port: 5432,
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,

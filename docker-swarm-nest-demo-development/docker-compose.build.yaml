@@ -1,8 +1,8 @@
 version: "3"
 
 services:
-  challange-gateway-service:
-    image: ronantr/challange-gateway-service:0.1.0 
+  challenge-gateway-service:
+    image: ronantr/challenge-gateway-service:0.1.0 
     build:
       context: services/gateway
       dockerfile: Dockerfile
@@ -65,8 +65,8 @@ services:
       target: production
 
 
-  challange-database:
-    image: ronantr/challange-database:0.1.2
+  challenge-database:
+    image: ronantr/challenge-database:0.1.2
     build:
       context: services/database
       dockerfile: Dockerfile
