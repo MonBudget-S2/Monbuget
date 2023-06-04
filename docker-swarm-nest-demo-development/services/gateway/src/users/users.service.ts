@@ -31,16 +31,28 @@ export class UsersService {
   }
 
   async login(body: unknown) {
-    try {
-      const response = await axios.post(
-        "http://challenge-users-service:3000/auth/login",
-        body
+    // try {
+    //   const response = await axios.post(
+    //     "http://challenge-users-service:3000/auth/login",
+    //     body
+    //   );
+    //   return response.data;
+    // } catch (error) {
+    //   return { error: error };
+    //   // console.error("Error calling user microservice:", error);
+    //   // return { error: "Error calling user microservice", errorDetails: error };
+    // }
+
+    return this.httpService
+      .post("http://challenge-users-service:3000/auth/login", body)
+      .pipe(
+        map((response) => {
+          if (response.data && response.data.message) {
+            return response.data.message;
+          } else {
+            return "Login failed";
+          }
+        })
       );
-      return response.data;
-    } catch (error) {
-      return { error: error };
-      // console.error("Error calling user microservice:", error);
-      // return { error: "Error calling user microservice", errorDetails: error };
-    }
   }
 }

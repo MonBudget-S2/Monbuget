@@ -13,6 +13,7 @@ import { UsersService } from 'src/users/users.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 
 import { Logger } from '@nestjs/common';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -33,5 +34,10 @@ export class AuthController {
       loginUserDto.password,
       user,
     );
+  }
+
+  @Post('register')
+  async register(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.register(createUserDto);
   }
 }

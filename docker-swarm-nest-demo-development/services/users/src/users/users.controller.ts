@@ -12,8 +12,8 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  @Post('register')
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.register(createUserDto);
-  }
+  // @Post('register')
+  // async register(@Body() createUserDto: CreateUserDto) {
+  //   return this.usersService.register(createUserDto);
+  // }
 }
