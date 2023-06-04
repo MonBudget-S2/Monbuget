@@ -33,13 +33,14 @@ export class UsersService {
   async login(body: unknown) {
     try {
       const response = await axios.post(
-        "http://challenge-users-service:3000/users/login",
+        "http://challenge-users-service:3000/auth/login",
         body
       );
       return response.data;
     } catch (error) {
-      console.error("Error calling user microservice:", error);
-      return { error: "Error calling user microservice", errorDetails: error };
+      return { error: error };
+      // console.error("Error calling user microservice:", error);
+      // return { error: "Error calling user microservice", errorDetails: error };
     }
   }
 }
