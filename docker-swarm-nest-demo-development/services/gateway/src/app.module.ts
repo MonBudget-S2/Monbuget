@@ -1,11 +1,38 @@
-import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
-import { PostsModule } from "./posts/posts.module";
-import { PostsService } from "./posts/posts.service";
-import { UsersModule } from "./users/users.module";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
 
 @Module({
-  imports: [HttpModule, PostsModule, UsersModule],
-  providers: [PostsService],
+  imports: [
+    ClientsModule.register([
+      {
+        name: "AUTH_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "auth-service",
+          port: 3001,
+        },
+      },
+      {
+        name: "USER_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "challenge-users-service",
+          port: 3002,
+        },
+      },
+      {
+        name: "INCOME_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "challenge-incomes-service",
+          port: 3003,
+        },
+      },
+    ]),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
