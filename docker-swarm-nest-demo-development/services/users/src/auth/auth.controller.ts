@@ -24,7 +24,6 @@ export class AuthController {
   ) {}
 
   //   @UseGuards(AuthGuard('jwt'))
-  // @Post('login')
   @MessagePattern({ service: 'auth', cmd: 'login' })
   async login(@Body() loginUserDto: LoginUserDto) {
     Logger.log('Login request', '***********AuthController***********');
@@ -44,8 +43,7 @@ export class AuthController {
   //   return await this.authService.login(data.username, data.password);
   // }
 
-  // @Post('register')
-
+  @MessagePattern({ service: 'auth', cmd: 'register' })
   async register(@Body() createUserDto: CreateUserDto) {
     return this.usersService.register(createUserDto);
   }

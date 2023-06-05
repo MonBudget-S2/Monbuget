@@ -12,6 +12,20 @@ export class AppController {
     return this.appService.login(data);
   }
 
+  @Post("users/register")
+  register(
+    @Payload()
+    data: {
+      username: string;
+      password: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+    }
+  ) {
+    return this.appService.register(data);
+  }
+
   @Get("users")
   getUsers() {
     return this.appService.getUsers();

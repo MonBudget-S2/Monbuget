@@ -13,14 +13,8 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  // @Post('register')
-  // async register(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.register(createUserDto);
-  // }
-
   @MessagePattern({ service: 'user', cmd: 'getUsers' })
   async getUsers() {
-    Logger.log('Get users request', '***********UsersController***********');
     return this.usersService.findAll();
   }
 }
