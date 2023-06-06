@@ -30,6 +30,14 @@ import { AppService } from "./app.service";
           port: 3003,
         },
       },
+      {
+        name: "EXPENSE_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "challenge-expenses-service",
+          port: 3004,
+        },
+      },
     ]),
   ],
   controllers: [AppController],

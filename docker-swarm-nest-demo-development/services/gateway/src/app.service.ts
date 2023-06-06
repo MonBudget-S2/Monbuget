@@ -66,5 +66,13 @@ export class AppService {
     );
   }
 
+  async createExpense(userId: string, amount: number) {
+    return await firstValueFrom(
+      this.incomeService.send(
+        { service: "expense", cmd: "create" },
+        { userId, amount }
+      )
+    );
+
   // Other API Gateway methods...
 }

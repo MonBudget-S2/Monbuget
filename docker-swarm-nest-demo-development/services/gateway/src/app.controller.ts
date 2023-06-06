@@ -38,9 +38,15 @@ export class AppController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @MessagePattern({ service: "income", action: "create" })
+  @Post("incomes")
   createIncome(@Payload() data: { userId: string; amount: number }) {
     return this.appService.createIncome(data.userId, data.amount);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post("expenses")
+  createExpense(@Payload() data: { userId: string; amount: number }) {
+    return this.appService.createExpense(data.userId, data.amount);
   }
 
   // Other API Gateway methods...
