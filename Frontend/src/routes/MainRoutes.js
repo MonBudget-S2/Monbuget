@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 
 // project imports
-import MainLayout from 'layout/MainLayout';
+// import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-// import PrivateRoutes from './PrivateRoutes';
+import PrivateRoutes from './PrivateRoutes';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -23,8 +23,9 @@ const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')))
 const MainRoutes = {
   path: '/',
   element: (
+    <PrivateRoutes />
     // <PrivateRoutes>
-    <MainLayout />
+    // <MainLayout />
     // </PrivateRoutes>
   ),
   children: [
