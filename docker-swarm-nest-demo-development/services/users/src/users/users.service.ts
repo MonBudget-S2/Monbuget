@@ -9,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -23,12 +23,28 @@ export class UsersService {
     return { message: 'User registered successfully' };
   }
 
-  async findByEmail(email: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { email } });
+  // async findByEmail(email: string): Promise<User | undefined> {
+  //   return this.userRepository.findOne({ where: { email } });
+  // }
+
+  public getUserByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
   }
 
-  async findByUsername(username: string): Promise<User | undefined> {
-    return this.userRepository.findOne({ where: { username } });
+  public getUserByUsername(username: string) {
+    return this.userRepository.findOneBy({ username });
+  }
+
+  // async findByUsername(username: string): Promise<User | undefined> {
+  //   return this.userRepository.findOne({ where: { username } });
+  // }
+
+  public getUserById(id: string) {
+    return this.userRepository.findOneBy({ id });
+  }
+
+  public deleteUser(id: string) {
+    return this.userRepository.delete({ id });
   }
 
   async findAll(): Promise<User[]> {
