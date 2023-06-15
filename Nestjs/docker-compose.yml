@@ -58,6 +58,19 @@ services:
     links:
       - mailer
       - db
+
+  income:
+    build: ./income
+    restart: always
+    hostname: income
+    env_file:
+      - .env
+    networks:
+      - backend
+    links:
+      - mailer
+      - db
+
   db:
     image: postgres:14
     container_name: postgres

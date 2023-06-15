@@ -11,5 +11,8 @@
     "url": "https://github.com/Denrox/nestjs-microservices-example.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/microservices": "^9.4.1"
+  }
 }
