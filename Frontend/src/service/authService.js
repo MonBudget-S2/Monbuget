@@ -3,12 +3,16 @@ import axios from 'axios';
 import { authenticateUser } from 'store/authSlice';
 import { initialState } from 'store/customizationReducer';
 
+// const url =
+//   process.env.NODE_ENV === "production"
+//     ? process.env.REACT_APP_URL_PROD
+//     : process.env.REACT_APP_URL_DEV;
+
+const url = "http://127.0.0.1:3000";
+    
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:3000', // Set the base URL of your API
-  headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:3001', // Replace with your client's origin
-  },
+  baseURL: url, // Set the base URL of your API
+
 });
 
 // export const login = async (credentials) => {
