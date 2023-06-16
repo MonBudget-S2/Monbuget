@@ -12,6 +12,11 @@ export class AppController {
     return this.appService.login(data);
   }
 
+  @Post("users/validateToken")
+  validateToken(@Payload() data: { token: string }) {
+    return this.appService.validateToken(data.token);
+  }
+
   @Post("users/register")
   register(
     @Payload()
@@ -25,6 +30,8 @@ export class AppController {
   ) {
     return this.appService.register(data);
   }
+
+
 
   @Get("users")
   getUsers() {

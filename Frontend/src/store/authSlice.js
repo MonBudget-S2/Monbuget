@@ -17,6 +17,16 @@ const authSlice = createSlice({
       state.id = id;
       state.role = role;
       state.userInfo = userInfo;
+
+      // const user = {
+      //   isConnected,
+      //   token,
+      //   id,
+      //   role,
+      //   userInfo
+      // };
+      
+      // localStorage.setItem('user', JSON.stringify(user));
     },
   },
 });

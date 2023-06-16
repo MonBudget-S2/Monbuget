@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { LoginRequest, TokenValidateRequest } from './authentication.request';
 import { compare } from 'bcryptjs';
@@ -55,6 +55,7 @@ export class AuthenticationService {
 
   public async validateToken(tokenValidateRequest: TokenValidateRequest) {
     if (!tokenValidateRequest.token) {
+      Logger.log('Token is missing', 'AuthenticationService');
       throw new BadRequestException('Token is missing');
     }
 
@@ -65,6 +66,7 @@ export class AuthenticationService {
       console.log(user);
 
       if (!user) {
+        Logger.log('Invalid user', 'AuthenticationService');
         throw new BadRequestException('Invalid user');
       }
 

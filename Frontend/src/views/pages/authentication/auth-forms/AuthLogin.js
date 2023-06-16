@@ -30,8 +30,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useDispatch } from 'react-redux';
 import { login } from 'service/authService';
-import { authenticateUser } from 'store/authSlice';
+// import { authenticateUser } from 'store/authSlice';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
 
 // ============================|| FIREBASE - LOGIN ||============================ //
@@ -59,8 +60,10 @@ const AuthLogin = ({ ...others }) => {
   
 
       const credentials = { username:email, password };
-      const response= await login(credentials);
-      dispatch(authenticateUser(response));
+      // const response= await login(credentials);
+      // dispatch(authenticateUser(response));
+      const res = await axios.post('http://127.0.0.1:3000/users/login', credentials);
+      login(res, dispatch);
 
   
       // Set the Formik status and submitting state

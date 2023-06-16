@@ -33,6 +33,14 @@ export class AppService {
     );
   }
 
+  async validateToken(token: string) {
+    const data = { token: token };
+    
+    return await firstValueFrom(
+      this.userService.send({ service: "auth", cmd: "validateToken" }, data)
+    );
+  }
+
   async register(data: {
     username: string;
     password: string;

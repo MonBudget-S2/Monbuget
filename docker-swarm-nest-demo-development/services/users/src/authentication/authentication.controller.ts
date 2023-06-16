@@ -14,15 +14,21 @@ export class AuthenticationController {
 
   @MessagePattern({ service: 'auth', cmd: 'login' })
   public login(@Body(ValidationPipe) loginRequest: LoginRequest) {
-    Logger.log("Auth Login request", "***********Auth***********");
-    
+    Logger.log('Auth Login request', '***********Auth***********');
+
     return this.authenticationService.login(loginRequest);
   }
 
+  // @MessagePattern({ service: 'auth', cmd: 'validateToken' })
+  // public validateToken(
+  //   @Body(ValidationPipe) tokenValidateRequest: TokenValidateRequest,
+  // ) {
+  //   Logger.log("ValidateToken request", "***********Auth***********");
+  //   return this.authenticationService.validateToken(tokenValidateRequest);
+  // }
   @MessagePattern({ service: 'auth', cmd: 'validateToken' })
-  public validateToken(
-    @Body(ValidationPipe) tokenValidateRequest: TokenValidateRequest,
-  ) {
+  public validateToken(tokenValidateRequest: TokenValidateRequest) {
+    Logger.log('ValidateToken request', '***********Auth***********');
     return this.authenticationService.validateToken(tokenValidateRequest);
   }
 
