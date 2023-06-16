@@ -42,6 +42,7 @@ import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
+  const userInfo = useSe
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();

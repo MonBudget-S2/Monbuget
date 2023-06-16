@@ -53,7 +53,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-const MainLayout = () => {
+const AdminMainLayout = () => {
   const theme = useTheme();
   const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
   // Handle left drawer
@@ -76,8 +76,7 @@ const MainLayout = () => {
         color="inherit"
         elevation={0}
         sx={{
-          // bgcolor: theme.palette.background.default,
-          bgcolor:"red",
+          bgcolor: theme.palette.background.default,
           transition: leftDrawerOpened ? theme.transitions.create('width') : 'none'
         }}
       >
@@ -100,4 +99,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default AdminMainLayout;

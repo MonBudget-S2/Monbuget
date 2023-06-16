@@ -1,13 +1,27 @@
 import MainLayout from 'layout/MainLayout';
 import { Navigate } from 'react-router-dom';
+import AdminMainLayout from 'layout/MainLayout/AdminMainLayout';
+import { getToken, isAdmin } from 'store/authSlice';
+import { useSelector } from 'react-redux';
+
 // import {  Outlet } from 'react-router-dom';
 const PrivateRoutes = () => {
-  /*** Here you should check if the user is authenticated or not,
-   * Now I am just returning true for the sake of simplicity
-   ***/
+  console.log(useSelector((state) => state))
+  const token = useSelector(getToken);
+  const admin = useSelector(isAdmin);
+  const isAuthenticated = token !== null;
+  // let auth = { token: false };
+  // return isAuthenticated ? <MainLayout /> : <Navigate to="/login" />;
+  if (isAuthenticated) {
 
-  let auth = { token: true };
-  return auth.token ? <MainLayout /> : <Navigate to="/login" />;
+    if (admin) {
+      return <AdminMainLayout />;
+    } else {
+      return <MainLayout />;
+    }
+  } else {
+    return<Navigate to="/login" />;
+  }
 };
 
 export default PrivateRoutes;
