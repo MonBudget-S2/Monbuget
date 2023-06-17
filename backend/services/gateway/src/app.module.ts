@@ -30,6 +30,14 @@ import { AppService } from "./app.service";
           port: 3004,
         },
       },
+      {
+        name: "BUDGET_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "challenge-budgets-service",
+          port: 3005,
+        },
+      },
     ]),
   ],
   controllers: [AppController],

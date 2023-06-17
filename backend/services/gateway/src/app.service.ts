@@ -23,7 +23,10 @@ export class AppService {
   constructor(
     @Inject("USER_SERVICE") private readonly authService: ClientProxy,
     @Inject("USER_SERVICE") private readonly userService: ClientProxy,
-    @Inject("INCOME_SERVICE") private readonly incomeService: ClientProxy
+    @Inject("INCOME_SERVICE") private readonly incomeService: ClientProxy,
+    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy,
+    @Inject("BUDGET_SERVICE") private readonly budgetService: ClientProxy
+
   ) {}
 
   async login(data: { username: string; password: string }) {
@@ -81,8 +84,19 @@ export class AppService {
         { userId, amount }
       )
     );
+      }
+    
+  async createBudget(userId: string, amount: number) {
+    return await firstValueFrom(
+      this.budgetService.send(
+        { service: "budget", cmd: "create" },
+        { userId, amount }
+      )
+    );
+
+}
 
   // Other API Gateway methods...
-}
+
 }
 
