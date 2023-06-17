@@ -37,9 +37,9 @@ services:
     volumes:
       - ./services/alerts:/home/node
     environment:
-      POSTGRES_DB: &challengeDatabaseName challenge
-      POSTGRES_USER: &challengeDatabaseUser challengeuser
-      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
 
   challenge-events-service:
     build:
@@ -51,9 +51,9 @@ services:
     volumes:
       - ./services/events:/home/node
     environment:
-      POSTGRES_DB: &challengeDatabaseName challenge
-      POSTGRES_USER: &challengeDatabaseUser challengeuser
-      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
 
   challenge-debts-service:
     build:
