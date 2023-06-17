@@ -56,12 +56,6 @@ export class AppController {
     return this.appService.createExpense(data.userId, data.amount);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post("budgets")
-  createBudget(@Payload() data: { userId: string; amount: number }) {
-    return this.appService.createBudget(data.userId, data.amount);
-  }
-  
 
   // Other API Gateway methods...
 
