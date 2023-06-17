@@ -29,11 +29,11 @@ docker compose exec challenge-incomes-service npm install
 docker compose exec challenge-incomes-service npm run start:dev
 ```
 
-### Categorys
+### categories
 
 ```bash
-docker compose exec challenge-categorys-service npm install
-docker compose exec challenge-categorys-service npm run start:dev
+docker compose exec challenge-categories-service npm install
+docker compose exec challenge-categories-service npm run start:dev
 ```
 
 ### Expenses

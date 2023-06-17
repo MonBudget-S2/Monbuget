@@ -15,10 +15,10 @@ services:
       dockerfile: Dockerfile
       target: production
 
-  challenge-categorys-service:
-    image: ronantr/challenge-categorys-service:0.1.0
+  challenge-categories-service:
+    image: ronantr/challenge-categories-service:0.1.0
     build:
-      context: services/categorys
+      context: services/categories
       dockerfile: Dockerfile
       target: production
 

@@ -3,16 +3,16 @@
 start:
 	docker compose up -d
 	docker-compose up -d
-	docker compose exec -d challange-gateway-service npm install 
-	docker compose exec -d challange-gateway-service npm run start:dev 
+	docker compose exec -d challenge-gateway-service npm install 
+	docker compose exec -d challenge-gateway-service npm run start:dev 
 	docker compose exec -d challenge-users-service npm install 
 	docker compose exec -d challenge-users-service npm run start:dev 
 	docker compose exec -d challenge-incomes-service npm install 
 	docker compose exec -d challenge-incomes-service npm run start:dev 
 	docker compose exec -d challenge-expenses-service npm install 
 	docker compose exec -d challenge-expenses-service npm run start:dev 
-	docker compose exec -d challenge-categorys-service npm install 
-	docker compose exec -d challenge-categorys-service npm run start:dev 
+	docker compose exec -d challenge-categories-service npm install 
+	docker compose exec -d challenge-categories-service npm run start:dev 
 	docker compose exec -d challenge-events-service npm install 
 	docker compose exec -d challenge-events-service npm run start:dev 
 	docker compose exec -d challenge-debts-service npm install 

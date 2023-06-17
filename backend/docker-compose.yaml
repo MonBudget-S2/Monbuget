@@ -27,9 +27,9 @@ services:
       POSTGRES_USER: &challengeDatabaseUser challengeuser
       POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
 
-  challenge-categorys-service:
+  challenge-categories-service:
     build:
-      context: services/categorys
+      context: services/categories
       dockerfile: Dockerfile
       target: development
     tty: true
@@ -64,6 +64,20 @@ services:
     stdin_open: true
     volumes:
       - ./services/debts:/home/node
+    environment:
+      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-budgets-service:
+    build:
+      context: services/budgets
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/budgets:/home/node
     environment:
       POSTGRES_DB: *challengeDatabaseName 
       POSTGRES_USER: *challengeDatabaseUser 
