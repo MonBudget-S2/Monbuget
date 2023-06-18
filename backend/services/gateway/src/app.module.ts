@@ -3,10 +3,10 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { BudgetModule } from "./budgets/budget.module";
+import { AlertModule } from "./alerts/alert.module";
 
 @Module({
   imports: [
-    BudgetModule,
     ClientsModule.register([
       {
         name: "USER_SERVICE",
@@ -32,14 +32,14 @@ import { BudgetModule } from "./budgets/budget.module";
           port: 3004,
         },
       },
-      {
-        name: "BUDGET_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-budgets-service",
-          port: 3005,
-        },
-      },
+      // {
+      //   name: "BUDGET_SERVICE",
+      //   transport: Transport.TCP,
+      //   options: {
+      //     host: "challenge-budgets-service",
+      //     port: 3005,
+      //   },
+      // },
       {
         name: "CATEGORY_SERVICE",
         transport: Transport.TCP,
@@ -48,14 +48,14 @@ import { BudgetModule } from "./budgets/budget.module";
           port: 3007,
         },
       },
-      {
-        name: "ALERT_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-alerts-service",
-          port: 3006,
-        },
-      },
+      // {
+      //   name: "ALERT_SERVICE",
+      //   transport: Transport.TCP,
+      //   options: {
+      //     host: "challenge-alerts-service",
+      //     port: 3006,
+      //   },
+      // },
       {
         name: "DEBT_SERVICE",
         transport: Transport.TCP,
@@ -81,6 +81,9 @@ import { BudgetModule } from "./budgets/budget.module";
         }
       }
     ]),
+    BudgetModule,
+    AlertModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

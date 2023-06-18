@@ -12,7 +12,7 @@ export class AlertService {
 
 
   constructor(
-    @Inject("BUDGET_SERVICE") private readonly alertService: ClientProxy
+    @Inject("ALERT_SERVICE") private readonly alertService: ClientProxy
 
   ) {}
     
