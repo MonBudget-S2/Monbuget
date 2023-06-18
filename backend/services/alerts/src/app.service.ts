@@ -24,10 +24,7 @@ export class AppService {
     return this.alertRepository.find();
   }
 
-  async update(
-    id: string,
-    data: Partial<Alert>,
-  ): Promise<Alert | null> {
+  async update(id: string, data: Partial<Alert>): Promise<Alert | null> {
     const result = await this.alertRepository.update(id, data);
 
     if (result.affected === 0) {

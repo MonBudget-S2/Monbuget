@@ -23,7 +23,13 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'category', action: 'update' })
-  updateCategory({ id, category }: { id: string, category: UpdateCategoryDto }) {
+  updateCategory({
+    id,
+    category,
+  }: {
+    id: string;
+    category: UpdateCategoryDto;
+  }) {
     return this.appService.update(id, category);
   }
 
