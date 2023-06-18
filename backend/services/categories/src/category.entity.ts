@@ -1,21 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Alert {
+export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  type: string;
-
-  @Column()
-  severity: string;
-
-  @Column()
-  message: string;
-
-  @Column()
-  readAt: Date;
+  name: string;
 
   @Column()
   userId: string;
