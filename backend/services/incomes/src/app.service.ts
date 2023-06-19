@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Income } from './income.entity';
 import { Repository } from 'typeorm';
+import { UpdateIncomeDto } from './income.request';
 
 @Injectable()
 export class AppService {
@@ -24,8 +25,11 @@ export class AppService {
     return this.incomeRepository.find();
   }
 
-  async update(id: string, data: Partial<Income>): Promise<Income | null> {
-    const result = await this.incomeRepository.update(id, data);
+  async update(
+    id: string,
+    updateIncomeDto: UpdateIncomeDto,
+  ): Promise<Income | null> {
+    const result = await this.incomeRepository.update(id, updateIncomeDto);
 
     if (result.affected === 0) {
       return null; // Budget with the given ID not found

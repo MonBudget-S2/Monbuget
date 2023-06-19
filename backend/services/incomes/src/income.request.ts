@@ -1,8 +1,9 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import { IncomeType } from './income.enum';
 
 export class CreateIncomeDto {
-  @IsString()
-  type: string;
+  @IsEnum(IncomeType)
+  type: IncomeType;
 
   @IsNumber()
   amount: number;
@@ -15,8 +16,8 @@ export class CreateIncomeDto {
 }
 
 export class UpdateIncomeDto {
-  @IsString()
-  type?: string;
+  @IsEnum(IncomeType)
+  type?: IncomeType;
 
   @IsNumber()
   amount?: number;
