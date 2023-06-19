@@ -1,16 +1,15 @@
-import {Column, PrimaryGeneratedColumn} from "typeorm";
-
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+@Entity()
 export class DebtPayment {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    amount: number;
+  @Column()
+  amount: number;
 
-    @Column()
-    date: Date;
+  @Column()
+  date: Date;
 
-    @Column()
-    debtId: string;
-
+  @Column()
+  debtId: string;
 }
