@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alert } from './alert.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateAlertDto, UpdateAlertDto } from './alert.request';
 
 @Injectable()
 export class AppService {
@@ -10,8 +11,8 @@ export class AppService {
     private alertRepository: Repository<Alert>,
   ) {}
 
-  async create(data: any): Promise<any> {
-    const newAlert = this.alertRepository.create(data);
+  async create(createAlertDto: CreateAlertDto): Promise<any> {
+    const newAlert = this.alertRepository.create(createAlertDto);
     await this.alertRepository.save(newAlert);
     return { message: 'Alert created successfully' };
   }
@@ -24,8 +25,11 @@ export class AppService {
     return this.alertRepository.find();
   }
 
-  async update(id: string, data: Partial<Alert>): Promise<Alert | null> {
-    const result = await this.alertRepository.update(id, data);
+  async update(
+    id: string,
+    updateAlertDto: UpdateAlertDto,
+  ): Promise<Alert | null> {
+    const result = await this.alertRepository.update(id, updateAlertDto);
 
     if (result.affected === 0) {
       return null; // Alert with the given ID not found

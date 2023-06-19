@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Category } from './category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateCategoryDto, UpdateCategoryDto } from './category.request';
 
 @Injectable()
 export class AppService {
@@ -10,8 +11,8 @@ export class AppService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(data: any): Promise<any> {
-    const newCategory = this.categoryRepository.create(data);
+  async create(createCategoryDto: CreateCategoryDto): Promise<any> {
+    const newCategory = this.categoryRepository.create(createCategoryDto);
     await this.categoryRepository.save(newCategory);
     return { message: 'Category created successfully' };
   }
@@ -24,8 +25,11 @@ export class AppService {
     return this.categoryRepository.find();
   }
 
-  async update(id: string, data: Partial<Category>): Promise<Category | null> {
-    const result = await this.categoryRepository.update(id, data);
+  async update(
+    id: string,
+    updateCategoryDto: UpdateCategoryDto,
+  ): Promise<Category | null> {
+    const result = await this.categoryRepository.update(id, updateCategoryDto);
 
     if (result.affected === 0) {
       return null; // Category with the given ID not found
