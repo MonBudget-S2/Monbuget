@@ -1,5 +1,6 @@
-import {Column, PrimaryGeneratedColumn} from "typeorm";
+import {Entity,Column, PrimaryGeneratedColumn} from "typeorm";
 
+@Entity()
 export class EventParticipate {
     @PrimaryGeneratedColumn('uuid')
     id: string;
