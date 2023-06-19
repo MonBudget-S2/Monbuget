@@ -5,12 +5,28 @@ export class CreateIncomeDto {
     type: string
 
     @IsNumber()
-    amount: string
+    amount: number
 
     @IsString()
     userId: string
 
     @IsDate()
     date: Date
+
+}
+
+
+export class UpdateIncomeDto{
+    @IsString()
+    type?: string
+
+    @IsNumber()
+    amount?: number
+
+    @IsString()
+    userId?: string
+
+    @IsDate()
+    date?: Date
 
 }
