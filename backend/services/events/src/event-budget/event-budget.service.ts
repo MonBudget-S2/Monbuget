@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEventBudgetDto } from './dto/create-event-budget.dto';
-import { UpdateEventBudgetDto } from './dto/update-event-budget.dto';
+import {
+  CreateEventBudgetDto,
+  UpdateEventBudgetDto,
+} from './event-budget.request';
 
 @Injectable()
 export class EventBudgetService {

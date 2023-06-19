@@ -5,8 +5,8 @@ import { EventBudgetModule } from './event-budget/event-budget.module';
 import { EventParticipateModule } from './event-participate/event-participate.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config from './typeorm.config';
-import { EventBudget } from './event-budget/entities/event-budget.entity';
-import { EventParticipate } from './event-participate/entities/event-participate.entity';
+import { EventBudget } from './event-budget/event-budget.entity';
+import { EventParticipate } from './event-participate/event-participate.entity';
 
 @Module({
   imports: [

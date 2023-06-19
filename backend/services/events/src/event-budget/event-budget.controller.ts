@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { EventBudgetService } from './event-budget.service';
-import { CreateEventBudgetDto } from './dto/create-event-budget.dto';
-import { UpdateEventBudgetDto } from './dto/update-event-budget.dto';
+import { CreateEventBudgetDto, UpdateEventBudgetDto } from './event-budget.request';
 
 @Controller('event-budget')
 export class EventBudgetController {
