@@ -1,33 +1,29 @@
-import {IsDate, IsNumber, IsString} from "class-validator";
-import {PartialType} from "@nestjs/mapped-types";
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateIncomeDto {
-    @IsString()
-    type: string
+  @IsString()
+  type: string;
 
-    @IsNumber()
-    amount: number
+  @IsNumber()
+  amount: number;
 
-    @IsString()
-    userId: string
+  @IsString()
+  userId: string;
 
-    @IsDate()
-    date: Date
-
+  @IsDate()
+  date: Date;
 }
 
+export class UpdateIncomeDto {
+  @IsString()
+  type?: string;
 
-export class UpdateIncomeDto{
-    @IsString()
-    type?: string
+  @IsNumber()
+  amount?: number;
 
-    @IsNumber()
-    amount?: number
+  @IsString()
+  userId?: string;
 
-    @IsString()
-    userId?: string
-
-    @IsDate()
-    date?: Date
-
+  @IsDate()
+  date?: Date;
 }

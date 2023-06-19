@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import {InjectRepository} from "@nestjs/typeorm";
-import { Income } from './income.entity'
-import { Repository } from 'typeorm'
+import { InjectRepository } from '@nestjs/typeorm';
+import { Income } from './income.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AppService {
   constructor(
-      @InjectRepository(Income)
-      private incomeRepository: Repository<Income>,
+    @InjectRepository(Income)
+    private incomeRepository: Repository<Income>,
   ) {}
 
   async create(data: any): Promise<any> {
@@ -24,10 +24,7 @@ export class AppService {
     return this.incomeRepository.find();
   }
 
-  async update(
-      id: string,
-      data: Partial<Income>,
-  ): Promise<Income | null> {
+  async update(id: string, data: Partial<Income>): Promise<Income | null> {
     const result = await this.incomeRepository.update(id, data);
 
     if (result.affected === 0) {

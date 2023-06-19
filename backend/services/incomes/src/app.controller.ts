@@ -1,15 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { CreateIncomeDto, UpdateIncomeDto} from "./income.request";
-import { MessagePattern } from "@nestjs/microservices";
+import { CreateIncomeDto, UpdateIncomeDto } from './income.request';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @MessagePattern({ service: 'income', action:'create'})
-  createIncome(income: CreateIncomeDto)
-  {
+  @MessagePattern({ service: 'income', action: 'create' })
+  createIncome(income: CreateIncomeDto) {
     return this.appService.create(income);
   }
 
@@ -24,7 +23,7 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'income', action: 'update' })
-  updateIncome({ id, income }: { id: string, income: UpdateIncomeDto }) {
+  updateIncome({ id, income }: { id: string; income: UpdateIncomeDto }) {
     return this.appService.update(id, income);
   }
 
