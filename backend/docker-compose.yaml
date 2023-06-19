@@ -35,7 +35,7 @@ services:
     tty: true
     stdin_open: true
     volumes:
-      - ./services/alerts:/home/node
+      - ./services/categories:/home/node
     environment:
       POSTGRES_DB: *challengeDatabaseName 
       POSTGRES_USER: *challengeDatabaseUser 
