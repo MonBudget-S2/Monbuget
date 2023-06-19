@@ -2,7 +2,6 @@
 
 start:
 	docker compose up -d
-	docker-compose up -d
 	docker compose exec -d challenge-gateway-service npm install 
 	docker compose exec -d challenge-gateway-service npm run start:dev 
 	docker compose exec -d challenge-users-service npm install 
