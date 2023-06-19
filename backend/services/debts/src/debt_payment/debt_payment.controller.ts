@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DebtPaymentService } from './debt_payment.service';
-import { CreateDebtPaymentDto } from './dto/create-debt_payment.dto';
-import { UpdateDebtPaymentDto } from './dto/update-debt_payment.dto';
+import { CreateDebtPaymentDto, UpdateDebtPaymentDto } from './debt_payment.request';
 
 @Controller('debt-payment')
 export class DebtPaymentController {

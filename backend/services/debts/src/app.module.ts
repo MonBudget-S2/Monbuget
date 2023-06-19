@@ -5,8 +5,8 @@ import { DebtModule } from './debt/debt.module';
 import { DebtPaymentModule } from './debt_payment/debt_payment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config from './typeorm.config';
-import { Debt } from './debt/entities/debt.entity';
-import { DebtPayment } from './debt_payment/entities/debt_payment.entity';
+import { Debt } from './debt/debt.entity';
+import { DebtPayment } from './debt_payment/debt_payment.entity';
 
 @Module({
   imports: [
