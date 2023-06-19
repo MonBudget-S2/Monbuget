@@ -77,7 +77,7 @@ import { CategoryModule } from "./categories/category.module";
         name: "INCOME_SERVICE",
         transport: Transport.TCP,
         options: {
-           host : "challenge-incones-service",
+           host : "challenge-incomes-service",
            port:3010,
         }
       }
