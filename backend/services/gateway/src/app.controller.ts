@@ -1,7 +1,8 @@
 import { Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { AppService } from "./app.service";
-import { AuthenticationRequired } from "./authentication/authentication.decorator";
+import { AuthenticationRequired, HasRole } from "./authentication/authentication.decorator";
+import { Role } from "./authentication/authentication.enum";
 
 @Controller()
 export class AppController {
@@ -35,6 +36,7 @@ export class AppController {
 
   // @UseGuards(JwtAuthGuard)
  @AuthenticationRequired()
+ @HasRole(Role.ADMIN)
   @Get("users")
   getUsers() {
     return this.appService.getUsers();

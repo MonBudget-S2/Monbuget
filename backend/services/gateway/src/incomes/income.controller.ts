@@ -1,10 +1,8 @@
 import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from "@nestjs/common";
-import {JwtAuthGuard} from "../jwt-auth.guard";
 import { IncomeService } from './income.service'
 import { CreateIncomeDto, UpdateIncomeDto} from "./income.request";
 import {UpdateCategoryDto} from "../categories/category.request";
 
-@UseGuards(JwtAuthGuard)
 @Controller("incomes")
 export class IncomeController{
 
