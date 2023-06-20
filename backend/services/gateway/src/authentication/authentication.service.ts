@@ -7,7 +7,7 @@ import { Reflector } from '@nestjs/core';
 import { Role } from './authentication.enum';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/user.request';
 
 @Injectable()
 export class AuthenticationService {

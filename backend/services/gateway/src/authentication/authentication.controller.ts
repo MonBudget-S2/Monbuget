@@ -3,7 +3,7 @@ import { LoginRequest, TokenValidateRequest } from './authentication.request';
 import { AuthenticationService } from './authentication.service';
 // import { UsersService } from 'src/users/users.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/user.request';
 
 @Controller()
 export class AuthenticationController {

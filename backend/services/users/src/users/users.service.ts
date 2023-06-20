@@ -50,4 +50,14 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
+
+  async updateUser(id: string, data: any): Promise<User | null> {
+    const result = await this.userRepository.update(id, data);
+
+    if (result.affected === 0) {
+      return null; // User with the given ID not found
+    }
+
+    return this.userRepository.findOneBy({ id });
+  }
 }

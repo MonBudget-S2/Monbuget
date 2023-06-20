@@ -6,6 +6,7 @@ import { BudgetModule } from "./budgets/budget.module";
 import { AlertModule } from "./alerts/alert.module";
 import { CategoryModule } from "./categories/category.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
+import { UserModule } from "./users/user.module";
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { AuthenticationModule } from "./authentication/authentication.module";
     AlertModule,
     CategoryModule,
     AuthenticationModule,
+    UserModule,
 
   ],
   controllers: [AppController],

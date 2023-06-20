@@ -5,6 +5,7 @@ import {
   Transport,
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
+import { CreateUserDto } from "./users/user.request";
 
 @Injectable()
 export class AppService {
@@ -44,29 +45,12 @@ export class AppService {
     );
   }
 
-  async register(data: {
-    username: string;
-    password: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-  }) {
+  async register(createUserDto: CreateUserDto) {
     return await firstValueFrom(
-      this.userService.send({ service: "auth", cmd: "register" }, data)
+      this.userService.send({ service: "auth", cmd: "register" }, createUserDto)
     );
   }
 
-  async getUsers() {
-    return await firstValueFrom(
-      this.userService.send({ service: "user", cmd: "getUsers" }, {})
-    );
-  }
-
-  async getUserProfile(userId: string) {
-    return await firstValueFrom(
-      this.userService.send({ service: "user", cmd: "getUserProfile" }, userId)
-    );
-  }
 
   async createIncome(userId: string, amount: number) {
     return await firstValueFrom(

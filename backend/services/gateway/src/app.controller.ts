@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from "@nestjs/microservices";
 import { AppService } from "./app.service";
 import { AuthenticationRequired, HasRole } from "./authentication/authentication.decorator";
 import { Role } from "./authentication/authentication.enum";
+import { CreateUserDto } from "./users/user.request";
 
 @Controller()
 export class AppController {
@@ -21,30 +22,11 @@ export class AppController {
   @Post("users/register")
   register(
     @Payload()
-    data: {
-      username: string;
-      password: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-    }
+    createUserDto: CreateUserDto,
   ) {
-    return this.appService.register(data);
+    return this.appService.register(createUserDto);
   }
 
-
-
-  // @UseGuards(JwtAuthGuard)
- @AuthenticationRequired()
- @HasRole(Role.ADMIN)
-  @Get("users")
-  getUsers() {
-    return this.appService.getUsers();
-  }
-  // @MessagePattern({ service: "user", action: "profile" })
-  getUserProfile(@Payload() data: { userId: string }) {
-    return this.appService.getUserProfile(data.userId);
-  }
 
   @Post("incomes")
   createIncome(@Payload() data: { userId: string; amount: number }) {
