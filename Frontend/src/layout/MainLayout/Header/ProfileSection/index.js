@@ -1,15 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
   Avatar,
   Box,
-  Card,
-  CardContent,
   Chip,
   ClickAwayListener,
   Divider,
@@ -23,7 +21,6 @@ import {
   Paper,
   Popper,
   Stack,
-  Switch,
   Typography
 } from '@mui/material';
 
@@ -33,22 +30,23 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
 import User1 from 'assets/images/users/user-round.svg';
-
 // assets
 import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
+
+import { authenticateUser, getUser } from 'store/authSlice';
+import { initialState } from 'store/customizationReducer';
 
 // ==============================|| PROFILE MENU ||============================== //
 
 const ProfileSection = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser)
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
 
-  const [sdm, setSdm] = useState(true);
   const [value, setValue] = useState('');
-  const [notification, setNotification] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
@@ -56,7 +54,10 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    console.log('Logout');
+    localStorage.removeItem('token');
+
+    dispatch(authenticateUser(initialState));
+    navigate('/login');
   };
 
   const handleClose = (event) => {
@@ -157,12 +158,12 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
+                        <Typography variant="h4">Bienvenu,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {user?.userInfo?.lastname + ' ' + user?.userInfo?.firstname}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">{user.role}</Typography>
                     </Stack>
                     <OutlinedInput
                       sx={{ width: '100%', pr: 1, pl: 2, my: 2 }}
@@ -184,51 +185,8 @@ const ProfileSection = () => {
                   </Box>
                   <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
                     <Box sx={{ p: 2 }}>
-                      <UpgradePlanCard />
                       <Divider />
-                      <Card
-                        sx={{
-                          bgcolor: theme.palette.primary.light,
-                          my: 2
-                        }}
-                      >
-                        <CardContent>
-                          <Grid container spacing={3} direction="column">
-                            <Grid item>
-                              <Grid item container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                  <Typography variant="subtitle1">Start DND Mode</Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    color="primary"
-                                    checked={sdm}
-                                    onChange={(e) => setSdm(e.target.checked)}
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                            <Grid item>
-                              <Grid item container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                  <Typography variant="subtitle1">Allow Notifications</Typography>
-                                </Grid>
-                                <Grid item>
-                                  <Switch
-                                    checked={notification}
-                                    onChange={(e) => setNotification(e.target.checked)}
-                                    name="sdm"
-                                    size="small"
-                                  />
-                                </Grid>
-                              </Grid>
-                            </Grid>
-                          </Grid>
-                        </CardContent>
-                      </Card>
-                      <Divider />
+                      
                       <List
                         component="nav"
                         sx={{

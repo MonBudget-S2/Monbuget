@@ -1,5 +1,5 @@
 {
-  "name": "berry-free-material-react-cra",
+  "name": "mon-budget",
   "version": "3.3.2",
   "private": true,
   "dependencies": {
@@ -11,8 +11,11 @@
     "@mui/material": "^5.8.6",
     "@mui/system": "^5.8.6",
     "@mui/utils": "^5.8.6",
+    "@reduxjs/toolkit": "^1.9.5",
     "@tabler/icons": "^1.72.0",
     "apexcharts": "^3.35.3",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.0",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.16",
     "material-ui-popup-state": "^4.0.1",
@@ -27,6 +30,7 @@
     "react-router-dom": "6.3.0",
     "react-scripts": "^5.0.1",
     "redux": "^4.2.0",
+    "start": "^5.1.0",
     "yup": "^0.32.11"
   },
   "scripts": {
