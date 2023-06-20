@@ -12,4 +12,15 @@ export class UsersController {
   async getUsers() {
     return this.usersService.findAll();
   }
+
+  @MessagePattern({ service: 'user', cmd: 'getUserById' })
+  async getUserById(id: string) {
+    return this.usersService.getUserById(id);
+  }
+
+  @MessagePattern({ service: 'user', cmd: 'getUserByUsername' })
+  async getUserByUsername(username: string) {
+    return this.usersService.getUserByUsername(username);
+  }
+
 }

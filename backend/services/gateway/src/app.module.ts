@@ -5,6 +5,7 @@ import { AppService } from "./app.service";
 import { BudgetModule } from "./budgets/budget.module";
 import { AlertModule } from "./alerts/alert.module";
 import { CategoryModule } from "./categories/category.module";
+import { AuthenticationModule } from "./authentication/authentication.module";
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { CategoryModule } from "./categories/category.module";
     BudgetModule,
     AlertModule,
     CategoryModule,
+    AuthenticationModule,
 
   ],
   controllers: [AppController],
