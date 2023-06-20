@@ -1,7 +1,5 @@
 import { Controller, Post, Body, UseGuards, Logger } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
 import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
