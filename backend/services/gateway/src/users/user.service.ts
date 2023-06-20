@@ -26,13 +26,13 @@ export class UserService {
 }
 async getAllUsers() {
     return await firstValueFrom(
-      this.userService.send({ service: "user", cmd: "getAll" }, {})
+      this.userService.send({ service: "user", cmd: "getUsers" }, {})
     );
   }
 
   async getUserById(id: string) {
     return await firstValueFrom(
-      this.userService.send({ service: "user", cmd: "getById" }, { id })
+      this.userService.send({ service: "user", cmd: "getUserById" }, { id })
     );
   }
 

@@ -11,7 +11,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         transport: Transport.TCP,
         options: {
           host: 'challenge-users-service',
-          port: 3005,
+          port: 3002,
         },
       },
     ]),
