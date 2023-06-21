@@ -57,7 +57,7 @@ export class UserService {
     return await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "update" },
-        { id, user: updateUserDto }
+        { id, updateUserDto }
       )
     );
   }

@@ -40,12 +40,16 @@ export class UserController {
   }
 
   @Put(":id")
-  updateUser(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(id, updateUserDto,@CurrentUser() user: any);
+  updateUser(
+    @Param("id") id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @CurrentUser() user: any
+  ) {
+    return this.userService.updateUser(id, updateUserDto, user);
   }
 
   @Delete(":id")
-  deleteUser(@Param("id") id: string) {
-    return this.userService.deleteUser(id,@CurrentUser() user: any);
+  deleteUser(@Param("id") id: string, @CurrentUser() user: any) {
+    return this.userService.deleteUser(id, user);
   }
 }

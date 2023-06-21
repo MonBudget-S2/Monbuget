@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UpdateUserDto } from './user.request';
 import { RemoveFieldsInterceptor } from './interceptors/remove-fields.interceptor';
 
@@ -32,13 +32,15 @@ export class UsersController {
     return this.usersService.getUserByUsername(username);
   }
 
-  @MessagePattern({ service: 'user', action: 'update' })
-  updateUser(@Param('id') id: string, @Body() user: UpdateUserDto) {
-    return this.usersService.updateUser(id, user);
+  @MessagePattern({ service: 'user', cmd: 'update' })
+  updateUser(@Payload() payload: { id: string; updateUserDto: UpdateUserDto }) {
+    console.log('updateUser', payload);
+    const { id, updateUserDto } = payload;
+    return this.usersService.updateUser(id, updateUserDto);
   }
 
-  @MessagePattern({ service: 'user', action: 'delete' })
-  deleteUser(@Param('id') id: string) {
+  @MessagePattern({ service: 'user', cmd: 'delete' })
+  deleteUser(@Payload() id: string) {
     return this.usersService.deleteUser(id);
   }
 }
