@@ -35,8 +35,6 @@ export class UserService {
   }
 
   async getUserById(id: string, user: any) {
-    console.log("user test", user);
-    console.log("id test", id);
     if (user.id !== id && user.role !== Role.ADMIN) {
       throw new HttpException(
         "You are not authorized to access this resource",
@@ -48,7 +46,14 @@ export class UserService {
     );
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto, user: any) {
+    if (user.id !== id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
+
     return await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "update" },
@@ -57,7 +62,13 @@ export class UserService {
     );
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string, user: any) {
+    if (user.id !== id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
     return await firstValueFrom(
       this.userService.send({ service: "user", cmd: "delete" }, id)
     );

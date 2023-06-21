@@ -34,7 +34,6 @@ export class UserController {
   }
 
   @Get(":id")
-  @HasRole(Role.ADMIN)
   getUserById(@Param("id") id: string, @CurrentUser() user: any) {
     // console.log("user test", user);
     return this.userService.getUserById(id, user);
@@ -42,11 +41,11 @@ export class UserController {
 
   @Put(":id")
   updateUser(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.updateUser(id, updateUserDto);
+    return this.userService.updateUser(id, updateUserDto,@CurrentUser() user: any);
   }
 
   @Delete(":id")
   deleteUser(@Param("id") id: string) {
-    return this.userService.deleteUser(id);
+    return this.userService.deleteUser(id,@CurrentUser() user: any);
   }
 }
