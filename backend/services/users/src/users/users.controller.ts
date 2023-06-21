@@ -1,9 +1,19 @@
-import { Controller, Post, Body, UseGuards, Logger, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Logger,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { UpdateUserDto } from './user.request';
+import { RemoveFieldsInterceptor } from './interceptors/remove-fields.interceptor';
 
 @Controller()
+@UseInterceptors(new RemoveFieldsInterceptor(['password']))
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -31,5 +41,4 @@ export class UsersController {
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
   }
-
 }
