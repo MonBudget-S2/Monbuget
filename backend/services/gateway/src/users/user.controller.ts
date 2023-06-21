@@ -12,6 +12,7 @@ import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
 import {
   AuthenticationRequired,
+  CurrentUser,
   HasRole,
 } from "src/authentication/authentication.decorator";
 import { Role } from "src/authentication/authentication.enum";
@@ -33,9 +34,10 @@ export class UserController {
   }
 
   @Get(":id")
-  getUserById(@Param("id") id: string) {
-    // console.log("id", id);
-    return this.userService.getUserById(id);
+  @HasRole(Role.ADMIN)
+  getUserById(@Param("id") id: string, @CurrentUser() user: any) {
+    // console.log("user test", user);
+    return this.userService.getUserById(id, user);
   }
 
   @Put(":id")

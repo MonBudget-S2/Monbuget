@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from "@nestjs/common";
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -6,6 +12,7 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
+import { Role } from "src/authentication/authentication.enum";
 
 @Injectable()
 export class UserService {
@@ -27,9 +34,15 @@ export class UserService {
     );
   }
 
-  async getUserById(id: string) {
-    Logger.log("id test", id);
-    console.log("id", id[0]);
+  async getUserById(id: string, user: any) {
+    console.log("user test", user);
+    console.log("id test", id);
+    if (user.id !== id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
     return await firstValueFrom(
       this.userService.send({ service: "user", cmd: "getUserById" }, id)
     );
