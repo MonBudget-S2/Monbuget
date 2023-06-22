@@ -4,6 +4,13 @@ import { lazy } from 'react';
 // import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import PrivateRoutes from './PrivateRoutes';
+import Income from 'views/pages/income/Income';
+import AddIncome from 'views/pages/income/AddIncome';
+import Expense from 'views/pages/expense/Expense';
+import AddExpense from 'views/pages/expense/AddExpense';
+import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
+import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
+import Settings from 'views/pages/notifications_settings/Settings';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -36,7 +43,36 @@ const MainRoutes = {
     {
       path: 'dashboard',
       element: <DashboardDefault />
+    },
+    {
+      path: 'income',
+      element: <Income />
+    },
+    {
+      path: 'addincome',
+      element: <AddIncome />
+    },
+    {
+      path: 'expense',
+      element: <Expense />
+    },
+    {
+      path: 'addexpense',
+      element: <AddExpense />
+    },
+    {
+      path: 'categoricalbudget',
+      element: <CategoricalBudget />
+    },
+    {
+      path: 'Budgetallocation',
+      element: <BudgetAllocation />
+    },
+    {
+      path: 'Settings',
+      element: <Settings />
     }
+
     // {
     //   path: 'dashboard',
     //   children: [
@@ -47,6 +83,7 @@ const MainRoutes = {
     //   ]
     // }
   ]
+  
 };
 
 export default MainRoutes;
