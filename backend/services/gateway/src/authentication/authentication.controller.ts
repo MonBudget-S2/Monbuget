@@ -13,12 +13,12 @@ export class AuthenticationController {
     
   ) {}
 
-  @MessagePattern({ service: 'auth', cmd: 'login' })
-  public login(@Body(ValidationPipe) loginRequest: LoginRequest) {
-    Logger.log('Auth Login request', '***********Auth***********');
+  // @MessagePattern({ service: 'auth', cmd: 'login' })
+  // public login(@Body(ValidationPipe) loginRequest: LoginRequest) {
+  //   Logger.log('Auth Login request', '***********Auth***********');
 
-    return this.authenticationService.login(loginRequest);
-  }
+  //   return this.authenticationService.login(loginRequest);
+  // }
 
   // @MessagePattern({ service: 'auth', cmd: 'validateToken' })
   // public validateToken(
@@ -27,14 +27,14 @@ export class AuthenticationController {
   //   Logger.log("ValidateToken request", "***********Auth***********");
   //   return this.authenticationService.validateToken(tokenValidateRequest);
   // }
-  @MessagePattern({ service: 'auth', cmd: 'validateToken' })
-  public validateToken(tokenValidateRequest: TokenValidateRequest) {
-    Logger.log('ValidateToken request', '***********Auth***********');
-    return this.authenticationService.validateToken(tokenValidateRequest);
-  }
+  // @MessagePattern({ service: 'auth', cmd: 'validateToken' })
+  // public validateToken(tokenValidateRequest: TokenValidateRequest) {
+  //   Logger.log('ValidateToken request', '***********Auth***********');
+  //   return this.authenticationService.validateToken(tokenValidateRequest);
+  // }
 
-  @MessagePattern({ service: 'auth', cmd: 'register' })
-  async register(@Body() createUserDto: CreateUserDto) {
-    return this.authenticationService.register(createUserDto);
-  }
+  // @MessagePattern({ service: 'auth', cmd: 'register' })
+  // async register(@Body() createUserDto: CreateUserDto) {
+  //   return this.authenticationService.register(createUserDto);
+  // }
 }
