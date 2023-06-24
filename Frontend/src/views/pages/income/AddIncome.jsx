@@ -7,13 +7,10 @@ import { getUserId } from 'store/authSlice';
 import { useSelector } from 'react-redux';
 
 import incomeService from '../../../service/incomeService';
-import CustomAlert from 'ui-component/alert/CustomAlert';
-const AddIncome = () => {
+const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded }) => {
   const theme = useTheme();
   const userId = useSelector(getUserId);
   console.log(userId);
-
-  const [message, setMessage] = useState({ open: false, type: 'success', message: 'KK' });
 
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
@@ -31,12 +28,13 @@ const AddIncome = () => {
       setStatus({ success: true });
       setSubmitting(false);
       setIsAddFormOpen(false);
-      setMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
+      setAlertMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
+      setIsNewIncomeAdded(true);
     } else {
       setStatus({ success: false });
       setErrors({ submit: response.data.message });
       setSubmitting(false);
-      setMessage({ open: true, type: 'error', message: response.data.message });
+      setAlertMessage({ open: true, type: 'error', message: response.data.message });
     }
   };
 
@@ -52,7 +50,6 @@ const AddIncome = () => {
         </Typography>
       </Button>
 
-      <CustomAlert open={message.open} message={message.message} type={message.type} setMessage={setMessage} />
       <Formik
         initialValues={{
           incomeType: '',

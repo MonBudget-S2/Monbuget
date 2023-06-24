@@ -12,7 +12,11 @@ import {
 import { IncomeService } from "./income.service";
 import { CreateIncomeDto, UpdateIncomeDto } from "./income.request";
 import { UpdateCategoryDto } from "../categories/category.request";
-import { AuthenticationRequired } from "src/authentication/authentication.decorator";
+import {
+  AuthenticationRequired,
+  HasRole,
+} from "src/authentication/authentication.decorator";
+import { Role } from "src/authentication/authentication.enum";
 
 @AuthenticationRequired()
 @Controller("incomes")
@@ -29,8 +33,9 @@ export class IncomeController {
   }
 
   @Get()
-  getAllIncomes() {
-    return this.incomeService.getAllIncomes();
+  getAllIncomes(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.incomeService.getAllIncomes(user: any);
   }
 
   @Get(":id")

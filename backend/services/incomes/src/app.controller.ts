@@ -17,6 +17,11 @@ export class AppController {
     return this.appService.getAll();
   }
 
+  @MessagePattern({ service: 'income', action: 'getAllByUser' })
+  getAllBudgetsByUser(userId: string) {
+    return this.appService.getAllByUser(userId);
+  }
+
   @MessagePattern({ service: 'income', action: 'getById' })
   getIncomeById(id: string) {
     return this.appService.getById(id);

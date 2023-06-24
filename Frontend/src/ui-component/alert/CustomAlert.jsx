@@ -13,14 +13,13 @@ export default function CustomAlert({ open, message, type, setMessage }) {
     if (reason === 'clickaway') {
       return;
     }
-
     setMessage({ open: false, type: type, message: message });
   };
 
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={10000}
       onClose={handleAlertClose}
       TransitionComponent={TransitionDown}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

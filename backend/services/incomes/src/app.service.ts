@@ -27,6 +27,10 @@ export class AppService {
     return this.incomeRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<Income[]> {
+    return this.incomeRepository.find({ where: { userId } });
+  }
+
   async update(
     id: string,
     updateIncomeDto: UpdateIncomeDto,

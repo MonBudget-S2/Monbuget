@@ -15,8 +15,13 @@ const addIncome = async (credentials) => {
   return await axiosInstance.post('/incomes', credentials);
 };
 
+const getIncomes = async () => {
+  return await axiosInstance.get('/incomes');
+};
+
 const incomService = {
-  addIncome
+  addIncome,
+  getIncomes
 };
 
 export default incomService;

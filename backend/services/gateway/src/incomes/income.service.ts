@@ -7,6 +7,7 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateIncomeDto, UpdateIncomeDto } from "./income.request";
+import { Role } from "src/authentication/authentication.enum";
 
 @Injectable()
 export class IncomeService {
@@ -23,10 +24,18 @@ export class IncomeService {
     );
   }
 
-  async getAllIncomes() {
+  async getAllIncomes(user) {
+    console.log(user);
+    const isAdmin = user.role === Role.ADMIN;
+    if (isAdmin) {
     return await firstValueFrom(
       this.incomeService.send({ service: "income", action: "getAll" }, {})
     );
+    } else {
+      return await firstValueFrom(
+        this.incomeService.send({ service: "income", action: "getAllByUser" }, user.id)
+      );
+    }
   }
 
   async getIncomeById(id: string) {
