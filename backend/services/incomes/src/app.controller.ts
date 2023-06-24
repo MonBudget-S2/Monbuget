@@ -8,8 +8,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ service: 'income', action: 'create' })
-  createIncome(income: CreateIncomeDto) {
-    return this.appService.create(income);
+  createIncome(createIncomeDto: CreateIncomeDto) {
+    return this.appService.create(createIncomeDto);
   }
 
   @MessagePattern({ service: 'income', action: 'getAll' })

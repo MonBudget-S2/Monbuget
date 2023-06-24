@@ -40,7 +40,7 @@ export const { authenticateUser, setIsCheckingForToken } = authSlice.actions;
 export const isAdmin = (state) => state.auth.role === 'ADMIN';
 export const isLogged = (state) => state.auth.isConnected;
 export const getToken = (state) => state.auth.token;
-export const getUserId = (state) => state.auth.id;
+export const getUserId = (state) => state.auth.id || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).id) || null;
 export const getUserInfo = (state) => state.auth.userInfo;
 export const getUser = (state) => state.auth;
 export const selectIsCheckingForToken = (state) => state.auth.isCheckingForToken;

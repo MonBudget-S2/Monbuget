@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Income } from './income.entity';
 import { Repository } from 'typeorm';
-import { UpdateIncomeDto } from './income.request';
+import { CreateIncomeDto, UpdateIncomeDto } from './income.request';
 
 @Injectable()
 export class AppService {
@@ -11,8 +11,10 @@ export class AppService {
     private incomeRepository: Repository<Income>,
   ) {}
 
-  async create(data: any): Promise<any> {
-    const newIncome = this.incomeRepository.create(data);
+  async create(createIncomeDto: CreateIncomeDto): Promise<any> {
+    console.log('createIncomeDto', createIncomeDto);
+    const newIncome = this.incomeRepository.create(createIncomeDto);
+    console.log('newIncome', newIncome);
     await this.incomeRepository.save(newIncome);
     return { message: 'Budget created successfully' };
   }

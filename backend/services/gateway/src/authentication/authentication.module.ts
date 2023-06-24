@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthenticationController } from './authentication.controller';
-import { AuthenticationService } from './authentication.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { AuthenticationController } from "./authentication.controller";
+import { AuthenticationService } from "./authentication.service";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { UserService } from "src/users/user.service";
 
 @Module({
   imports: [
@@ -15,13 +16,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           host: "challenge-users-service",
           port: 3002,
         },
-      }]),
+      },
+    ]),
     JwtModule.register({
       global: true,
       secret:
-        'I SWEAR TO GOD IF I SEE THIS IN A REAL PROJECT I WILL KILL YOU DO YOU UNDERSTAND???',
+        "I SWEAR TO GOD IF I SEE THIS IN A REAL PROJECT I WILL KILL YOU DO YOU UNDERSTAND???",
       signOptions: {
-        expiresIn: '1d',
+        expiresIn: "1d",
       },
     }),
   ],
