@@ -1,10 +1,5 @@
 // assets
-import { IconKey, 
-  IconMoneybag, 
-  IconBusinessplan, 
-  IconBrightness,
-  IconSettings
- } from '@tabler/icons';
+import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -25,24 +20,10 @@ const pages = {
     {
       id: 'ManageIncome',
       title: 'Gestion des revenus',
-      type: 'collapse',
-      icon: icons.IconBusinessplan,
-
-      children: [
-        {
-          id: 'income',
-          title: 'Objectif de revenu',
-          type: 'item',
-          url: '/income',
-          // target: false -> ouvre nouvel onglet
-        },
-        {
-          id: 'addIncome',
-          title: 'Ajouter un revenu',
-          type: 'item',
-          url: '/addincome',
-        },
-      ]
+      // type: 'collapse',
+      type: 'item',
+      url: '/income',
+      icon: icons.IconBusinessplan
     },
     {
       id: 'ManageExpense',
@@ -53,17 +34,17 @@ const pages = {
       children: [
         {
           id: 'expense',
-          title: 'Vue d\'ensemble',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/expense',
+          url: '/expense'
           // target: false -> ouvre nouvel onglet
         },
         {
           id: 'addExpense',
           title: 'Ajouter une dépense',
           type: 'item',
-          url: '/addexpense',
-        },
+          url: '/addexpense'
+        }
       ]
     },
     {
@@ -75,17 +56,17 @@ const pages = {
       children: [
         {
           id: 'categoricalBudget',
-          title: 'Vue d\'ensemble',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/categoricalbudget',
+          url: '/categoricalbudget'
           // target: false -> ouvre nouvel onglet
         },
         {
           id: 'budgetAllocation',
           title: 'Créer un budget catégoriel',
           type: 'item',
-          url: '/budgetallocation',
-        },
+          url: '/budgetallocation'
+        }
       ]
     },
     {

@@ -5,7 +5,7 @@ import { lazy } from 'react';
 import Loadable from 'ui-component/Loadable';
 import PrivateRoutes from './PrivateRoutes';
 import Income from 'views/pages/income/Income';
-import AddIncome from 'views/pages/income/AddIncome';
+// import AddIncome from 'views/pages/income/AddIncome';
 import Expense from 'views/pages/expense/Expense';
 import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
@@ -48,10 +48,10 @@ const MainRoutes = {
       path: 'income',
       element: <Income />
     },
-    {
-      path: 'addincome',
-      element: <AddIncome />
-    },
+    // {
+    //   path: 'addincome',
+    //   element: <AddIncome />
+    // },
     {
       path: 'expense',
       element: <Expense />
@@ -83,7 +83,6 @@ const MainRoutes = {
     //   ]
     // }
   ]
-  
 };
 
 export default MainRoutes;

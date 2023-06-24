@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select, FormHelperText } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select, FormHelperText, Button, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import DialogForm from 'ui-component/modal/DialogForm';
@@ -15,7 +15,7 @@ const AddIncome = () => {
 
   const [message, setMessage] = useState({ open: false, type: 'success', message: 'KK' });
 
-  const [isAddFormOpen, setIsAddFormOpen] = useState(true);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     const { incomeType, amountReceived, dateReceived } = values;
@@ -40,8 +40,18 @@ const AddIncome = () => {
     }
   };
 
+  const handleClickOpen = () => {
+    setIsAddFormOpen(true);
+  };
+
   return (
     <>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        <Typography style={{ color: 'white' }} variant="subtitle1">
+          Ajouter un revenu
+        </Typography>
+      </Button>
+
       <CustomAlert open={message.open} message={message.message} type={message.type} setMessage={setMessage} />
       <Formik
         initialValues={{
