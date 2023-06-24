@@ -176,7 +176,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          Total Dépenses {timeValue ? 'du mois' : 'de l\'année'}
+                          Total Dépenses {timeValue ? '/ mois' : '/ année'}
                         </Typography>
                       </Grid>
                     </Grid>

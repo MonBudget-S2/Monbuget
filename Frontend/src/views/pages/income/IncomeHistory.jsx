@@ -1,113 +1,67 @@
-import { useState } from 'react';
-import { Grid, Typography, CardContent, Divider, Button, CardActions, Menu, MenuItem } from '@mui/material';
+import React from 'react';
+import { Grid, Typography, CardContent, Divider } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import { useTheme } from '@mui/material/styles';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
+import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 
 import { gridSpacing } from 'store/constant';
 import { incomeHistoryData } from './income-history-data';
 
-// ==============================|| INCOME HISTORY COMPONENT ||============================== //
-
 const IncomeHistory = ({ isLoading }) => {
-    const theme = useTheme();
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     return (
         <>
-        {isLoading ? (
-            <SkeletonPopularCard />
-          ) : (
-                <MainCard content={false}>
+            {isLoading ? (
+                <SkeletonPopularCard />
+            ) : (
+                <MainCard content={false} sx={{ bgcolor: '#f9f9f9', boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)' }}>
                     <CardContent>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
-                                <Grid container alignContent="center" justifyContent="space-between">
+                                <Grid container alignItems="center" justifyContent="space-between">
                                     <Grid item>
-                                        <Typography variant="h4">Historique dernier transactions</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <MoreHorizOutlinedIcon
-                                            fontSize="small"
-                                            sx={{
-                                                color: theme.palette.primary[200],
-                                                cursor: 'pointer'
-                                            }}
-                                            aria-controls="menu-popular-card"
-                                            aria-haspopup="true"
-                                            onClick={handleClick}
-                                        />
-                                        <Menu
-                                            id="menu-popular-card"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={Boolean(anchorEl)}
-                                            onClose={handleClose}
-                                            variant="selectedMenu"
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right'
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right'
-                                            }}
-                                        >
-                                            <MenuItem onClick={handleClose}>Today</MenuItem>
-                                            <MenuItem onClick={handleClose}>This Month</MenuItem>
-                                            <MenuItem onClick={handleClose}>This Year</MenuItem>
-                                        </Menu>
+                                        <Typography variant="h4">Derniers revenus</Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
-                                {incomeHistoryData.map((data, index) => (
-                                    <Grid container direction="column" key={index}>
+                                {incomeHistoryData.slice(-5).map((income, index) => (
+                                    <Grid container direction="column" key={index} sx={{ my: 1 }}>
                                         <Grid item>
                                             <Grid container alignItems="center" justifyContent="space-between">
                                                 <Grid item>
-                                                    <Typography variant="subtitle1" color="inherit">
-                                                        {data.name}
+                                                    <Typography variant="subtitle1" color="textPrimary" fontWeight="bold">
+                                                        {income.name}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="textSecondary">
+                                                        {income.category}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item>
-                                                    <Typography variant="subtitle1" color="success.dark">
-                                                        ${data.amount.toFixed(2)}
+                                                    <Typography variant="subtitle1" color="success.dark" fontWeight="bold">
+                                                        {income.amount.toFixed(2)}€
+                                                    </Typography>
+                                                    <Typography variant="body2" color="textSecondary" >
+                                                        {new Date(income.date).toLocaleDateString()}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
-                                            <Typography variant="subtitle2" color="textSecondary">
-                                                {new Date(data.date).toLocaleDateString()}
-                                            </Typography>
                                         </Grid>
-                                        <Divider sx={{ my: 1.5 }} />
+                                        {index !== 4 && <Divider sx={{ my: 1.5 }} />}
                                     </Grid>
                                 ))}
                             </Grid>
                         </Grid>
+                        
                     </CardContent>
-                    <CardActions sx={{ p: 1.25, pt: 0, justifyContent: 'center' }}>
-                        <Button size="small" disableElevation>
-                            View All
-                            <ChevronRightOutlinedIcon />
-                        </Button>
-                    </CardActions>
+                    <Grid item>
+                        {incomeHistoryData.length > 5 && (
+                            <SeeAllButton to="/historyincome" title="Tout afficher" />
+                        )}
+                    </Grid>
                 </MainCard>
-        )}
-        
+            )}
         </>
     );
 };
 
 export default IncomeHistory;
-

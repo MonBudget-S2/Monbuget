@@ -39,51 +39,24 @@ const IncomeChart = ({ isLoading }) => {
 
     const { navType } = customization;
     const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
     const grey200 = theme.palette.grey[200];
     const grey500 = theme.palette.grey[500];
 
     const primary200 = theme.palette.primary[200];
     const primaryDark = theme.palette.primary.dark;
     const secondaryMain = theme.palette.secondary.main;
-    const secondaryLight = theme.palette.secondary.light;
 
     useEffect(() => {
-        const newChartData = {
-            ...chartData.options,
-            colors: [primary200, primaryDark, secondaryMain, primary, ],
-            xaxis: {
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: grey200
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                labels: {
-                    colors: grey500
-                }
-            }
-        };
-
-        // do not load chart when loading
+        chartData.options.colors = [primary200, primaryDark, secondaryMain, primary];
+        chartData.options.grid.borderColor = grey200;
+        chartData.options.legend.labels.colors = grey500;
+    
+        // Ne chargez pas le graphique lorsqu'il est en cours de chargement
         if (!isLoading) {
-            ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
+            ApexCharts.exec(`bar-chart`, 'updateOptions', chartData.options);
         }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+    }, [navType, primary200, primaryDark, secondaryMain, primary, grey200, isLoading, grey500]);
+    
 
     return (
         <>
@@ -97,10 +70,7 @@ const IncomeChart = ({ isLoading }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">Total des Revenus</Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="h3">2324€</Typography>
+                                            <Typography variant="subtitle1">Graphique de revenus</Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
