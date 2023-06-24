@@ -1,9 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get, Put, Delete, Param } from '@nestjs/common';
 import { BudgetService } from './budget.service';
 import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
-import { JwtAuthGuard } from 'src/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller("budgets")
 export class BudgetController {
   constructor(private readonly budgetService: BudgetService) {}

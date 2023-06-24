@@ -1,9 +1,7 @@
 import { Controller, Post, Body, UseGuards, Get, Put, Delete, Param } from '@nestjs/common';
 import { AlertService } from './alert.service';
 import { CreateAlertDto, UpdateAlertDto } from './alert.request';
-import { JwtAuthGuard } from 'src/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller("alerts")
 export class AlertController {
   constructor(private readonly alertService: AlertService) {}

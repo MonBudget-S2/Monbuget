@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
-  Divider,
+  Dialog,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -17,7 +17,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
+  Slide,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -25,33 +25,32 @@ import {
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 // project imports
-import useScriptRef from 'hooks/useScriptRef';
-import Google from 'assets/images/icons/social-google.svg';
 import AnimateButton from 'ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from 'utils/password-strength';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import authService from 'service/authService';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
-const FirebaseRegister = ({ ...others }) => {
+const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
-  const scriptedRef = useScriptRef();
+  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+  const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-  const customization = useSelector((state) => state.customization);
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(true);
 
   const [strength, setStrength] = useState(0);
   const [level, setLevel] = useState();
 
-  const googleHandler = async () => {
-    console.error('Register');
-  };
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -67,56 +66,63 @@ const FirebaseRegister = ({ ...others }) => {
     setLevel(strengthColor(temp));
   };
 
-  useEffect(() => {
-    changePassword('123456');
-  }, []);
+  const handleRegister = async (values, { setErrors, setStatus, setSubmitting }) => {
+    console.log('Registering...', values);
+
+    const { fname, lname, username, email, password } = values;
+    const response = await authService.register({ firstname: fname, lastname: lname, username, email, password });
+    if (response.status === 201) {
+      console.log('Register success');
+      console.log(response.data);
+      setStatus({ success: true });
+      setSubmitting(false);
+      setSuccessAlertOpen(true);
+      navigate('/login');
+    } else {
+      console.log('Register failed');
+      console.log(response.data);
+      setStatus({ success: false });
+      setErrors({ submit: response.data.message });
+      setSubmitting(false);
+      setErrorAlertOpen(true);
+    }
+  };
+  const handleCloseAlerts = () => {
+    setSuccessAlertOpen(false);
+    setErrorAlertOpen(false);
+  };
+
+  // useEffect(() => {
+  //   changePassword('123456');
+  // }, []);
 
   return (
     <>
+      <Dialog
+        open={successAlertOpen || errorAlertOpen}
+        onClose={handleCloseAlerts}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        TransitionComponent={Slide}
+        TransitionProps={{
+          direction: 'down'
+        }}
+        sx={{ textAlign: 'center', position: 'absolute', top: '30px' }}
+      >
+        {successAlertOpen && (
+          <Alert severity="success" onClose={handleCloseAlerts}>
+            Registration successful! You can now log in.
+          </Alert>
+        )}
+
+        {errorAlertOpen && (
+          <Alert severity="error" onClose={handleCloseAlerts}>
+            Registration failed. Please try again.
+          </Alert>
+        )}
+      </Dialog>
+
       <Grid container direction="column" justifyContent="center" spacing={2}>
-        <Grid item xs={12}>
-          <AnimateButton>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={googleHandler}
-              size="large"
-              sx={{
-                color: 'grey.700',
-                backgroundColor: theme.palette.grey[50],
-                borderColor: theme.palette.grey[100]
-              }}
-            >
-              <Box sx={{ mr: { xs: 1, sm: 2, width: 20 } }}>
-                <img src={Google} alt="google" width={16} height={16} style={{ marginRight: matchDownSM ? 8 : 16 }} />
-              </Box>
-              Sign up with Google
-            </Button>
-          </AnimateButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Box sx={{ alignItems: 'center', display: 'flex' }}>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-            <Button
-              variant="outlined"
-              sx={{
-                cursor: 'unset',
-                m: 2,
-                py: 0.5,
-                px: 7,
-                borderColor: `${theme.palette.grey[100]} !important`,
-                color: `${theme.palette.grey[900]}!important`,
-                fontWeight: 500,
-                borderRadius: `${customization.borderRadius}px`
-              }}
-              disableRipple
-              disabled
-            >
-              OR
-            </Button>
-            <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-          </Box>
-        </Grid>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle1">Sign up with Email address</Typography>
@@ -128,56 +134,81 @@ const FirebaseRegister = ({ ...others }) => {
         initialValues={{
           email: '',
           password: '',
+          username: '',
+          fname: '',
+          lname: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
+          fname: Yup.string().max(255).required('First name is required'),
+          lname: Yup.string().max(255).required('Last name is required'),
+          username: Yup.string().max(255).required('Username is required'),
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-            }
-          } catch (err) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
+        onSubmit={handleRegister}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <Grid container spacing={matchDownSM ? 0 : 2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  margin="normal"
-                  name="fname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
+                <FormControl fullWidth error={Boolean(touched.fname && errors.fname)} sx={{ ...theme.typography.customInput }}>
+                  <InputLabel htmlFor="outlined-adornment-fname-register">First Name</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-fname-register"
+                    type="text"
+                    value={values.fname}
+                    name="fname"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    inputProps={{}}
+                  />
+                  {touched.fname && errors.fname && (
+                    <FormHelperText error id="standard-weight-helper-text--register">
+                      {errors.fname}
+                    </FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  margin="normal"
-                  name="lname"
-                  type="text"
-                  defaultValue=""
-                  sx={{ ...theme.typography.customInput }}
-                />
+                <FormControl fullWidth error={Boolean(touched.lname && errors.lname)} sx={{ ...theme.typography.customInput }}>
+                  <InputLabel htmlFor="outlined-adornment-lname-register">Last Name</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-lname-register"
+                    type="text"
+                    value={values.lname}
+                    name="lname"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    inputProps={{}}
+                  />
+                  {touched.lname && errors.lname && (
+                    <FormHelperText error id="standard-weight-helper-text--register">
+                      {errors.lname}
+                    </FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
             </Grid>
+            <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-username-register">Username</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-username-register"
+                type="text"
+                value={values.username}
+                name="username"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                inputProps={{}}
+              />
+              {touched.username && errors.username && (
+                <FormHelperText error id="standard-weight-helper-text--register">
+                  {errors.username}
+                </FormHelperText>
+              )}
+            </FormControl>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-register">Email Address</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="email"
@@ -283,4 +314,4 @@ const FirebaseRegister = ({ ...others }) => {
   );
 };
 
-export default FirebaseRegister;
+export default AuthRegister;

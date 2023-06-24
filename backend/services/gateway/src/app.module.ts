@@ -4,6 +4,9 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { BudgetModule } from "./budgets/budget.module";
 import { AlertModule } from "./alerts/alert.module";
+import { CategoryModule } from "./categories/category.module";
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { UserModule } from "./users/user.module";
 
 @Module({
   imports: [
@@ -40,14 +43,14 @@ import { AlertModule } from "./alerts/alert.module";
       //     port: 3005,
       //   },
       // },
-      {
-        name: "CATEGORY_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-categories-service",
-          port: 3007,
-        },
-      },
+      // {
+      //   name: "CATEGORY_SERVICE",
+      //   transport: Transport.TCP,
+      //   options: {
+      //     host: "challenge-categories-service",
+      //     port: 3007,
+      //   },
+      // },
       // {
       //   name: "ALERT_SERVICE",
       //   transport: Transport.TCP,
@@ -76,13 +79,16 @@ import { AlertModule } from "./alerts/alert.module";
         name: "INCOME_SERVICE",
         transport: Transport.TCP,
         options: {
-           host : "challenge-incones-service",
+           host : "challenge-incomes-service",
            port:3010,
         }
       }
     ]),
     BudgetModule,
     AlertModule,
+    CategoryModule,
+    AuthenticationModule,
+    UserModule,
 
   ],
   controllers: [AppController],

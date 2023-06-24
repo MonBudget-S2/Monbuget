@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Budget } from './budget.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
 
 @Injectable()
 export class AppService {
@@ -10,8 +11,8 @@ export class AppService {
     private budgetRepository: Repository<Budget>,
   ) {}
 
-  async create(data: any): Promise<any> {
-    const newExpense = this.budgetRepository.create(data);
+  async create(createBudgetDto: CreateBudgetDto): Promise<any> {
+    const newExpense = this.budgetRepository.create(createBudgetDto);
     await this.budgetRepository.save(newExpense);
     return { message: 'Budget created successfully' };
   }
@@ -26,9 +27,9 @@ export class AppService {
 
   async update(
     id: string,
-    data: Partial<Budget>,
+    updateBudgetDto: UpdateBudgetDto,
   ): Promise<Budget | null> {
-    const result = await this.budgetRepository.update(id, data);
+    const result = await this.budgetRepository.update(id, updateBudgetDto);
 
     if (result.affected === 0) {
       return null; // Budget with the given ID not found

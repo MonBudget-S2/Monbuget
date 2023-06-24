@@ -1,7 +1,9 @@
 import { Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
-import { JwtAuthGuard } from "./jwt-auth.guard";
 import { AppService } from "./app.service";
+import { AuthenticationRequired, HasRole } from "./authentication/authentication.decorator";
+import { Role } from "./authentication/authentication.enum";
+import { CreateUserDto } from "./users/user.request";
 
 @Controller()
 export class AppController {
@@ -20,37 +22,17 @@ export class AppController {
   @Post("users/register")
   register(
     @Payload()
-    data: {
-      username: string;
-      password: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-    }
+    createUserDto: CreateUserDto,
   ) {
-    return this.appService.register(data);
+    return this.appService.register(createUserDto);
   }
 
 
-
-  @Get("users")
-  getUsers() {
-    return this.appService.getUsers();
-  }
-  // @UseGuards(JwtAuthGuard)
-  // @MessagePattern({ service: "user", action: "profile" })
-
-  getUserProfile(@Payload() data: { userId: string }) {
-    return this.appService.getUserProfile(data.userId);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post("incomes")
   createIncome(@Payload() data: { userId: string; amount: number }) {
     return this.appService.createIncome(data.userId, data.amount);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post("expenses")
   createExpense(@Payload() data: { userId: string; amount: number }) {
     return this.appService.createExpense(data.userId, data.amount);

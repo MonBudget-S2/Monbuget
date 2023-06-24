@@ -4,7 +4,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { CreateAlertDto, UpdateAlertDto } from './alert.request';
 
 @Controller()
-export class AlertController {
+export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ service: 'alert', action: 'create' })
@@ -23,7 +23,7 @@ export class AlertController {
   }
 
   @MessagePattern({ service: 'alert', action: 'update' })
-  updateAlert({ id, alert }: { id: string, alert: UpdateAlertDto }) {
+  updateAlert({ id, alert }: { id: string; alert: UpdateAlertDto }) {
     return this.appService.update(id, alert);
   }
 
