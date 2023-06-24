@@ -35,7 +35,7 @@ export class IncomeController {
   @Get()
   getAllIncomes(@Req() request: CustomRequest) {
     const user = request.user;
-    return this.incomeService.getAllIncomes(user: any);
+    return this.incomeService.getAllIncomes(user);
   }
 
   @Get(":id")
@@ -54,5 +54,14 @@ export class IncomeController {
   @Delete(":id")
   deleteIncome(@Param("id") id: string) {
     return this.incomeService.deleteIncome(id);
+  }
+
+  @Get("types/:year")
+  getAllIncomesByTypeForYear(
+    @Param("year") year: number,
+    @Req() request: CustomRequest
+  ) {
+    const user = request.user;
+    return this.incomeService.getAllIncomesByTypeForYear(user, year);
   }
 }

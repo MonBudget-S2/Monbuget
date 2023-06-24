@@ -36,4 +36,11 @@ export class AppController {
   deleteIncome(id: string) {
     return this.appService.delete(id);
   }
+
+  @MessagePattern({ service: 'income', action: 'getAllIncomesByTypeForYear' })
+  getAllIncomesByTypeForYear(data: { year: number; userId?: string }) {
+    const { year, userId } = data;
+    console.log('year', year);
+    return this.appService.getAllIncomesByTypeForYear(year, userId);
+  }
 }

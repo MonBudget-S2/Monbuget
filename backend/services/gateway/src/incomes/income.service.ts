@@ -25,15 +25,17 @@ export class IncomeService {
   }
 
   async getAllIncomes(user) {
-    console.log(user);
     const isAdmin = user.role === Role.ADMIN;
     if (isAdmin) {
-    return await firstValueFrom(
-      this.incomeService.send({ service: "income", action: "getAll" }, {})
-    );
+      return await firstValueFrom(
+        this.incomeService.send({ service: "income", action: "getAll" }, {})
+      );
     } else {
       return await firstValueFrom(
-        this.incomeService.send({ service: "income", action: "getAllByUser" }, user.id)
+        this.incomeService.send(
+          { service: "income", action: "getAllByUser" },
+          user.id
+        )
       );
     }
   }
@@ -56,6 +58,26 @@ export class IncomeService {
   async deleteIncome(id: string) {
     return await firstValueFrom(
       this.incomeService.send({ service: "income", action: "delete" }, id)
+    );
+  }
+
+  async getAllIncomesByTypeForYear(user, year?: number) {
+    const currentYear = year || new Date().getFullYear();
+    const isAdmin = user.role === Role.ADMIN;
+    if (isAdmin) {
+      return await firstValueFrom(
+        this.incomeService.send(
+          { service: "income", action: "getAllIncomesByTypeForYear" },
+          { currentYear }
+        )
+      );
+    }
+
+    return await firstValueFrom(
+      this.incomeService.send(
+        { service: "income", action: "getAllIncomesByTypeForYear" },
+        { year: currentYear, userId: user.id }
+      )
     );
   }
 }

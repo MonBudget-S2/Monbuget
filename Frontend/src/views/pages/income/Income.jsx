@@ -6,7 +6,7 @@ import { Grid } from '@mui/material';
 // project imports
 import IncomeChart from './IncomeChart';
 import { gridSpacing } from 'store/constant';
-import chartData from './income-chart-data';
+// import chartData from './income-chart-data';
 import IncomeHistory from './IncomeHistory';
 import IncomeTable from './IncomeTable';
 import AddIncome from './AddIncome';
@@ -41,7 +41,7 @@ const Income = () => {
       <Grid item xs={12} md={8}>
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12}>
-            <IncomeChart series={chartData.series} isLoading={isLoading} key={isNewIncomeAdded} />
+            <IncomeChart isLoading={isLoading} key={isNewIncomeAdded} />
           </Grid>
         </Grid>
       </Grid>

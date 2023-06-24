@@ -19,9 +19,14 @@ const getIncomes = async () => {
   return await axiosInstance.get('/incomes');
 };
 
+const getIncomeByTypeForYear = async (year) => {
+  return await axiosInstance.get(`/incomes/types/${year}`);
+};
+
 const incomService = {
   addIncome,
-  getIncomes
+  getIncomes,
+  getIncomeByTypeForYear
 };
 
 export default incomService;

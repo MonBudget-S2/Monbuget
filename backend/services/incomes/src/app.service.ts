@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Income } from './income.entity';
 import { Repository } from 'typeorm';
 import { CreateIncomeDto, UpdateIncomeDto } from './income.request';
+import { Raw } from 'typeorm';
+import { IncomeType } from './income.enum';
 
 @Injectable()
 export class AppService {
@@ -47,5 +49,51 @@ export class AppService {
   async delete(id: string): Promise<boolean> {
     const result = await this.incomeRepository.delete(id);
     return result.affected > 0;
+  }
+
+  async getAllIncomesByTypeForYear(
+    year: number,
+    userId?: string,
+  ): Promise<{ [type: string]: number[] }> {
+    // const incomes = await this.incomeRepository.find({
+    //   where: {
+    //     date: Raw(
+    //       (alias) =>
+    //         `${alias} >= '${currentYear}-01-01' AND ${alias} <= '${currentYear}-12-31'`,
+    //     ),
+    //   },
+    //   order: {
+    //     date: 'ASC',
+    //   },
+    // });
+    const queryBuilder = this.incomeRepository.createQueryBuilder('income');
+
+    queryBuilder
+      .where('income.date >= :startDate', { startDate: `${year}-01-01` })
+      .andWhere('income.date <= :endDate', { endDate: `${year}-12-31` })
+      .orderBy('income.date', 'ASC');
+
+    if (userId) {
+      queryBuilder.andWhere('income.userId = :userId', { userId });
+    }
+
+    const incomes = await queryBuilder.getMany();
+
+    const incomesByType: { [type: string]: number[] } = {};
+
+    Object.values(IncomeType).forEach((category) => {
+      incomesByType[category] = new Array(12).fill(0);
+    });
+
+    incomes.forEach((income) => {
+      const { amount, type, date } = income;
+      const month = new Date(date).getMonth();
+
+      if (type && incomesByType[type]) {
+        incomesByType[type][month] += amount;
+      }
+    });
+
+    return incomesByType;
   }
 }
