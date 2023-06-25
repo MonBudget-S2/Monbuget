@@ -16,13 +16,13 @@ import IncomeCard from './IncomeCard';
 
 const Income = () => {
     const [isLoading, setLoading] = useState(true);
-    const [totalRealExpenses, setTotalRealExpenses] = useState(0);
+    const [totalIncome, setTotalIncome] = useState(0);
 
     useEffect(() => {
         setLoading(false);
 
-        const realExpenses = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
-        setTotalRealExpenses(realExpenses);
+        const incomes = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
+        setTotalIncome(incomes);
     }, []);
 
     return (
@@ -33,7 +33,7 @@ const Income = () => {
                         <IncomeCard
                             isLoading={isLoading}
                             title="Total des revenus"
-                            total={totalRealExpenses}
+                            total={totalIncome}
                         />
                     </Grid>
                     {/* TODO: Faire le plus haut revenus recu */}
@@ -41,7 +41,7 @@ const Income = () => {
                         <TotalExpenseByMonth
                             isLoading={isLoading}
                             title="Total des dépenses réelles"
-                            total={totalRealExpenses}
+                            total={totalIncome}
                         />
                     </Grid> */}
                 </Grid>

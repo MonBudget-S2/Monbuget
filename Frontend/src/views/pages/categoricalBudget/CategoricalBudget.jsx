@@ -52,30 +52,30 @@ const CategoricalBudget = () => {
             <Grid item xs={12} md={6} container alignItems="center" justifyContent="center">
                 <MainCard sx={{ mx: 3 }}>
                     <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Nom du budget</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Catégorie</TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Montant alloué</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {datas.slice(-5).map((row) => (
-                                    <TableRow key={row.id}>
-                                        <TableCell>{row.budgetName}</TableCell>
-                                        <TableCell align="center">{row.category}</TableCell>
-                                        <TableCell align="center">{row.totalAllocation} €</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        {datas.length > 5 && (
-                            <SeeAllButton to="/listcategoricalbudget" title="Tout afficher" />
-                        )}
+                    <Table>
+                        <TableHead>
+                        <TableRow>
+                            <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Nom du budget</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Catégorie</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Montant alloué</TableCell>
+                        </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {datas.slice(-5).map((row) => (
+                            <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
+                            <TableCell>{row.budgetName}</TableCell>
+                            <TableCell align="center">{row.category}</TableCell>
+                            <TableCell align="center" sx={{ color: '#f44336', fontWeight: 'bold' }}>{row.totalAllocation} €</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                    {datas.length > 5 && (
+                        <SeeAllButton to="/listcategoricalbudget" title="Tout afficher" sx={{ marginTop: '16px' }} />
+                    )}
                     </TableContainer>
                 </MainCard>
-            </Grid>
+                </Grid>
         </Grid>
     );
 };

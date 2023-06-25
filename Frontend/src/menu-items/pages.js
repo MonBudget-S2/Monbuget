@@ -19,12 +19,12 @@ const icons = {
 
 const pages = {
   id: 'pages',
-  // title: 'Vue d\'ensemble',
+  title: 'Gestion financière',
   type: 'group',
   children: [
     {
       id: 'ManageIncome',
-      title: 'Gestion des revenus',
+      title: 'Gestion des Revenus',
       type: 'collapse',
       icon: icons.IconMoneybag,
 
@@ -58,7 +58,7 @@ const pages = {
     },
     {
       id: 'ManageExpense',
-      title: 'Gestion des dépenses',
+      title: 'Gestion des Dépenses',
       type: 'collapse',
       icon: icons.IconBusinessplan,
 
@@ -86,7 +86,7 @@ const pages = {
     },
     {
       id: 'ManageCategoricalBudget',
-      title: 'Gestion des budgets catégoriels',
+      title: 'Gestion des Budgets catégoriels',
       type: 'collapse',
       icon: icons.IconBrightness,
 

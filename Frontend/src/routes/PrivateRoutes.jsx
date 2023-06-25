@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 const PrivateRoutes = () => {
   console.log(useSelector((state) => state));
   // const token = useSelector(getToken);
-  const token = localStorage.getItem('token');
+  // const token = localStorage.getItem('token');
   const admin = useSelector(isAdmin);
   // const isAuthenticated = token !== null;
   const isAuthenticated = true;

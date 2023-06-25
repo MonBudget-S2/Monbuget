@@ -14,7 +14,7 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.dark,
+    background: 'linear-gradient(45deg, #1F1C2C, #928DAB)',
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -46,7 +46,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
             top: -155,
             right: -70
         }
-    }
+    },
 }));
 
 const ExpenseCard = ({ isLoading, title, total }) => {
@@ -143,7 +143,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                                 mr: 1,
                                                 mt: 1.75,
                                                 mb: 0.75,
-                                                color : theme.palette.primary[200]
+                                                color : '#fff'
                                             }}
                                         >
                                             {total}€
@@ -172,7 +172,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                     sx={{
                                         fontSize: '1rem',
                                         fontWeight: 500,
-                                        color: theme.palette.secondary[200]
+                                        color : '#fff'
                                     }}
                                 >
                                     {title}

@@ -41,14 +41,11 @@ const Expense = () => {
                             isLoading={isLoading}
                             title="Total des dépenses réelles"
                             total={totalRealExpenses}
-                            totalColor="#ff0000" // Couleur rouge
                         />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalExpenseByMonth
                             isLoading={isLoading}
-                            title="Total des dépenses réelles"
-                            total={totalRealExpenses}
                         />
                     </Grid>
                 </Grid>

@@ -12,7 +12,7 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.dark,
+    background: 'linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12)',
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -70,16 +70,7 @@ const MostExpensiveCategoryBudget = ({ isLoading, title, total }) => {
                             <Grid item>
                                 <Grid container justifyContent="space-between">
                                     <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.commonAvatar,
-                                                ...theme.typography.largeAvatar,
-                                                backgroundColor: theme.palette.primary[600],
-                                                mt: 1
-                                            }}
-                                        >
-                                        </Avatar>
+                                        
                                     </Grid>
                                     <Grid item>
                                         <Avatar
@@ -140,7 +131,7 @@ const MostExpensiveCategoryBudget = ({ isLoading, title, total }) => {
                                                 mr: 1,
                                                 mt: 1.75,
                                                 mb: 0.75,
-                                                color: theme.palette.secondary[200]
+                                                color: '#fff'
                                             }}
                                         >
                                             {total}
@@ -155,7 +146,7 @@ const MostExpensiveCategoryBudget = ({ isLoading, title, total }) => {
                                     sx={{
                                         fontSize: '1rem',
                                         fontWeight: 500,
-                                        color: theme.palette.secondary[200]
+                                        color: '#fff'
                                     }}
                                 >
                                     {title}
