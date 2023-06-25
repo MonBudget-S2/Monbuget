@@ -1,0 +1,79 @@
+version: "3"
+
+services:
+  challenge-gateway-service:
+    image: ronantr/challenge-gateway-service:0.1.0 
+    build:
+      context: services/gateway
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-users-service:
+    image: ronantr/challenge-users-service:0.1.0
+    build:
+      context: services/users
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-categories-service:
+    image: ronantr/challenge-categories-service:0.1.0
+    build:
+      context: services/categories
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-alerts-service:
+    image: aminnairi/challenge-alerts-service:0.1.0
+    build:
+      context: services/alerts
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-budgets-service:
+    image: aminnairi/challenge-budgets-service:0.1.0
+    build:
+      context: services/budgets
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-debts-service:
+    image: aminnairi/challenge-debts-service:0.1.0
+    build:
+      context: services/debts
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-events-service:
+    image: aminnairi/challenge-events-service:0.1.0
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-expenses-service:
+    image: aminnairi/challenge-expenses-service:0.1.0
+    build:
+      context: services/expenses
+      dockerfile: Dockerfile
+      target: production
+
+  challenge-incomes-service:
+    image: aminnairi/challenge-incomes-service:0.1.0
+    build:
+      context: services/incomes
+      dockerfile: Dockerfile
+      target: production
+
+
+  challenge-database:
+    image: ronantr/challenge-database:0.1.2
+    build:
+      context: services/database
+      dockerfile: Dockerfile
+
+  posts-service:
+    image: aminnairi/posts-service:0.1.0
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: production

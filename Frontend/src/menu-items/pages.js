@@ -1,41 +1,100 @@
 // assets
-import { IconKey } from '@tabler/icons';
+import { IconKey, 
+  IconMoneybag, 
+  IconBusinessplan, 
+  IconBrightness,
+  IconSettings
+ } from '@tabler/icons';
 
 // constant
 const icons = {
-  IconKey
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
+  IconBrightness,
+  IconSettings
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const pages = {
   id: 'pages',
-  title: 'Pages',
-  caption: 'Pages Caption',
+  // title: 'Vue d\'ensemble',
   type: 'group',
   children: [
     {
-      id: 'authentication',
-      title: 'Authentication',
+      id: 'ManageIncome',
+      title: 'Gestion des revenus',
       type: 'collapse',
-      icon: icons.IconKey,
+      icon: icons.IconBusinessplan,
 
       children: [
         {
-          id: 'login3',
-          title: 'Login',
+          id: 'income',
+          title: 'Objectif de revenu',
           type: 'item',
-          url: '/login',
-          target: true
+          url: '/income',
+          // target: false -> ouvre nouvel onglet
         },
         {
-          id: 'register3',
-          title: 'Register',
+          id: 'addIncome',
+          title: 'Ajouter un revenu',
           type: 'item',
-          url: '/register',
-          target: true
-        }
+          url: '/addincome',
+        },
       ]
+    },
+    {
+      id: 'ManageExpense',
+      title: 'Gestion des dépenses',
+      type: 'collapse',
+      icon: icons.IconMoneybag,
+
+      children: [
+        {
+          id: 'expense',
+          title: 'Vue d\'ensemble',
+          type: 'item',
+          url: '/expense',
+          // target: false -> ouvre nouvel onglet
+        },
+        {
+          id: 'addExpense',
+          title: 'Ajouter une dépense',
+          type: 'item',
+          url: '/addexpense',
+        },
+      ]
+    },
+    {
+      id: 'ManageCategoricalBudget',
+      title: 'Gestion des budgets catégoriels',
+      type: 'collapse',
+      icon: icons.IconBrightness,
+
+      children: [
+        {
+          id: 'categoricalBudget',
+          title: 'Vue d\'ensemble',
+          type: 'item',
+          url: '/categoricalbudget',
+          // target: false -> ouvre nouvel onglet
+        },
+        {
+          id: 'budgetAllocation',
+          title: 'Créer un budget catégoriel',
+          type: 'item',
+          url: '/budgetallocation',
+        },
+      ]
+    },
+    {
+      id: 'settings',
+      title: 'Paramètres',
+      type: 'item',
+      url: '/settings',
+      icon: icons.IconSettings,
+      breadcrumbs: false
     }
   ]
 };

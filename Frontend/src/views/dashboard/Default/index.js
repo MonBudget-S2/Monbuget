@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 // project imports
 import EarningCard from './EarningCard';
@@ -52,7 +52,12 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Grid item xs={12} md={8} sx={{backgroundColor:"red", p:5}}>
+        <Typography> Changer le graphique ici </Typography>
+      </Grid>
     </Grid>
+
+    
   );
 };
 
