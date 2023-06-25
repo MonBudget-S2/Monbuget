@@ -10,9 +10,9 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import Link from '@mui/material/Link'
 
 const pages = ['Home','Products', 'Pricing', 'About'];
-const settings = ['Login', 'Logout'];
 const HomeNavBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -116,15 +116,20 @@ const HomeNavBar = () => {
                         ))}
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },justifyContent:'flex-end'}}>
-                        {settings.map((setting)=>(
-                            <Button
-                                key={setting}
+                            <Link href="/login"><Button
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {setting}
-                            </Button>
-                        ))}
+                              Login
+                            </Button></Link>
+
+                            <Link href="/register"><Button
+                                onClick={handleCloseNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Register
+                            </Button></Link>
+
                     </Box>
                 </Toolbar>
             </Container>
