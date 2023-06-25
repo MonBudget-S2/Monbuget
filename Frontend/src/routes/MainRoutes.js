@@ -12,6 +12,11 @@ import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
 import Settings from 'views/pages/notifications_settings/Settings';
 import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
+import ListExpense from 'views/pages/expense/ListExpense';
+import HistoryIncome from 'views/pages/income/HistoryIncome';
+import ListIncome from 'views/pages/income/ListIncome';
+import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
+import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -46,6 +51,14 @@ const MainRoutes = {
       element: <Income />
     },
     {
+      path: 'listincome',
+      element: <ListIncome />
+    },
+    {
+      path: 'historyincome',
+      element: <HistoryIncome />
+    },
+    {
       path: 'addincome',
       element: <AddIncome />
     },
@@ -58,11 +71,15 @@ const MainRoutes = {
       element: <AddExpense />
     },
     {
+      path: 'listexpense',
+      element: <ListExpense />
+    },
+    {
       path: 'categoricalbudget',
       element: <CategoricalBudget />
     },
     {
-      path: 'Budgetallocation',
+      path: 'budgetallocation',
       element: <BudgetAllocation />
     },
     {
@@ -70,7 +87,15 @@ const MainRoutes = {
       element: <NewBudgetEvenementiel />
     },
     {
-      path: 'Settings',
+      path: 'listcategoricalbudget',
+      element: <ListCategoricalBudget />
+    },
+    {
+      path: 'detailcategoricalbudget',
+      element: <DetailCategoricalBudget />
+    },
+    {
+      path: 'settings',
       element: <Settings />
     }
 

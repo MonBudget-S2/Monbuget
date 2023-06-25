@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import { Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 // third-party
@@ -32,58 +30,24 @@ const status = [
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
 const CategoricalBudgetChart = ({ isLoading }) => {
-    const [value, setValue] = useState('month');
-    const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
-
-    const { navType } = customization;
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const grey500 = theme.palette.grey[500];
-
-    const primary200 = theme.palette.primary[200];
-    const primaryDark = theme.palette.primary.dark;
-    const secondaryMain = theme.palette.secondary.main;
-    const secondaryLight = theme.palette.secondary.light;
+    const [value, setValue] = useState('month'); // Par défaut, la valeur est 'month' pour afficher le graphique par mois
 
     useEffect(() => {
-        const newChartData = {
-            ...chartData.options,
-            colors: [primary200, primaryDark, secondaryMain, secondaryLight],
-            xaxis: {
-                categories: ['Transport', 'Logement', 'Loisir', 'Nourriture'],
-                labels: {
-                    style: {
-                        colors: [primary, primary, primary, primary]
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: [primary]
-                    }
-                }
-            },
-            grid: {
-                borderColor: grey200
-            },
-            tooltip: {
-                theme: 'light'
-            },
-            legend: {
-                labels: {
-                    colors: grey500
-                }
-            }
-        };
-
-        // do not load chart when loading
-        if (!isLoading) {
-            ApexCharts.exec(`donut-chart`, 'updateOptions', newChartData);
+        // Mise à jour des options du graphique en fonction de la valeur sélectionnée
+        if (value === 'month') {
+            chartData.labels = ['Transport', 'Logement', 'Loisir', 'Nourriture'];
+            chartData.series = [5000, 3000, 8000, 6000];
+        } else if (value === 'year') {
+            chartData.labels = ['Transport', 'Logement', 'Loisir', 'Nourriture'];
+            chartData.series = [15000, 12000, 10000, 8000];
         }
-    }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+    
+        // Ne chargez pas le graphique lorsqu'il est en cours de chargement
+        if (!isLoading) {
+            ApexCharts.exec('donut-chart', 'updateOptions', chartData);
+        }
+    }, [isLoading, value]);
+
 
     return (
         <>

@@ -5,16 +5,14 @@ import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
-import EarningIcon from 'assets/images/icons/earning.svg';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined';
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    background: 'linear-gradient(45deg, #1F1C2C, #928DAB)',
+    background: 'linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12)',
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -46,10 +44,10 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
             top: -155,
             right: -70
         }
-    },
+    }
 }));
 
-const ExpenseCard = ({ isLoading, title, total }) => {
+const MostExpensiveCategoryBudget = ({ isLoading, title, total }) => {
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -72,17 +70,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                             <Grid item>
                                 <Grid container justifyContent="space-between">
                                     <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.commonAvatar,
-                                                ...theme.typography.largeAvatar,
-                                                backgroundColor: theme.palette.secondary[800],
-                                                mt: 1
-                                            }}
-                                        >
-                                            <img src={EarningIcon} alt="Notification" />
-                                        </Avatar>
+                                        
                                     </Grid>
                                     <Grid item>
                                         <Avatar
@@ -90,18 +78,18 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                             sx={{
                                                 ...theme.typography.commonAvatar,
                                                 ...theme.typography.mediumAvatar,
-                                                backgroundColor: theme.palette.secondary.dark,
-                                                color: theme.palette.secondary[200],
+                                                backgroundColor: theme.palette.primary.dark,
+                                                color: theme.palette.primary[200],
                                                 zIndex: 1
                                             }}
-                                            aria-controls="menu-earning-card"
+                                            aria-controls="menu-expense-card"
                                             aria-haspopup="true"
                                             onClick={handleClick}
                                         >
                                             <MoreHorizIcon fontSize="inherit" />
                                         </Avatar>
                                         <Menu
-                                            id="menu-earning-card"
+                                            id="menu-expense-card"
                                             anchorEl={anchorEl}
                                             keepMounted
                                             open={Boolean(anchorEl)}
@@ -143,27 +131,13 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                                 mr: 1,
                                                 mt: 1.75,
                                                 mb: 0.75,
-                                                color : '#fff'
+                                                color: '#fff'
                                             }}
                                         >
-                                            {total}€
+                                            {total}
                                         </Typography>
                                     </Grid>
-                                    <Grid item>
-                                        <Avatar
-                                            sx={{
-                                                cursor: 'pointer',
-                                                ...theme.typography.smallAvatar,
-                                                backgroundColor: theme.palette.secondary[200],
-                                                color: theme.palette.secondary.dark
-                                            }}
-                                        >
-                                            <ArrowUpwardIcon
-                                                fontSize="inherit"
-                                                sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }}
-                                            />
-                                        </Avatar>
-                                    </Grid>
+                                    
                                 </Grid>
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
@@ -172,7 +146,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                     sx={{
                                         fontSize: '1rem',
                                         fontWeight: 500,
-                                        color : '#fff'
+                                        color: '#fff'
                                     }}
                                 >
                                     {title}
@@ -186,10 +160,10 @@ const ExpenseCard = ({ isLoading, title, total }) => {
     );
 };
 
-ExpenseCard.propTypes = {
+MostExpensiveCategoryBudget.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
-    total: PropTypes.number.isRequired
+    total: PropTypes.string.isRequired
 };
 
-export default ExpenseCard;
+export default MostExpensiveCategoryBudget;

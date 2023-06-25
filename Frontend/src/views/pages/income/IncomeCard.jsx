@@ -14,7 +14,7 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    background: 'linear-gradient(45deg, #1F1C2C, #928DAB)',
+    background: `linear-gradient(45deg, ${theme.palette.secondary.light}, ${theme.palette.error.main})`,
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -46,10 +46,10 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
             top: -155,
             right: -70
         }
-    },
+    }
 }));
 
-const ExpenseCard = ({ isLoading, title, total }) => {
+const IncomeCard = ({ isLoading, title, total }) => {
     const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -143,7 +143,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                                 mr: 1,
                                                 mt: 1.75,
                                                 mb: 0.75,
-                                                color : '#fff'
+                                                color : theme.palette.common[200]
                                             }}
                                         >
                                             {total}€
@@ -172,7 +172,7 @@ const ExpenseCard = ({ isLoading, title, total }) => {
                                     sx={{
                                         fontSize: '1rem',
                                         fontWeight: 500,
-                                        color : '#fff'
+                                        color: theme.palette.common[200]
                                     }}
                                 >
                                     {title}
@@ -186,10 +186,10 @@ const ExpenseCard = ({ isLoading, title, total }) => {
     );
 };
 
-ExpenseCard.propTypes = {
+IncomeCard.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
     total: PropTypes.number.isRequired
 };
 
-export default ExpenseCard;
+export default IncomeCard;

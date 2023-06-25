@@ -1,43 +1,36 @@
-import { useEffect, useState } from 'react';
-
-// material-ui
-import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-
-// project imports
 import { gridSpacing } from 'store/constant';
 import ExpenseChart from './ExpenseChart';
 import ExpenseCard from './ExpenseCard';
 import ExpenseByCategory from './ExpenseByCategory';
 import CreateButton from 'ui-component/buttons/CreateButton';
 import TotalExpenseByMonth from './TotalExpenseByMonth';
+import MostExpensive from './MostExpensive';
+import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 
-// project datas
 import expenseByCategoryData from './expense-by-category';
 import chartData from './expense-chart-data';
 import expenseHistoryData from './expensive-history-data';
-import MostExpensive from './MostExpensive';
-
-// ==============================|| EXPENSE PAGE ||============================== //
 
 const Expense = () => {
     const [totalRealExpenses, setTotalRealExpenses] = useState(0);
     const [isLoading, setLoading] = useState(true);
+    const [recentExpenses, setRecentExpenses] = useState([]);
 
     useEffect(() => {
         setLoading(false);
-
+    
         const realExpenses = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
         setTotalRealExpenses(realExpenses);
+    
+        // Récupérer les 5 dernières transactions créées dans l'ordre décroissant
+        const sortedExpenses = [...expenseHistoryData].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const lastFiveExpenses = sortedExpenses.slice(0, 5);
+        setRecentExpenses(lastFiveExpenses.reverse());
     }, []);
-
-    const handleEdit = () => {
-        // Logique pour modifier une dépense
-    };
-
-    const handleDelete = () => {
-        // Logique pour supprimer une dépense
-    };
+    
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -53,8 +46,6 @@ const Expense = () => {
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalExpenseByMonth
                             isLoading={isLoading}
-                            title="Total des dépenses réelles"
-                            total={totalRealExpenses}
                         />
                     </Grid>
                 </Grid>
@@ -80,34 +71,19 @@ const Expense = () => {
                                     <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
                                         Date de réception
                                     </TableCell>
-                                    <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                                        Actions
-                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {expenseHistoryData.slice(-5).map((row, index) => (
+                                {recentExpenses.map((row, index) => (
                                     <TableRow key={index}>
                                         <TableCell>{row.expenseCategory}</TableCell>
-                                        <TableCell align="center">-{row.amount}€</TableCell>
+                                        <TableCell align="center" style={{ color: '#ff0000' }}>- {row.amount}€</TableCell>
                                         <TableCell align="center">{new Date(row.date).toLocaleDateString('fr-FR')}</TableCell>
-                                        <TableCell align="center">
-                                            <Button variant="outlined" color="primary" onClick={() => handleEdit(row.id)} sx={{ marginRight: '8px' }}>
-                                                Voir
-                                            </Button>
-                                            <Button variant="outlined" color="secondary" onClick={() => handleDelete(row.id)}>
-                                                Supprimer
-                                            </Button>
-                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                        {expenseHistoryData.length > 5 && (
-                            <Button variant="outlined" color="primary" onClick={() => console.log('Afficher tout')}>
-                                Afficher tout
-                            </Button>
-                        )}
+                        {expenseHistoryData.length > 5 && <SeeAllButton to="/listexpense" title="Tout afficher" />}
                     </TableContainer>
                 </MainCard>
             </Grid>

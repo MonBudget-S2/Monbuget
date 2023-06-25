@@ -10,14 +10,12 @@ import { gridSpacing } from 'store/constant';
 
 // assets
 import { format } from 'date-fns';
-import datas from './income-data';
-import SeeAllButton from 'ui-component/buttons/SeeAllButton';
+import incomeData from './income-data';
 
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const IncomeTable = ({ isLoading }) => {
-    
+// ==============================|| LIST INCOME ||============================== //
 
+const ListIncome = ({ isLoading }) => {
     return (
         <>
             {isLoading ? (
@@ -25,9 +23,6 @@ const IncomeTable = ({ isLoading }) => {
             ) : (
                 <MainCard content={false}>
                     <CardContent>
-                        {datas.length > 4 && (
-                            < SeeAllButton to="/listincome" title="Tout afficher"/>
-                        )}
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
                                 <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
@@ -37,15 +32,17 @@ const IncomeTable = ({ isLoading }) => {
                                                 <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Catégorie de revenus</TableCell>
                                                 <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Montant reçu</TableCell>
                                                 <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Date de réception</TableCell>
+                                                <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Description</TableCell>
                                                 <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Actions</TableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {datas.slice(-5).map((row) => (
+                                            {incomeData.map((row) => (
                                                 <TableRow key={row.id}>
                                                     <TableCell>{row.incomeName}</TableCell>
                                                     <TableCell align="center">{row.amountEarned}€</TableCell>
                                                     <TableCell align="center">{format(new Date(row.dateEarned), 'dd-MM-yyyy')}</TableCell>
+                                                    <TableCell align="center">{row.description}</TableCell>
                                                     <TableCell align="center">
                                                         <Button variant="outlined" color="primary" onClick={() => onEdit(row.id)} sx={{ marginRight: '8px' }}>
                                                             Voir
@@ -68,8 +65,8 @@ const IncomeTable = ({ isLoading }) => {
     );
 };
 
-IncomeTable.propTypes = {
+ListIncome.propTypes = {
     isLoading: PropTypes.bool
 };
 
-export default IncomeTable;
+export default ListIncome;
