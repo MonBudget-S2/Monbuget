@@ -54,7 +54,10 @@ export class AppService {
   async getAllIncomesByTypeForYear(
     year: number,
     userId?: string,
-  ): Promise<{ [type: string]: number[] }> {
+  ): Promise<{
+    incomesByType: { [type: string]: number[] };
+    totalIncome: number;
+  }> {
     // const incomes = await this.incomeRepository.find({
     //   where: {
     //     date: Raw(
@@ -78,6 +81,7 @@ export class AppService {
     }
 
     const incomes = await queryBuilder.getMany();
+    let totalIncome = 0;
 
     const incomesByType: { [type: string]: number[] } = {};
 
@@ -91,9 +95,10 @@ export class AppService {
 
       if (type && incomesByType[type]) {
         incomesByType[type][month] += amount;
+        totalIncome += amount;
       }
     });
 
-    return incomesByType;
+    return { incomesByType, totalIncome };
   }
 }

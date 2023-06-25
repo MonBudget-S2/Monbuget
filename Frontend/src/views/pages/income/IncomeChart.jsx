@@ -15,6 +15,7 @@ import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowth
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import incomService from 'service/incomeService';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 // import data from 'ui-component/table/data';
 
 // chart data
@@ -102,15 +103,19 @@ const chartConfig = {
     }
   },
   series: []
-
 };
 
 // ==============================|| MANAGE INCOME- TOTAL GROWTH BAR CHART ||============================== //
 
 const IncomeChart = ({ isLoading }) => {
   const [chartData, setChartData] = useState(chartConfig);
-  console.log(setChartData);
-  console.log(incomService);
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [totalIncome, setTotalIncome] = useState(0);
+
+  const handleYearChange = (increment) => {
+    const newYear = year + increment;
+    setYear(newYear);
+  };
   const [periode, setPeriode] = useState(status[0].value);
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
@@ -126,10 +131,10 @@ const IncomeChart = ({ isLoading }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await incomService.getIncomeByTypeForYear('2023');
+      const res = await incomService.getIncomeByTypeForYear(year);
 
       if (res.data) {
-        const series = Object.entries(res.data).map(([name, data]) => ({
+        const series = Object.entries(res.data.incomesByType).map(([name, data]) => ({
           name,
           data
         }));
@@ -137,12 +142,12 @@ const IncomeChart = ({ isLoading }) => {
           ...chartConfig,
           series
         };
-        console.log('test2', newChartData);
         setChartData(newChartData);
+        setTotalIncome(res.data.totalIncome);
       }
     };
     getData();
-  }, [periode]);
+  }, [periode, year]);
 
   useEffect(() => {
     chartData.options.colors = [primary200, primaryDark, secondaryMain, primary];
@@ -170,9 +175,18 @@ const IncomeChart = ({ isLoading }) => {
                       <Typography variant="subtitle2">Total des Revenus</Typography>
                     </Grid>
                     <Grid item>
-                      <Typography variant="h3">2324€</Typography>
+                      <Typography variant="h3">{totalIncome}€</Typography>
                     </Grid>
                   </Grid>
+                </Grid>
+                <Grid item>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <ArrowBack onClick={() => handleYearChange(-1)} sx={{ cursor: 'pointer' }} />
+                    <Typography variant="h6" sx={{ mx: 2 }}>
+                      {year}
+                    </Typography>
+                    <ArrowForward onClick={() => handleYearChange(1)} sx={{ cursor: 'pointer' }} />
+                  </div>
                 </Grid>
                 <Grid item>
                   <TextField id="standard-select-currency" select periode={periode} onChange={(e) => setPeriode(e.target.value)}>
