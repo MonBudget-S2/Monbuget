@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 
 // project imports
 import IncomeChart from './IncomeChart';
@@ -18,6 +18,7 @@ import CustomAlert from 'ui-component/alert/CustomAlert';
 const Income = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isNewIncomeAdded, setIsNewIncomeAdded] = useState(false);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
@@ -30,13 +31,27 @@ const Income = () => {
     }
   }, [isNewIncomeAdded]);
 
+  const handleClickOpen = () => {
+    setIsAddFormOpen(true);
+  };
+
   return (
     <Grid container spacing={gridSpacing}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
 
       <Grid item xs={12}>
         {/* <CreateButton to="/addexpense" title="Ajouter un revenu" /> */}
-        <AddIncome setAlertMessage={setAlertMessage} setIsNewIncomeAdded={setIsNewIncomeAdded} />
+        <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <Typography style={{ color: 'white' }} variant="subtitle1">
+            Ajouter un revenu
+          </Typography>
+        </Button>
+        <AddIncome
+          setAlertMessage={setAlertMessage}
+          setIsNewIncomeAdded={setIsNewIncomeAdded}
+          isAddFormOpen={isAddFormOpen}
+          setIsAddFormOpen={setIsAddFormOpen}
+        />
       </Grid>
       <Grid item xs={12} md={8}>
         <Grid container spacing={gridSpacing}>
@@ -49,7 +64,13 @@ const Income = () => {
         <IncomeHistory key={isNewIncomeAdded} />
       </Grid>
       <Grid item xs={12}>
-        <IncomeTable key={isNewIncomeAdded} />
+        <IncomeTable
+          setAlertMessage={setAlertMessage}
+          setIsNewIncomeAdded={setIsNewIncomeAdded}
+          isAddFormOpen={isAddFormOpen}
+          setIsAddFormOpen={setIsAddFormOpen}
+          key={isNewIncomeAdded}
+        />
       </Grid>
     </Grid>
   );

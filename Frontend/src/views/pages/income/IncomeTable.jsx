@@ -14,10 +14,12 @@ import { format, parseISO } from 'date-fns';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import incomeService from '../../../service/incomeService';
+import AddIncome from './AddIncome';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const IncomeTable = ({ isLoading }) => {
+const IncomeTable = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsAddFormOpen, isLoading }) => {
   const [incomes, setIncomes] = useState([{}]);
+  const [editingIncome, setEditingIncome] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +35,29 @@ const IncomeTable = ({ isLoading }) => {
     fetchData();
   }, []);
 
+  const onEdit = (id) => {
+    console.log('Edit', id);
+    const income = incomes.find((income) => income.id === id);
+    income.date = format(parseISO(income.date), 'yyyy-MM-dd');
+    setEditingIncome(income); // Set the editing income data
+    setIsAddFormOpen(true); // Open the form
+  };
+
   return (
     <>
       {isLoading ? (
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
+          {isAddFormOpen && (
+            <AddIncome
+              setAlertMessage={setAlertMessage}
+              setIsNewIncomeAdded={setIsNewIncomeAdded}
+              isAddFormOpen={isAddFormOpen}
+              setIsAddFormOpen={setIsAddFormOpen}
+              income={editingIncome}
+            />
+          )}
           <CardContent>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
@@ -68,7 +87,7 @@ const IncomeTable = ({ isLoading }) => {
                           <TableCell align="center">{format(parseISO('2023-06-23T00:00:00.000Z'), 'dd-MM-yyyy')}</TableCell>
                           <TableCell align="center">
                             <Button variant="outlined" color="primary" onClick={() => onEdit(row.id)} sx={{ marginRight: '8px' }}>
-                              Voir
+                              Modifier
                             </Button>
                             <Button variant="outlined" color="secondary" onClick={() => onDelete(row.id)}>
                               Supprimer

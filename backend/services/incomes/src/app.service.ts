@@ -30,6 +30,9 @@ export class AppService {
   }
 
   async getAllByUser(userId: string): Promise<Income[]> {
+    console.log('userId', userId);
+    const incomes = await this.incomeRepository.find({ where: { userId } });
+    console.log('incomes', incomes);
     return this.incomeRepository.find({ where: { userId } });
   }
 
@@ -37,13 +40,16 @@ export class AppService {
     id: string,
     updateIncomeDto: UpdateIncomeDto,
   ): Promise<Income | null> {
-    const result = await this.incomeRepository.update(id, updateIncomeDto);
+    console.log('updateIncomeDto', updateIncomeDto);
+    const income = await this.incomeRepository.findOneByOrFail({ id });
+    const updatedIncome = await this.incomeRepository.save({
+      ...income,
+      ...updateIncomeDto,
+    });
 
-    if (result.affected === 0) {
-      return null; // Budget with the given ID not found
-    }
+    console.log('updatedIncome', updatedIncome);
 
-    return this.incomeRepository.findOneBy({ id });
+    return updatedIncome;
   }
 
   async delete(id: string): Promise<boolean> {

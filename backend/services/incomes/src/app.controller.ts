@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateIncomeDto, UpdateIncomeDto } from './income.request';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -28,8 +28,11 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'income', action: 'update' })
-  updateIncome({ id, income }: { id: string; income: UpdateIncomeDto }) {
-    return this.appService.update(id, income);
+  updateIncome(
+    @Payload() payload: { id: string; updateIncomeDto: UpdateIncomeDto },
+  ) {
+    const { id, updateIncomeDto } = payload;
+    return this.appService.update(id, updateIncomeDto);
   }
 
   @MessagePattern({ service: 'income', action: 'delete' })

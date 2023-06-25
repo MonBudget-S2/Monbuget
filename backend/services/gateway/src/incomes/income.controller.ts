@@ -39,16 +39,19 @@ export class IncomeController {
   }
 
   @Get(":id")
-  getIncomeById(@Param("id") id: string) {
-    return this.incomeService.getIncomeById(id);
+  getIncomeById(@Param("id") id: string, @Req() request: CustomRequest) {
+    const user = request.user;
+    return this.incomeService.getIncomeById(id, user);
   }
 
   @Put(":id")
   updateIncome(
     @Param("id") id: string,
-    @Body() updateIncomeDto: UpdateIncomeDto
+    @Body() updateIncomeDto: UpdateIncomeDto,
+    @Req() request: CustomRequest
   ) {
-    return this.incomeService.updateIncome(id, updateIncomeDto);
+    const user = request.user;
+    return this.incomeService.updateIncome(id, updateIncomeDto, user);
   }
 
   @Delete(":id")

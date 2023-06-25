@@ -23,8 +23,13 @@ const getIncomeByTypeForYear = async (year) => {
   return await axiosInstance.get(`/incomes/types/${year}`);
 };
 
+const updateIncome = async (id, credentials) => {
+  return await axiosInstance.put(`/incomes/${id}`, credentials);
+};
+
 const incomService = {
   addIncome,
+  updateIncome,
   getIncomes,
   getIncomeByTypeForYear
 };

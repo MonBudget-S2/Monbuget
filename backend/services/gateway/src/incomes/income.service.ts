@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 
 import {
   ClientProxy,
@@ -40,17 +40,28 @@ export class IncomeService {
     }
   }
 
-  async getIncomeById(id: string) {
-    return await firstValueFrom(
+  async getIncomeById(id: string, user) {
+    const isAdmin = user.role === Role.ADMIN;
+    const income = await firstValueFrom(
       this.incomeService.send({ service: "income", action: "getById" }, id)
     );
+    if (!isAdmin && income.userId !== user.id) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
+    return income;
   }
 
-  async updateIncome(id: string, updateIncomeDto: UpdateIncomeDto) {
+  async updateIncome(id: string, updateIncomeDto: UpdateIncomeDto, user) {
+    //get income by id and check if user is owner of income
+    const income = await this.getIncomeById(id, user);
+    updateIncomeDto.userId = income.userId;
     return await firstValueFrom(
       this.incomeService.send(
         { service: "income", action: "update" },
-        { id, updateIncomeDto: updateIncomeDto }
+        { id, updateIncomeDto }
       )
     );
   }

@@ -1,18 +1,18 @@
-import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select, FormHelperText, Button, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select, FormHelperText } from '@mui/material';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import DialogForm from 'ui-component/modal/DialogForm';
-import { useState } from 'react';
 import { getUserId } from 'store/authSlice';
 import { useSelector } from 'react-redux';
 
 import incomeService from '../../../service/incomeService';
-const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded }) => {
+const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsAddFormOpen, income = null }) => {
   const theme = useTheme();
+  const isEditing = Boolean(income);
+  console.log('test', income);
+
   const userId = useSelector(getUserId);
   console.log(userId);
-
-  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
     const { incomeType, amountReceived, dateReceived } = values;
@@ -23,44 +23,56 @@ const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded }) => {
       userId: userId
     };
 
-    const response = await incomeService.addIncome(dataIncome);
-    if (response.status === 201) {
-      setStatus({ success: true });
-      setSubmitting(false);
-      setIsAddFormOpen(false);
-      setAlertMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
-      setIsNewIncomeAdded(true);
-    } else {
-      setStatus({ success: false });
-      setErrors({ submit: response.data.message });
-      setSubmitting(false);
-      setAlertMessage({ open: true, type: 'error', message: response.data.message });
-    }
-  };
+    if (!isEditing) {
+      const response = await incomeService.addIncome(dataIncome);
 
-  const handleClickOpen = () => {
-    setIsAddFormOpen(true);
+      if (response.status === 201) {
+        setStatus({ success: true });
+        setSubmitting(false);
+        setIsAddFormOpen(false);
+        setAlertMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
+        setIsNewIncomeAdded(true);
+      } else {
+        setStatus({ success: false });
+        setErrors({ submit: response.data.message });
+        setSubmitting(false);
+        setAlertMessage({ open: true, type: 'error', message: response.data.message });
+      }
+    } else {
+      const response = await incomeService.updateIncome(income.id, dataIncome);
+      if (response.status === 200) {
+        setStatus({ success: true });
+        setSubmitting(false);
+        setIsAddFormOpen(false);
+        setAlertMessage({ open: true, type: 'success', message: 'Revenu modifié avec succès' });
+        setIsNewIncomeAdded(true);
+      } else {
+        setStatus({ success: false });
+        setErrors({ submit: response.data.message });
+        setSubmitting(false);
+        setAlertMessage({ open: true, type: 'error', message: response.data.message });
+      }
+    }
   };
 
   return (
     <>
-      <Button variant="contained" color="primary" onClick={handleClickOpen}>
-        <Typography style={{ color: 'white' }} variant="subtitle1">
-          Ajouter un revenu
-        </Typography>
-      </Button>
-
       <Formik
         initialValues={{
-          incomeType: '',
-          amountReceived: '',
-          dateReceived: '',
+          incomeType: isEditing ? income.type : '',
+          amountReceived: isEditing ? income.amount : '',
+          dateReceived: isEditing ? income.date : '',
           submit: null
         }}
         onSubmit={handleSubmit}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
-          <DialogForm title="Ajouter Revenue" isOpen={isAddFormOpen} setIsOpen={setIsAddFormOpen} onSubmit={handleSubmit}>
+          <DialogForm
+            title={isEditing ? 'Modifier un revenu' : 'Ajouter un revenu'}
+            isOpen={isAddFormOpen}
+            setIsOpen={setIsAddFormOpen}
+            onSubmit={handleSubmit}
+          >
             <FormControl fullWidth error={Boolean(touched.incomeType && errors.incomeType)} sx={{ ...theme.typography.customInput }}>
               <InputLabel id="outlined-adornment-incomeType">Type de revenu</InputLabel>
               <Select
