@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateCategoryDto, UpdateCategoryDto } from './category.request';
 
 @Controller()
@@ -8,8 +8,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @MessagePattern({ service: 'category', action: 'create' })
-  createCategory(category: CreateCategoryDto) {
-    return this.appService.create(category);
+  createCategory(createCategoryDto: CreateCategoryDto) {
+    return this.appService.create(createCategoryDto);
   }
 
   @MessagePattern({ service: 'category', action: 'getAll' })
@@ -23,13 +23,10 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'category', action: 'update' })
-  updateCategory({
-    id,
-    category,
-  }: {
-    id: string;
-    category: UpdateCategoryDto;
-  }) {
+  updateCategory(
+    @Payload() payload: { id: string; category: UpdateCategoryDto },
+  ) {
+    const { id, category } = payload;
     return this.appService.update(id, category);
   }
 
