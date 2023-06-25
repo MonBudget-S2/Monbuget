@@ -321,6 +321,7 @@ const AddBudgetEvenementiel = ({ ...others }) =>{
     const { name,date } = values
     console.log(name)
     console.log(date)
+    console.log("envoyer")
   };
   return (
       <>
@@ -344,9 +345,9 @@ const AddBudgetEvenementiel = ({ ...others }) =>{
           }}
           validationSchema={Yup.object().shape({
             name : Yup.string().max(255).required('Budget Name is required'),
-            dateStart : Yup.date().max(255).required('Budget date Start is required'),
-            dateEnd : Yup.date().max(255).required('Budget date End is required'),
-            amount : Yup.number().max(255).required('Budget Amount is required'),
+            dateStart : Yup.date().required('Budget date Start is required'),
+            dateEnd : Yup.date().required('Budget date End is required'),
+            amount : Yup.number().min(0).required('Budget Amount is required'),
           })}
           onSubmit={handleAddBudget}
         >
