@@ -11,6 +11,7 @@ import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
 import Settings from 'views/pages/notifications_settings/Settings';
+import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -63,6 +64,10 @@ const MainRoutes = {
     {
       path: 'Budgetallocation',
       element: <BudgetAllocation />
+    },
+    {
+      path:'AddBudgetEvenementiel',
+      element: <NewBudgetEvenementiel />
     },
     {
       path: 'Settings',
