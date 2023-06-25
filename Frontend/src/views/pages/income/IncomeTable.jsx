@@ -17,7 +17,7 @@ import incomeService from '../../../service/incomeService';
 import AddIncome from './AddIncome';
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const IncomeTable = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsAddFormOpen, isLoading }) => {
+const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen, isLoading }) => {
   const [incomes, setIncomes] = useState([{}]);
   const [editingIncome, setEditingIncome] = useState(null);
 
@@ -36,11 +36,22 @@ const IncomeTable = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setI
   }, []);
 
   const onEdit = (id) => {
-    console.log('Edit', id);
     const income = incomes.find((income) => income.id === id);
     income.date = format(parseISO(income.date), 'yyyy-MM-dd');
     setEditingIncome(income); // Set the editing income data
     setIsAddFormOpen(true); // Open the form
+  };
+
+  const onDelete = async (id) => {
+    const reponse = await incomeService.deleteIncome(id);
+    console.log('response', reponse);
+    if (reponse.status === 200) {
+      console.log('Revenu supprimé avec succès');
+      setAlertMessage({ open: true, message: 'Revenu supprimé avec succès', type: 'success' });
+      setIsIncomeChanged(true);
+    } else {
+      setAlertMessage({ open: true, message: 'Erreur lors de la suppression du revenu', type: 'error' });
+    }
   };
 
   return (
@@ -52,7 +63,7 @@ const IncomeTable = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setI
           {isAddFormOpen && (
             <AddIncome
               setAlertMessage={setAlertMessage}
-              setIsNewIncomeAdded={setIsNewIncomeAdded}
+              setIsIncomeChanged={setIsIncomeChanged}
               isAddFormOpen={isAddFormOpen}
               setIsAddFormOpen={setIsAddFormOpen}
               income={editingIncome}

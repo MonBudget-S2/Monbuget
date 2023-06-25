@@ -17,7 +17,7 @@ import CustomAlert from 'ui-component/alert/CustomAlert';
 
 const Income = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
-  const [isNewIncomeAdded, setIsNewIncomeAdded] = useState(false);
+  const [isIncomeChanged, setIsIncomeChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
@@ -26,10 +26,10 @@ const Income = () => {
   }, []);
 
   useEffect(() => {
-    if (isNewIncomeAdded) {
-      setIsNewIncomeAdded(false);
+    if (isIncomeChanged) {
+      setIsIncomeChanged(false);
     }
-  }, [isNewIncomeAdded]);
+  }, [isIncomeChanged]);
 
   const handleClickOpen = () => {
     setIsAddFormOpen(true);
@@ -48,7 +48,7 @@ const Income = () => {
         </Button>
         <AddIncome
           setAlertMessage={setAlertMessage}
-          setIsNewIncomeAdded={setIsNewIncomeAdded}
+          setIsIncomeChanged={setIsIncomeChanged}
           isAddFormOpen={isAddFormOpen}
           setIsAddFormOpen={setIsAddFormOpen}
         />
@@ -56,20 +56,20 @@ const Income = () => {
       <Grid item xs={12} md={8}>
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12}>
-            <IncomeChart isLoading={isLoading} key={isNewIncomeAdded} />
+            <IncomeChart isLoading={isLoading} key={isIncomeChanged} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12} md={4}>
-        <IncomeHistory key={isNewIncomeAdded} />
+        <IncomeHistory key={isIncomeChanged} />
       </Grid>
       <Grid item xs={12}>
         <IncomeTable
           setAlertMessage={setAlertMessage}
-          setIsNewIncomeAdded={setIsNewIncomeAdded}
+          setIsIncomeChanged={setIsIncomeChanged}
           isAddFormOpen={isAddFormOpen}
           setIsAddFormOpen={setIsAddFormOpen}
-          key={isNewIncomeAdded}
+          key={isIncomeChanged}
         />
       </Grid>
     </Grid>

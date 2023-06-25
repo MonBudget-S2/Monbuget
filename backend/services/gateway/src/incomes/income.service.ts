@@ -66,7 +66,8 @@ export class IncomeService {
     );
   }
 
-  async deleteIncome(id: string) {
+  async deleteIncome(id: string, user) {
+    const income = await this.getIncomeById(id, user);
     return await firstValueFrom(
       this.incomeService.send({ service: "income", action: "delete" }, id)
     );

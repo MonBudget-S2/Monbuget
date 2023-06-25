@@ -6,7 +6,7 @@ import { getUserId } from 'store/authSlice';
 import { useSelector } from 'react-redux';
 
 import incomeService from '../../../service/incomeService';
-const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsAddFormOpen, income = null }) => {
+const AddIncome = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen, income = null }) => {
   const theme = useTheme();
   const isEditing = Boolean(income);
   console.log('test', income);
@@ -31,7 +31,7 @@ const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsA
         setSubmitting(false);
         setIsAddFormOpen(false);
         setAlertMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
-        setIsNewIncomeAdded(true);
+        setIsIncomeChanged(true);
       } else {
         setStatus({ success: false });
         setErrors({ submit: response.data.message });
@@ -45,7 +45,7 @@ const AddIncome = ({ setAlertMessage, setIsNewIncomeAdded, isAddFormOpen, setIsA
         setSubmitting(false);
         setIsAddFormOpen(false);
         setAlertMessage({ open: true, type: 'success', message: 'Revenu modifié avec succès' });
-        setIsNewIncomeAdded(true);
+        setIsIncomeChanged(true);
       } else {
         setStatus({ success: false });
         setErrors({ submit: response.data.message });

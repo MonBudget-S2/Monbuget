@@ -27,10 +27,15 @@ const updateIncome = async (id, credentials) => {
   return await axiosInstance.put(`/incomes/${id}`, credentials);
 };
 
+const deleteIncome = async (id) => {
+  return await axiosInstance.delete(`/incomes/${id}`);
+};
+
 const incomService = {
   addIncome,
   updateIncome,
   getIncomes,
+  deleteIncome,
   getIncomeByTypeForYear
 };
 

@@ -55,8 +55,9 @@ export class IncomeController {
   }
 
   @Delete(":id")
-  deleteIncome(@Param("id") id: string) {
-    return this.incomeService.deleteIncome(id);
+  deleteIncome(@Param("id") id: string, @Req() request: CustomRequest) {
+    const user = request.user;
+    return this.incomeService.deleteIncome(id, user);
   }
 
   @Get("types/:year")
