@@ -9,7 +9,7 @@ const config: TypeOrmModuleOptions = {
   port: 5432,
   username: 'challengeuser',
   password: 'challengepass',
-  database: 'challenge',
+  database: 'challengeexpenses',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
 };

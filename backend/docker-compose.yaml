@@ -23,7 +23,7 @@ services:
     volumes:
       - ./services/alerts:/home/node
     environment:
-      POSTGRES_DB: &challengeDatabaseName challenge
+      POSTGRES_DB: &challengeDatabaseNameAlerts challengealerts
       POSTGRES_USER: &challengeDatabaseUser challengeuser
       POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
 
@@ -37,7 +37,7 @@ services:
     volumes:
       - ./services/categories:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameCategories challengecategories 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./services/events:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameEvents challengeevents 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
@@ -65,7 +65,7 @@ services:
     volumes:
       - ./services/debts:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameDebts challengedebts 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
@@ -79,7 +79,7 @@ services:
     volumes:
       - ./services/budgets:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameBudgets challengebudgets 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
@@ -93,7 +93,7 @@ services:
     volumes:
       - ./services/expenses:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameExpenses challengeexpenses 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword
 
@@ -107,7 +107,7 @@ services:
     volumes:
       - ./services/incomes:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameIncomes challengeincomes
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
@@ -121,7 +121,7 @@ services:
     volumes:
       - ./services/users:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
+      POSTGRES_DB: &challengeDatabaseNameUsers challengeusers
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword
       
@@ -133,7 +133,15 @@ services:
       context: services/database
       dockerfile: Dockerfile
     environment:
-      POSTGRES_DB: *challengeDatabaseName
+      POSTGRES_MULTIPLE_DATABASES1: *challengeDatabaseNameAlerts 
+      POSTGRES_MULTIPLE_DATABASES2: *challengeDatabaseNameUsers 
+      POSTGRES_MULTIPLE_DATABASES3: *challengeDatabaseNameIncomes
+      POSTGRES_MULTIPLE_DATABASES4: *challengeDatabaseNameExpenses
+      POSTGRES_MULTIPLE_DATABASES5: *challengeDatabaseNameBudgets
+      POSTGRES_MULTIPLE_DATABASES6: *challengeDatabaseNameDebts
+      POSTGRES_MULTIPLE_DATABASES7: *challengeDatabaseNameEvents
+      POSTGRES_MULTIPLE_DATABASES8: *challengeDatabaseNameCategories
+
       POSTGRES_USER: *challengeDatabaseUser
       POSTGRES_PASSWORD: *challengeDatabasePassword
 
@@ -147,7 +155,6 @@ services:
     volumes:
       - ./services/posts:/home/node
     environment:
-      POSTGRES_DB: *challengeDatabaseName 
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword 
 
