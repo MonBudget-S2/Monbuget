@@ -1,17 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Budget } from './budget.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
+import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppService {
   constructor(
+    @Inject('CATEGORY_SERVICE') private readonly categoryService: ClientProxy,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
   ) {}
 
   async create(createBudgetDto: CreateBudgetDto): Promise<any> {
+    if (createBudgetDto.categoryId) {
+      return await this.saveBudgetToDatabase(createBudgetDto);
+    } else if (createBudgetDto.customCategory) {
+      const categoryDto = {
+        name: createBudgetDto.customCategory,
+        userId: createBudgetDto.userId,
+      };
+      const createdCategory = await this.createCategory(categoryDto);
+      createBudgetDto.categoryId = createdCategory.id;
+      return await this.saveBudgetToDatabase(createBudgetDto);
+    }
+
     const newExpense = this.budgetRepository.create(createBudgetDto);
     await this.budgetRepository.save(newExpense);
     return { message: 'Budget created successfully' };
@@ -41,5 +56,16 @@ export class AppService {
   async delete(id: string): Promise<boolean> {
     const result = await this.budgetRepository.delete(id);
     return result.affected > 0;
+  }
+
+  private async saveBudgetToDatabase(
+    createBudgetDto: CreateBudgetDto,
+  ): Promise<Budget> {
+    const { customCategory, ...budgetDto } = createBudgetDto;
+    return this.budgetRepository.save(budgetDto);
+  }
+
+  private async createCategory(categoryDto): Promise<any> {
+    return await firstValueFrom(this.categoryService.send('', categoryDto));
   }
 }

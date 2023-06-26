@@ -20,7 +20,7 @@ export class CategoryService {
     return await firstValueFrom(
       this.categoryService.send(
         { service: "category", action: "create" },
-        { category: createCategoryDto }
+        createCategoryDto
       )
     );
   }

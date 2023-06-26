@@ -9,6 +9,7 @@ export class AppController {
 
   @MessagePattern({ service: 'category', action: 'create' })
   createCategory(createCategoryDto: CreateCategoryDto) {
+    console.log('createCategoryDto', createCategoryDto);
     return this.appService.create(createCategoryDto);
   }
 
