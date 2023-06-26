@@ -82,7 +82,7 @@ const CategoricalBudgetChart = ({ isLoading }) => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12}>
-                            <Chart options={chartData.options} series={chartData.series} type={chartData.type} height={chartData.height} />
+                            <Chart options={chartData.options} series={chartData.series} type={chartData.type} height={chartData.height}  />
                         </Grid>
                     </Grid>
                 </MainCard>

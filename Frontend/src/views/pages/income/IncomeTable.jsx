@@ -1,39 +1,61 @@
+// ==============================|| INCOME TABLE ||============================== //
+
 import PropTypes from 'prop-types';
-
-// material-ui
-import { Button, CardContent, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
-// project imports
+import { CardContent, Grid, Box } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
-
-// assets
 import { format, parseISO } from 'date-fns';
-// import datas from './income-data';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import incomeService from '../../../service/incomeService';
 import AddIncome from './AddIncome';
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
+import UpdateButton from 'ui-component/buttons/UpdateButton';
+import DeleteButton from 'ui-component/buttons/DeleteButton';
+import DataTable from 'ui-component/table/DataTable';
+
+import incomeData from './income-data'
+
 
 const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen, isLoading }) => {
   const [incomes, setIncomes] = useState([{}]);
   const [editingIncome, setEditingIncome] = useState(null);
+  
+
 
   useEffect(() => {
     const fetchData = async () => {
-      const reponse = await incomeService.getIncomes();
+      const response = await incomeService.getIncomes();
 
-      if (reponse.status === 200) {
-        console.log('test', reponse.data);
-        setIncomes(reponse.data);
+      if (response.status === 200) {
+        console.log('test', response.data);
+        setIncomes(response.data);
       } else {
         console.log('Erreur lors de la récupération des revenus');
       }
     };
     fetchData();
   }, []);
+
+  const columns = [
+    { field: 'type', headerName: 'Type de revenus', flex: 1 },
+    { field: 'amount', headerName: 'Montant', flex: 1 },
+    { field: 'date', headerName: 'Date', flex: 1 },
+    {
+      field: 'actions',
+      sortable: false,
+      headerName: 'Actions',
+      flex: 1,
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+          <UpdateButton to="/listexpense" onClick={() => onEdit(params.row.id)} />
+          <DeleteButton to="listexpense" onClick={() => onDelete(params.row.id)} />
+        </Box>
+      ),
+    },
+
+  ];
+
+  
 
   const onEdit = (id) => {
     const income = incomes.find((income) => income.id === id);
@@ -43,9 +65,9 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
   };
 
   const onDelete = async (id) => {
-    const reponse = await incomeService.deleteIncome(id);
-    console.log('response', reponse);
-    if (reponse.status === 200) {
+    const response = await incomeService.deleteIncome(id);
+    console.log('response', response);
+    if (response.status === 200) {
       console.log('Revenu supprimé avec succès');
       setAlertMessage({ open: true, message: 'Revenu supprimé avec succès', type: 'success' });
       setIsIncomeChanged(true);
@@ -72,43 +94,7 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
           <CardContent>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
-                <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                          Catégorie de revenus
-                        </TableCell>
-                        <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                          Montant reçu
-                        </TableCell>
-                        <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                          Date de réception
-                        </TableCell>
-                        <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                          Actions
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {incomes.map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.type}</TableCell>
-                          <TableCell align="center">{row.amount}€</TableCell>
-                          <TableCell align="center">{format(parseISO('2023-06-23T00:00:00.000Z'), 'dd-MM-yyyy')}</TableCell>
-                          <TableCell align="center">
-                            <Button variant="outlined" color="primary" onClick={() => onEdit(row.id)} sx={{ marginRight: '8px' }}>
-                              Modifier
-                            </Button>
-                            <Button variant="outlined" color="secondary" onClick={() => onDelete(row.id)}>
-                              Supprimer
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                  <DataTable rows={incomeData} columns={columns} />
               </Grid>
             </Grid>
           </CardContent>
@@ -119,7 +105,7 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
 };
 
 IncomeTable.propTypes = {
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 };
 
 export default IncomeTable;

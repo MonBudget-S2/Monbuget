@@ -20,10 +20,24 @@ const pages = {
     {
       id: 'ManageIncome',
       title: 'Gestion des revenus',
-      // type: 'collapse',
-      type: 'item',
+      type: 'collapse',
       url: '/income',
-      icon: icons.IconBusinessplan
+      icon: icons.IconMoneybag,
+
+      children: [
+        {
+          id: 'expense',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: '/income'
+        },
+        {
+          id: 'listincomehistory',
+          title: "Historique des revenus",
+          type: 'item',
+          url: '/listincomehistory'
+        },
+      ]
     },
     {
       id: 'ManageExpense',
@@ -72,12 +86,6 @@ const pages = {
           title: 'Créer un budget catégoriel',
           type: 'item',
           url: '/budgetallocation',
-        },
-        {
-          id: 'listCategoricalBudget',
-          title: 'Liste des budgets catégoriels',
-          type: 'item',
-          url: '/listcategoricalbudget',
         },
         {
           id: 'detailCategoricalBudgetModal',
