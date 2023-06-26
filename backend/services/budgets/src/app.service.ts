@@ -22,8 +22,10 @@ export class AppService {
         name: createBudgetDto.customCategory,
         userId: createBudgetDto.userId,
       };
-      const createdCategory = await this.createCategory(categoryDto);
+      const res = await this.createCategory(categoryDto);
+      const createdCategory = await res.newCategory;
       createBudgetDto.categoryId = createdCategory.id;
+      console.log('createBudgetDto', createBudgetDto);
       return await this.saveBudgetToDatabase(createBudgetDto);
     }
 
@@ -66,6 +68,11 @@ export class AppService {
   }
 
   private async createCategory(categoryDto): Promise<any> {
-    return await firstValueFrom(this.categoryService.send('', categoryDto));
+    return await firstValueFrom(
+      this.categoryService.send(
+        { service: 'category', action: 'create' },
+        categoryDto,
+      ),
+    );
   }
 }
