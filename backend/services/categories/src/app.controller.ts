@@ -17,6 +17,11 @@ export class AppController {
     return this.appService.getAll();
   }
 
+  @MessagePattern({ service: 'category', action: 'getAllByUser' })
+  getAllCategoriesByUser(userId: string) {
+    return this.appService.getAllByUser(userId);
+  }
+
   @MessagePattern({ service: 'category', action: 'getById' })
   getCategoryById(id: string) {
     return this.appService.getById(id);

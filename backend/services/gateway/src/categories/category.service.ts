@@ -5,11 +5,7 @@ import {
   Injectable,
   Logger,
 } from "@nestjs/common";
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from "@nestjs/microservices";
+import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateCategoryDto, UpdateCategoryDto } from "./category.request";
 import { Role } from "src/authentication/authentication.enum";

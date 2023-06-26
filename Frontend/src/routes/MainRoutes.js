@@ -9,7 +9,7 @@ import Income from 'views/pages/income/Income';
 import Expense from 'views/pages/expense/Expense';
 import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
-import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
+import BudgetAllocation from 'views/pages/categoricalBudget/AddCategoricalBudget';
 import Settings from 'views/pages/notifications_settings/Settings';
 import ListExpense from 'views/pages/expense/ListExpense';
 import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';

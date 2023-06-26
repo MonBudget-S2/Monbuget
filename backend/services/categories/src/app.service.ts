@@ -25,6 +25,10 @@ export class AppService {
     return this.categoryRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<Category[]> {
+    return this.categoryRepository.findBy({ userId });
+  }
+
   async update(
     id: string,
     updateCategoryDto: UpdateCategoryDto,
