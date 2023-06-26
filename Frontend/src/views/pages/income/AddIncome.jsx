@@ -66,12 +66,13 @@ const AddIncome = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAd
         }}
         onSubmit={handleSubmit}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, touched, values, isSubmitting }) => (
           <DialogForm
             title={isEditing ? 'Modifier un revenu' : 'Ajouter un revenu'}
             isOpen={isAddFormOpen}
             setIsOpen={setIsAddFormOpen}
             onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
           >
             <FormControl fullWidth error={Boolean(touched.incomeType && errors.incomeType)} sx={{ ...theme.typography.customInput }}>
               <InputLabel id="outlined-adornment-incomeType">Type de revenu</InputLabel>

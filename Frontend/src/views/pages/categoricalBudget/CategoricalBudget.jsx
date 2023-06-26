@@ -14,6 +14,7 @@ import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 import MostExpenseCategoryBudget from './MostExpenseCategoryBudget';
 import AddCategoricalBudget from './AddCategoricalBudget';
 import CustomAlert from 'ui-component/alert/CustomAlert';
+import ListCategoricalBudget from "./ListCategoricalBudget"
 
 // ==============================|| CATEGORICAL BUDGET PAGE ||============================== //
 
@@ -108,6 +109,9 @@ const CategoricalBudget = () => {
             {datas.length > 5 && <SeeAllButton to="/listcategoricalbudget" title="Tout afficher" sx={{ marginTop: '16px' }} />}
           </TableContainer>
         </MainCard>
+      </Grid>
+      <Grid item xs={12} md={6} container alignItems="center" justifyContent="center">
+        <ListCategoricalBudget />
       </Grid>
     </Grid>
   );

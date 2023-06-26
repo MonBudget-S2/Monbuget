@@ -9,6 +9,8 @@ export class AppController {
 
   @MessagePattern({ service: 'budget', action: 'create' })
   createBudget(budget: CreateBudgetDto) {
+    console.log('budget', budget);
+
     return this.appService.create(budget);
   }
 

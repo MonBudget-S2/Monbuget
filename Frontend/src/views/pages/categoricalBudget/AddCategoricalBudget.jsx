@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField,
-  FormHelperText,
-  Typography
-} from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField, FormHelperText, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import DialogForm from 'ui-component/modal/DialogForm';
@@ -31,13 +20,14 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
   };
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
-    const { budgetName, periodStart, periodEnd, totalAllocation } = values;
+    const { budgetName, periodStart, periodEnd, totalAllocation, customCategory, selectedCategory } = values;
     const dataBudget = {
       name: budgetName,
-      periodStart: periodStart,
-      periodEnd: periodEnd,
-      totalAllocation: totalAllocation,
-      userId: userId
+      startDate: periodStart,
+      endDate: periodEnd,
+      amount: totalAllocation,
+      categoryId: selectedCategory ? selectedCategory : null,
+      customCategory: customCategory ? customCategory : null
     };
 
     if (!isEditing) {
@@ -102,6 +92,7 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
             isOpen={isAddFormOpen}
             setIsOpen={setIsAddFormOpen}
             onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
           >
             <FormControl fullWidth error={Boolean(touched.budgetName && errors.budgetName)} sx={{ ...theme.typography.customInput }}>
               <InputLabel htmlFor="outlined-adornment-budgetName">Nom du budget</InputLabel>
@@ -261,10 +252,6 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-
-            <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-              Ajouter
-            </Button>
           </DialogForm>
         )}
       </Formik>

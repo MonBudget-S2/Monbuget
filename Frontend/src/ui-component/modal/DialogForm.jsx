@@ -6,8 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
-
-export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {}, children }) {
+export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {},isSubmitting =false, children }) {
   const handleSubmit = () => {
     onSubmit();
     // setIsOpen(false);
@@ -55,7 +54,7 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
           <Button onClick={handleSubmit} size="large" type="submit" variant="contained" color="secondary">
             Valider
           </Button>
-          <Button onClick={handleCancel}>Annuler</Button>
+          <Button onClick={handleCancel} disabled={isSubmitting}>Annuler</Button>
         </DialogActions>
       </Dialog>
     </Box>

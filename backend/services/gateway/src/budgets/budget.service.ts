@@ -24,7 +24,7 @@ export class BudgetService {
     return await firstValueFrom(
       this.budgetService.send(
         { service: "budget", action: "create" },
-        { budget: createBudgetDto }
+        createBudgetDto
       )
     );
   }
