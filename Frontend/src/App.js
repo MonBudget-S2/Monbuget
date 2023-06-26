@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import authService from 'service/authService';
 import Loader from 'ui-component/Loader';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 // ==============================|| APP ||============================== //
 
@@ -24,6 +25,7 @@ const App = () => {
   const [isCheckingToken, setIsCheckingToken] = useState(true);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const userConnected = useSelector(fetchUser);
 
@@ -52,6 +54,7 @@ const App = () => {
       })
       .catch((data) => {
         console.log(data);
+
         // setIsCheckingForToken(false);
         // dispatch(
         //   setState({
@@ -63,8 +66,8 @@ const App = () => {
         //     userInfo: data.userInfo,
         //   })
         // );
-
         setIsCheckingToken(false);
+        navigate('/login');
       });
   }, [dispatch]);
   return (
