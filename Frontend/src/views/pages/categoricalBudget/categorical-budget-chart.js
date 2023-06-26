@@ -17,7 +17,7 @@ const chartData = {
     },
     series: [5000, 3000, 8000, 6000], // Dépenses mensuelles par défaut
     type: 'donut',
-    height: 400,
+    height: 500,
 };
 
 export default chartData;

@@ -55,7 +55,7 @@ const IncomeHistory = ({ isLoading }) => {
                     </CardContent>
                     <Grid item>
                         {incomeHistoryData.length > 5 && (
-                            <SeeAllButton to="/historyincome" title="Tout afficher" />
+                            <SeeAllButton to="/listincomehistory" title="Tout afficher" />
                         )}
                     </Grid>
                 </MainCard>

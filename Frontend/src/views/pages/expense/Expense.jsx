@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 import ExpenseChart from './ExpenseChart';
@@ -13,6 +13,7 @@ import MostExpensive from './MostExpensive';
 import expenseByCategoryData from './expense-by-category';
 import chartData from './expense-chart-data';
 import expenseHistoryData from './expensive-history-data';
+import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 
 const Expense = () => {
   const [totalRealExpenses, setTotalRealExpenses] = useState(0);
@@ -24,14 +25,6 @@ const Expense = () => {
     const realExpenses = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
     setTotalRealExpenses(realExpenses);
   }, []);
-
-  const handleEdit = () => {
-    // Logique pour modifier une dépense
-  };
-
-  const handleDelete = () => {
-    // Logique pour supprimer une dépense
-  };
 
   return (
     <Grid container spacing={gridSpacing}>
@@ -54,6 +47,13 @@ const Expense = () => {
       <Grid item xs={12} md={6}>
         <MainCard sx={{ mx: 3 }}>
           <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+            <Grid item xs={12}>
+              <Grid container alignItems="center" justifyContent="space-between">
+                <Grid item>
+                  <Typography variant="h4">Derniers dépenses</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
             <Table>
               <TableHead>
                 <TableRow>
@@ -64,33 +64,24 @@ const Expense = () => {
                   <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
                     Date de réception
                   </TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                    Actions
-                  </TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
                 {expenseHistoryData.slice(-5).map((row, index) => (
                   <TableRow key={index}>
                     <TableCell>{row.expenseCategory}</TableCell>
-                    <TableCell align="center">-{row.amount}€</TableCell>
+                    <TableCell align="center" className={row.amount > 0 ? 'expense' : ''}>
+                          - {row.amount}€
+                      </TableCell>
                     <TableCell align="center">{new Date(row.date).toLocaleDateString('fr-FR')}</TableCell>
-                    <TableCell align="center">
-                      <Button variant="outlined" color="primary" onClick={() => handleEdit(row.id)} sx={{ marginRight: '8px' }}>
-                        Voir
-                      </Button>
-                      <Button variant="outlined" color="secondary" onClick={() => handleDelete(row.id)}>
-                        Supprimer
-                      </Button>
-                    </TableCell>
+
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
             {expenseHistoryData.length > 5 && (
-              <Button variant="outlined" color="primary" onClick={() => console.log('Afficher tout')}>
-                Afficher tout
-              </Button>
+              <SeeAllButton to="/listexpense" title="Tout afficher" />
             )}
           </TableContainer>
         </MainCard>
