@@ -18,6 +18,7 @@ import ListIncome from 'views/pages/income/ListIncome';
 import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
+import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -90,6 +91,10 @@ const MainRoutes = {
     {
       path: 'budgetEvenementiel',
       element: <BudgetEvent />
+    },
+    {
+      path: 'budgetEvenementielAll',
+      element: <BudgetEventIndex />
     },
     {
       path: 'listcategoricalbudget',
