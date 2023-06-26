@@ -12,8 +12,6 @@ import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
 import Settings from 'views/pages/notifications_settings/Settings';
 import ListExpense from 'views/pages/expense/ListExpense';
-import HistoryIncome from 'views/pages/income/HistoryIncome';
-import ListIncome from 'views/pages/income/ListIncome';
 import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 
