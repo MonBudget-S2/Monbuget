@@ -19,6 +19,7 @@ import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategorical
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
+import BudgetEventExpense from "../views/dashboard/BudgetEvent/BudgetEventExpense";
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -90,6 +91,10 @@ const MainRoutes = {
     {
       path:'AddBudgetEvenementiel',
       element: <NewBudgetEvenementiel />
+    },
+    {
+      path: 'BudgetEventExpense',
+      element: <BudgetEventExpense />
     },
     {
       path: 'budgetEvenementiel',

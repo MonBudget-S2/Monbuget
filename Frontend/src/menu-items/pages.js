@@ -140,15 +140,15 @@ const pages = {
        },
        {
          id:'AllEvenementielBudget',
-         title: 'Tous les EventBudget',
+         title: 'Liste des EventBudgets',
          type: 'item',
          url: '/budgetEvenementielAll',
        },
        {
          id:'AllEvenementielBudgetExpense',
-         title: 'Tous les EventBudget Dépense',
+         title: 'Liste des EventBudgets Dépenses',
          type: 'item',
-         url: '/budgetEvenementielAll',
+         url: '/BudgetEventExpense',
        }
      ]
     },
