@@ -14,7 +14,7 @@ const icons = {
 
 const pages = {
   id: 'pages',
-  // title: 'Vue d\'ensemble',
+  title: 'Gestion financière',
   type: 'group',
   children: [
     {
@@ -27,9 +27,9 @@ const pages = {
     },
     {
       id: 'ManageExpense',
-      title: 'Gestion des dépenses',
+      title: 'Gestion des Dépenses',
       type: 'collapse',
-      icon: icons.IconMoneybag,
+      icon: icons.IconBusinessplan,
 
       children: [
         {
@@ -43,13 +43,19 @@ const pages = {
           id: 'addExpense',
           title: 'Ajouter une dépense',
           type: 'item',
-          url: '/addexpense'
-        }
+          url: '/addexpense',
+        },
+        {
+          id: 'listExpense',
+          title: 'Liste des dépenses',
+          type: 'item',
+          url: '/listexpense',
+        },
       ]
     },
     {
       id: 'ManageCategoricalBudget',
-      title: 'Gestion des budgets catégoriels',
+      title: 'Gestion des Budgets catégoriels',
       type: 'collapse',
       icon: icons.IconBrightness,
 
@@ -65,8 +71,20 @@ const pages = {
           id: 'budgetAllocation',
           title: 'Créer un budget catégoriel',
           type: 'item',
-          url: '/budgetallocation'
-        }
+          url: '/budgetallocation',
+        },
+        {
+          id: 'listCategoricalBudget',
+          title: 'Liste des budgets catégoriels',
+          type: 'item',
+          url: '/listcategoricalbudget',
+        },
+        {
+          id: 'detailCategoricalBudgetModal',
+          title: 'Budget catégoriel détaillé',
+          type: 'item',
+          url: '/detailcategoricalbudget',
+        },
       ]
     },
     {

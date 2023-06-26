@@ -14,7 +14,7 @@ import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.dark,
+  background: `linear-gradient(45deg, ${theme.palette.error.dark}, ${theme.palette.primary[800]})`,
   color: '#fff',
   overflow: 'hidden',
   position: 'relative',
@@ -27,7 +27,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: theme.palette.primary[800],
+    background: theme.palette.error[800],
     borderRadius: '50%',
     zIndex: 1,
     top: -85,
@@ -176,7 +176,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          Total Dépenses {timeValue ? 'du mois' : 'de l\'année'}
+                          Total Dépenses {timeValue ? '/ mois' : '/ année'}
                         </Typography>
                       </Grid>
                     </Grid>
