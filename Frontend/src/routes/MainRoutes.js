@@ -19,10 +19,13 @@ import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategorical
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
+/*
+import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
+*/
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-
+const BudgetEventShow = Loadable(lazy(() => import('views/dashboard/BudgetEvent/BudgetEventShow')));
 // utilities routing
 // const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 // const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -91,6 +94,10 @@ const MainRoutes = {
     {
       path: 'budgetEvenementiel',
       element: <BudgetEvent />
+    },
+    {
+      path: 'budgetEvent/:id',
+      element: <BudgetEventShow />
     },
     {
       path: 'budgetEvenementielAll',
