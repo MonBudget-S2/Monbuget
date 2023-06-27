@@ -1,34 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardContent, Grid, Chip } from '@mui/material';
+import { CardContent, Grid, Chip, IconButton } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
-import { CheckCircle, HourglassEmpty, Block } from '@mui/icons-material';
+import { CheckCircle, HourglassEmpty, Block, Edit, Delete } from '@mui/icons-material';
 import DataTable from 'ui-component/table/DataTable';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import categoricalBudgetService from 'service/categoricalBudgetService';
+import { format, parseISO } from 'date-fns';
+import AddCategoricalBudget from './AddCategoricalBudget';
 
-const ListCategoricalBudget = ({ setNbCategoricalBudgetFinished, setNbCategoricalBudgetActive }) => {
+const ListCategoricalBudget = ({
+  setAlertMessage,
+  setIsBudgetChanged,
+  isAddFormOpen,
+  setIsAddFormOpen,
+  setNbCategoricalBudgetFinished,
+  setNbCategoricalBudgetActive
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [budgets, setBudgets] = useState({});
+  const [editingBudget, setEditingBudget] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await categoricalBudgetService.getBudgets();
 
       if (response.status === 200) {
-        console.log('test', response.data);
+        console.log('test 2', response.data);
         setBudgets(response.data);
-        // const finishedBudgets = response.data.filter((budget) => getDateStatus(budget.startDate, budget.endDate) === 'Terminé');
-
         setIsLoading(false);
       } else {
         console.log('Erreur lors de la récupération des revenus');
         setIsLoading(false);
       }
     };
+    console.log('test', budgets);
     fetchData();
   }, []);
 
@@ -83,6 +92,28 @@ const ListCategoricalBudget = ({ setNbCategoricalBudgetFinished, setNbCategorica
     }
   };
 
+  const handleEdit = (budgetId) => {
+    const budget = budgets.find((budget) => budget.id === budgetId);
+    budget.startDate = format(parseISO(budget.startDate), 'yyyy-MM-dd');
+    budget.endDate = format(parseISO(budget.endDate), 'yyyy-MM-dd');
+    setEditingBudget(budget); // Set the editing income data
+    setIsAddFormOpen(true); // Open the form
+
+    // Handle edit action
+    console.log('Edit budget with ID:', budgetId);
+  };
+
+  const handleDelete = async (budgetId) => {
+    const response = await categoricalBudgetService.deleteBudget(budgetId);
+    if (response.status === 200) {
+      console.log('Budget deleted with ID:', budgetId);
+      setAlertMessage({ open: true, message: 'Budget supprimé avec succès', type: 'success' });
+      setIsBudgetChanged(true);
+    } else {
+      setAlertMessage({ open: true, message: 'Erreur lors de la suppression du budget', type: 'error' });
+    }
+  };
+
   const columns = [
     { field: 'name', headerName: 'Nom du budget', width: 200 },
     { field: 'amount', headerName: 'Montant alloué', width: 130 },
@@ -106,6 +137,21 @@ const ListCategoricalBudget = ({ setNbCategoricalBudgetFinished, setNbCategorica
 
         return <Chip variant="outlined" label={status} color={color} size="small" icon={icon} />;
       }
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 120,
+      renderCell: (params) => (
+        <>
+          <IconButton onClick={() => handleEdit(params.row.id)}>
+            <Edit />
+          </IconButton>
+          <IconButton onClick={() => handleDelete(params.row.id)}>
+            <Delete />
+          </IconButton>
+        </>
+      )
     }
   ];
 
@@ -115,6 +161,15 @@ const ListCategoricalBudget = ({ setNbCategoricalBudgetFinished, setNbCategorica
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
+          {isAddFormOpen && (
+            <AddCategoricalBudget
+              setAlertMessage={setAlertMessage}
+              setIsBudgetChanged={setIsBudgetChanged}
+              isAddFormOpen={isAddFormOpen}
+              setIsAddFormOpen={setIsAddFormOpen}
+              budget={editingBudget}
+            />
+          )}
           <CardContent>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>

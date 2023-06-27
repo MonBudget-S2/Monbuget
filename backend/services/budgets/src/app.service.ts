@@ -6,7 +6,7 @@ import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-interface BudgetResponse {
+export interface BudgetResponse {
   id: string;
   name: string;
   amount: number;
@@ -139,13 +139,39 @@ export class AppService {
     id: string,
     updateBudgetDto: UpdateBudgetDto,
   ): Promise<Budget | null> {
-    const result = await this.budgetRepository.update(id, updateBudgetDto);
-
-    if (result.affected === 0) {
-      return null; // Budget with the given ID not found
+    const budget = await this.budgetRepository.findOneByOrFail({ id });
+    console.log('updateDto', updateBudgetDto);
+    if (updateBudgetDto.categoryId) {
+      return await this.updateBudgetInDatabase(id, updateBudgetDto);
+    } else if (updateBudgetDto.customCategory) {
+      const categoryDto = {
+        name: updateBudgetDto.customCategory,
+        userId: updateBudgetDto.userId,
+      };
+      let createdCategory;
+      try {
+        const res = await this.createCategory(categoryDto);
+        createdCategory = await res.newCategory;
+        updateBudgetDto.categoryId = createdCategory.id;
+        console.log('updateBudgetDto', updateBudgetDto);
+        return await this.updateBudgetInDatabase(id, updateBudgetDto);
+      } catch (error) {
+        // Delete the created category if budget update fails
+        if (
+          error.response &&
+          error.response.message === 'Budget update failed'
+        ) {
+          await this.deleteCategory(createdCategory.id);
+        }
+        throw error; // Rethrow the error to be handled by the caller
+      }
     }
 
-    return this.budgetRepository.findOneBy({ id });
+    const updatedBudget = await this.budgetRepository.save({
+      ...budget,
+      ...updateBudgetDto,
+    });
+    return updatedBudget;
   }
 
   async delete(id: string): Promise<boolean> {
@@ -158,6 +184,17 @@ export class AppService {
   ): Promise<Budget> {
     const { customCategory, ...budgetDto } = createBudgetDto;
     return this.budgetRepository.save(budgetDto);
+  }
+  private async updateBudgetInDatabase(
+    id: string,
+    updateBudgetDto: UpdateBudgetDto,
+  ): Promise<Budget | null> {
+    const updatedBudget = await this.budgetRepository.save({
+      ...updateBudgetDto,
+      id,
+    });
+    console.log('updatedBudget', updatedBudget);
+    return updatedBudget;
   }
 
   private async createCategory(categoryDto): Promise<any> {

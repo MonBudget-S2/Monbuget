@@ -41,4 +41,7 @@ export class UpdateBudgetDto {
 
   @IsString()
   categoryId?: string;
+
+  @IsString()
+  customCategory?: string;
 }
