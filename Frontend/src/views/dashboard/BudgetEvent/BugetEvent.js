@@ -4,16 +4,33 @@ import MainCard from "../../../ui-component/cards/MainCard";
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import datas from "./BudgetEventData";
 import SeeAllButton from "../../../ui-component/buttons/SeeAllButton";
+import chartData from "views/dashboard/BudgetEvent/BudgetEventChartDate";
+import React, {useEffect, useState} from "react";
+import BudgetEventChart from "views/dashboard/BudgetEvent/BudgetEventChart";
 const BugetEvent = () =>{
     const redirecter = (id)=>{
         console.log(id)
     }
+    const [isLoading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     return(
         <Grid container>
             <h1>Budget event</h1>
             <Grid item xs={12}>
                 <CreateButton to="/AddBudgetEvenementiel" title="Ajouter un budget Evenementiel" />
+            </Grid>
+            <Grid item xs={12} md={12}>
+                <BudgetEventChart
+                    isLoading={isLoading}
+                    options={chartData.options}
+                    series={chartData.series}
+                    type={chartData.type}
+                    height={chartData.height}
+                />
             </Grid>
             <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
                 <MainCard>
