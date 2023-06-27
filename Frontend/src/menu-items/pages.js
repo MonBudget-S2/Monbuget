@@ -1,12 +1,5 @@
 // assets
-import {
-  IconKey,
-  IconMoneybag,
-  IconBusinessplan,
-  IconBrightness,
-  IconSettings,
-  IconOlympics
-} from '@tabler/icons';
+import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -29,7 +22,7 @@ const pages = {
       id: 'ManageIncome',
       title: 'Gestion des revenus',
       type: 'collapse',
-      url: '/income',
+      url: 'income',
       icon: icons.IconMoneybag,
 
       children: [
@@ -37,14 +30,14 @@ const pages = {
           id: 'expense',
           title: "Vue d'ensemble",
           type: 'item',
-          url: '/income'
+          url: 'income'
         },
         {
           id: 'listincomehistory',
-          title: "Historique des revenus",
+          title: 'Historique des revenus',
           type: 'item',
-          url: '/listincomehistory'
-        },
+          url: 'listincomehistory'
+        }
       ]
     },
     {
@@ -58,21 +51,21 @@ const pages = {
           id: 'expense',
           title: "Vue d'ensemble",
           type: 'item',
-          url: '/expense'
+          url: 'expense'
           // target: false -> ouvre nouvel onglet
         },
         {
           id: 'addExpense',
           title: 'Ajouter une dépense',
           type: 'item',
-          url: '/addexpense',
+          url: 'addexpense'
         },
         {
           id: 'listExpense',
           title: 'Liste des dépenses',
           type: 'item',
-          url: '/listexpense',
-        },
+          url: 'listexpense'
+        }
       ]
     },
     {
@@ -86,21 +79,21 @@ const pages = {
           id: 'categoricalBudget',
           title: "Vue d'ensemble",
           type: 'item',
-          url: '/categoricalbudget'
+          url: 'categoricalbudget'
           // target: false -> ouvre nouvel onglet
         },
         {
           id: 'budgetAllocation',
           title: 'Créer un budget catégoriel',
           type: 'item',
-          url: '/budgetallocation',
+          url: 'budgetallocation'
         },
         {
           id: 'detailCategoricalBudgetModal',
           title: 'Budget catégoriel détaillé',
           type: 'item',
-          url: '/detailcategoricalbudget',
-        },
+          url: 'detailcategoricalbudget'
+        }
       ]
     },
     {
@@ -111,27 +104,27 @@ const pages = {
       children: [
         {
           id: 'EvenementielBudget',
-          title: 'Vue d\'ensemble',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/budgetEvenementiel'
+          url: 'budgetEvenementiel'
         },
         {
           id: 'AddEvenementielBudget',
           title: 'Ajouter une EventBudget',
           type: 'item',
-          url: '/AddBudgetEvenementiel',
+          url: 'AddBudgetEvenementiel'
         },
         {
           id: 'AllEvenementielBudget',
           title: 'Liste des EventBudgets',
           type: 'item',
-          url: '/budgetEvenementielAll',
+          url: 'budgetEvenementielAll'
         },
         {
           id: 'AllEvenementielBudgetExpense',
           title: 'Liste des EventBudgets Dépenses',
           type: 'item',
-          url: '/BudgetEventExpense',
+          url: 'BudgetEventExpense'
         }
       ]
     },
@@ -139,7 +132,7 @@ const pages = {
       id: 'settings',
       title: 'Paramètres',
       type: 'item',
-      url: '/settings',
+      url: 'settings',
       icon: icons.IconSettings,
       breadcrumbs: false
     }

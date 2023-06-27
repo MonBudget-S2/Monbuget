@@ -15,9 +15,10 @@ import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate
 import ListExpense from 'views/pages/expense/ListExpense';
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
-import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
-import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
-import BudgetEventExpense from "../views/dashboard/BudgetEvent/BudgetEventExpense";
+import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
+import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex';
+import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpense';
+import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -38,7 +39,7 @@ const BudgetEventShow = Loadable(lazy(() => import('views/dashboard/BudgetEvent/
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: '/',
+  path: 'dashboard',
   element: (
     <PrivateRoutes />
     // <PrivateRoutes>
@@ -47,7 +48,7 @@ const MainRoutes = {
   ),
   children: [
     {
-      path: 'dashboard',
+      path: '',
       element: <DashboardDefault />
     },
     {
@@ -83,7 +84,7 @@ const MainRoutes = {
       element: <BudgetAllocation />
     },
     {
-      path:'AddBudgetEvenementiel',
+      path: 'AddBudgetEvenementiel',
       element: <NewBudgetEvenementiel />
     },
     {

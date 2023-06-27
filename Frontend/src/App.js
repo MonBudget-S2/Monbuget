@@ -17,6 +17,8 @@ import authService from 'service/authService';
 import Loader from 'ui-component/Loader';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { authenticateUser } from 'store/authSlice';
 
 // ==============================|| APP ||============================== //
 
@@ -39,7 +41,7 @@ const App = () => {
         axios.defaults.headers.delete['Authorization'] = `Bearer ${localStorage.getItem('token') || ''}`;
 
         dispatch(
-          setState({
+          authenticateUser({
             isConnected: data.isConnected,
             id: data.id,
             token: localStorage.getItem('token') || '',
@@ -53,21 +55,13 @@ const App = () => {
         setIsCheckingToken(false);
       })
       .catch((data) => {
-        console.log(data);
-
-        // setIsCheckingForToken(false);
-        // dispatch(
-        //   setState({
-        //     isConnected: data.isConnected,
-        //     id: data.id,
-        //     accessToken: localStorage.getItem("TOKEN") || "",
-        //     role: data.role,
-        //     isAdmin: data.isAdmin,
-        //     userInfo: data.userInfo,
-        //   })
-        // );
         setIsCheckingToken(false);
-        navigate('/login');
+        if (window.location.pathname.startsWith('/dashboard')) {
+          localStorage.removeItem('token');
+          console.log('error', data);
+
+          navigate('/login');
+        }
       });
   }, [dispatch]);
   return (
