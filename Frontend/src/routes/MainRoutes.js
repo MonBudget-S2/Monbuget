@@ -5,18 +5,16 @@ import { lazy } from 'react';
 import Loadable from 'ui-component/Loadable';
 import PrivateRoutes from './PrivateRoutes';
 import Income from 'views/pages/income/Income';
-import AddIncome from 'views/pages/income/AddIncome';
+// import AddIncome from 'views/pages/income/AddIncome';
 import Expense from 'views/pages/expense/Expense';
 import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
-import BudgetAllocation from 'views/pages/categoricalBudget/BudgetAllocation';
+import BudgetAllocation from 'views/pages/categoricalBudget/AddCategoricalBudget';
 import Settings from 'views/pages/notifications_settings/Settings';
 import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
 import ListExpense from 'views/pages/expense/ListExpense';
-import HistoryIncome from 'views/pages/income/HistoryIncome';
-import ListIncome from 'views/pages/income/ListIncome';
-import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
+import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
 import BudgetEventExpense from "../views/dashboard/BudgetEvent/BudgetEventExpense";
@@ -57,17 +55,13 @@ const MainRoutes = {
       element: <Income />
     },
     {
-      path: 'listincome',
-      element: <ListIncome />
+      path: 'listincomehistory',
+      element: <ListIncomeHistory />
     },
-    {
-      path: 'historyincome',
-      element: <HistoryIncome />
-    },
-    {
-      path: 'addincome',
-      element: <AddIncome />
-    },
+    // {
+    //   path: 'addincome',
+    //   element: <AddIncome />
+    // },
     {
       path: 'expense',
       element: <Expense />
@@ -131,7 +125,6 @@ const MainRoutes = {
     //   ]
     // }
   ]
-  
 };
 
 export default MainRoutes;

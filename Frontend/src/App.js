@@ -12,16 +12,20 @@ import themes from 'themes';
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
 import { useEffect } from 'react';
-import { setIsCheckingForToken } from 'store/authSlice';
+// import { setIsCheckingForToken } from 'store/authSlice';
 import authService from 'service/authService';
+import Loader from 'ui-component/Loader';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 // ==============================|| APP ||============================== //
 
 const App = () => {
   const customization = useSelector((state) => state.customization);
-  // const [checkingToken, setCheckingToken] = useState(true);
+  const [isCheckingToken, setIsCheckingToken] = useState(true);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const userConnected = useSelector(fetchUser);
 
@@ -44,13 +48,14 @@ const App = () => {
             userInfo: data.userInfo
           })
         );
-        setIsCheckingForToken(false);
+        // setIsCheckingForToken(false);
 
-        // setCheckingToken(false);
+        setIsCheckingToken(false);
       })
       .catch((data) => {
         console.log(data);
-        setIsCheckingForToken(false);
+
+        // setIsCheckingForToken(false);
         // dispatch(
         //   setState({
         //     isConnected: data.isConnected,
@@ -61,17 +66,15 @@ const App = () => {
         //     userInfo: data.userInfo,
         //   })
         // );
-
-        // setCheckingToken(false);
+        setIsCheckingToken(false);
+        navigate('/login');
       });
   }, [dispatch]);
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
-        <NavigationScroll>
-          <Routes />
-        </NavigationScroll>
+        <NavigationScroll>{isCheckingToken ? <Loader /> : <Routes />}</NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>
   );

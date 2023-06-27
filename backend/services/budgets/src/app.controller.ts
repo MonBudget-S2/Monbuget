@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
 
 @Controller()
@@ -9,6 +9,8 @@ export class AppController {
 
   @MessagePattern({ service: 'budget', action: 'create' })
   createBudget(budget: CreateBudgetDto) {
+    console.log('budget', budget);
+
     return this.appService.create(budget);
   }
 
@@ -23,7 +25,8 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'budget', action: 'update' })
-  updateBudget({ id, budget }: { id: string, budget: UpdateBudgetDto }) {
+  updateBudget(@Payload() payload: { id: string; budget: UpdateBudgetDto }) {
+    const { id, budget } = payload;
     return this.appService.update(id, budget);
   }
 

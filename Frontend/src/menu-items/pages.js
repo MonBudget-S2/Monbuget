@@ -1,11 +1,12 @@
 // assets
-import { IconKey, 
-  IconMoneybag, 
-  IconBusinessplan, 
+import {
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
   IconBrightness,
   IconSettings,
   IconOlympics
- } from '@tabler/icons';
+} from '@tabler/icons';
 
 // constant
 const icons = {
@@ -26,35 +27,23 @@ const pages = {
   children: [
     {
       id: 'ManageIncome',
-      title: 'Gestion des Revenus',
+      title: 'Gestion des revenus',
       type: 'collapse',
+      url: '/income',
       icon: icons.IconMoneybag,
 
       children: [
         {
-          id: 'income',
-          title: 'Objectif de revenu',
+          id: 'expense',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/income',
-          // target: false -> ouvre nouvel onglet
+          url: '/income'
         },
         {
-          id: 'addIncome',
-          title: 'Ajouter un revenu',
+          id: 'listincomehistory',
+          title: "Historique des revenus",
           type: 'item',
-          url: '/addincome',
-        },
-        {
-          id: 'listIncome',
-          title: 'Liste des revenus',
-          type: 'item',
-          url: '/listincome',
-        },
-        {
-          id: 'historyIncome',
-          title: 'Historique des revenus',
-          type: 'item',
-          url: '/historyincome',
+          url: '/listincomehistory'
         },
       ]
     },
@@ -67,9 +56,9 @@ const pages = {
       children: [
         {
           id: 'expense',
-          title: 'Vue d\'ensemble',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/expense',
+          url: '/expense'
           // target: false -> ouvre nouvel onglet
         },
         {
@@ -95,9 +84,9 @@ const pages = {
       children: [
         {
           id: 'categoricalBudget',
-          title: 'Vue d\'ensemble',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/categoricalbudget',
+          url: '/categoricalbudget'
           // target: false -> ouvre nouvel onglet
         },
         {
@@ -105,12 +94,6 @@ const pages = {
           title: 'Créer un budget catégoriel',
           type: 'item',
           url: '/budgetallocation',
-        },
-        {
-          id: 'listCategoricalBudget',
-          title: 'Liste des budgets catégoriels',
-          type: 'item',
-          url: '/listcategoricalbudget',
         },
         {
           id: 'detailCategoricalBudgetModal',
@@ -121,36 +104,36 @@ const pages = {
       ]
     },
     {
-     id:'ManageEvenementielBudget',
-     title: 'Gestion des Budgets Event',
-     type:'collapse',
-     icon: icons.IconOlympics,
-     children: [
-       {
-         id:'EvenementielBudget',
-         title: 'Vue d\'ensemble',
-         type: 'item',
-         url: '/budgetEvenementiel'
-       },
-       {
-         id:'AddEvenementielBudget',
-         title: 'Ajouter une EventBudget',
-         type: 'item',
-         url: '/AddBudgetEvenementiel',
-       },
-       {
-         id:'AllEvenementielBudget',
-         title: 'Liste des EventBudgets',
-         type: 'item',
-         url: '/budgetEvenementielAll',
-       },
-       {
-         id:'AllEvenementielBudgetExpense',
-         title: 'Liste des EventBudgets Dépenses',
-         type: 'item',
-         url: '/BudgetEventExpense',
-       }
-     ]
+      id: 'ManageEvenementielBudget',
+      title: 'Gestion des Budgets Event',
+      type: 'collapse',
+      icon: icons.IconOlympics,
+      children: [
+        {
+          id: 'EvenementielBudget',
+          title: 'Vue d\'ensemble',
+          type: 'item',
+          url: '/budgetEvenementiel'
+        },
+        {
+          id: 'AddEvenementielBudget',
+          title: 'Ajouter une EventBudget',
+          type: 'item',
+          url: '/AddBudgetEvenementiel',
+        },
+        {
+          id: 'AllEvenementielBudget',
+          title: 'Liste des EventBudgets',
+          type: 'item',
+          url: '/budgetEvenementielAll',
+        },
+        {
+          id: 'AllEvenementielBudgetExpense',
+          title: 'Liste des EventBudgets Dépenses',
+          type: 'item',
+          url: '/BudgetEventExpense',
+        }
+      ]
     },
     {
       id: 'settings',

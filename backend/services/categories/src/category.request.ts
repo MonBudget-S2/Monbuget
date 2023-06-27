@@ -5,7 +5,7 @@ export class CreateCategoryDto {
   name: string;
 
   @IsString()
-  userId: string;
+  userId?: string;
 }
 
 export class UpdateCategoryDto {

@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
-  Dialog,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -17,7 +15,6 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Slide,
   Typography,
   useMediaQuery
 } from '@mui/material';
@@ -35,13 +32,18 @@ import { strengthColor, strengthIndicator } from 'utils/password-strength';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import authService from 'service/authService';
+import CustomAlert from 'ui-component/alert/CustomAlert';
 
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const AuthRegister = ({ ...others }) => {
   const theme = useTheme();
-  const [successAlertOpen, setSuccessAlertOpen] = useState(false);
-  const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+
+  const [alertMessage, setAlertMessage] = useState({
+    isOpen: false,
+    message: '',
+    type: ''
+  });
 
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
   const [showPassword, setShowPassword] = useState(false);
@@ -67,8 +69,6 @@ const AuthRegister = ({ ...others }) => {
   };
 
   const handleRegister = async (values, { setErrors, setStatus, setSubmitting }) => {
-    console.log('Registering...', values);
-
     const { fname, lname, username, email, password } = values;
     const response = await authService.register({ firstname: fname, lastname: lname, username, email, password });
     if (response.status === 201) {
@@ -76,7 +76,11 @@ const AuthRegister = ({ ...others }) => {
       console.log(response.data);
       setStatus({ success: true });
       setSubmitting(false);
-      setSuccessAlertOpen(true);
+      setAlertMessage({
+        isOpen: true,
+        message: 'Registration successful! You can now log in.',
+        type: 'success'
+      });
       navigate('/login');
     } else {
       console.log('Register failed');
@@ -85,11 +89,12 @@ const AuthRegister = ({ ...others }) => {
       setErrors({ submit: response.data.message });
       setSubmitting(false);
       setErrorAlertOpen(true);
+      setAlertMessage({
+        isOpen: true,
+        message: 'Registration failed. Please try again.',
+        type: 'error'
+      });
     }
-  };
-  const handleCloseAlerts = () => {
-    setSuccessAlertOpen(false);
-    setErrorAlertOpen(false);
   };
 
   // useEffect(() => {
@@ -98,29 +103,7 @@ const AuthRegister = ({ ...others }) => {
 
   return (
     <>
-      <Dialog
-        open={successAlertOpen || errorAlertOpen}
-        onClose={handleCloseAlerts}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        TransitionComponent={Slide}
-        TransitionProps={{
-          direction: 'down'
-        }}
-        sx={{ textAlign: 'center', position: 'absolute', top: '30px' }}
-      >
-        {successAlertOpen && (
-          <Alert severity="success" onClose={handleCloseAlerts}>
-            Registration successful! You can now log in.
-          </Alert>
-        )}
-
-        {errorAlertOpen && (
-          <Alert severity="error" onClose={handleCloseAlerts}>
-            Registration failed. Please try again.
-          </Alert>
-        )}
-      </Dialog>
+      <CustomAlert open={alertMessage.isOpen} message={alertMessage.message} type={alertMessage.type} />
 
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
