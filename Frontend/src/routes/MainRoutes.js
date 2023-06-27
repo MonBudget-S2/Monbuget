@@ -11,13 +11,20 @@ import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/AddCategoricalBudget';
 import Settings from 'views/pages/notifications_settings/Settings';
+import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
 import ListExpense from 'views/pages/expense/ListExpense';
 import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
+import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent'
+import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex'
+import BudgetEventExpense from "../views/dashboard/BudgetEvent/BudgetEventExpense";
+/*
+import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
+*/
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
-
+const BudgetEventShow = Loadable(lazy(() => import('views/dashboard/BudgetEvent/BudgetEventShow')));
 // utilities routing
 // const UtilsTypography = Loadable(lazy(() => import('views/utilities/Typography')));
 // const UtilsColor = Loadable(lazy(() => import('views/utilities/Color')));
@@ -39,10 +46,6 @@ const MainRoutes = {
     // </PrivateRoutes>
   ),
   children: [
-    {
-      path: '/',
-      element: <DashboardDefault />
-    },
     {
       path: 'dashboard',
       element: <DashboardDefault />
@@ -78,6 +81,30 @@ const MainRoutes = {
     {
       path: 'budgetallocation',
       element: <BudgetAllocation />
+    },
+    {
+      path:'AddBudgetEvenementiel',
+      element: <NewBudgetEvenementiel />
+    },
+    {
+      path: 'BudgetEventExpense',
+      element: <BudgetEventExpense />
+    },
+    {
+      path: 'budgetEvenementiel',
+      element: <BudgetEvent />
+    },
+    {
+      path: 'budgetEvent/:id',
+      element: <BudgetEventShow />
+    },
+    {
+      path: 'budgetEvenementielAll',
+      element: <BudgetEventIndex />
+    },
+    {
+      path: 'listcategoricalbudget',
+      element: <ListCategoricalBudget />
     },
     {
       path: 'detailcategoricalbudget',

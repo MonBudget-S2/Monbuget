@@ -1,5 +1,12 @@
 // assets
-import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings } from '@tabler/icons';
+import {
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
+  IconBrightness,
+  IconSettings,
+  IconOlympics
+} from '@tabler/icons';
 
 // constant
 const icons = {
@@ -7,7 +14,8 @@ const icons = {
   IconMoneybag,
   IconBusinessplan,
   IconBrightness,
-  IconSettings
+  IconSettings,
+  IconOlympics
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -93,6 +101,38 @@ const pages = {
           type: 'item',
           url: '/detailcategoricalbudget',
         },
+      ]
+    },
+    {
+      id: 'ManageEvenementielBudget',
+      title: 'Gestion des Budgets Event',
+      type: 'collapse',
+      icon: icons.IconOlympics,
+      children: [
+        {
+          id: 'EvenementielBudget',
+          title: 'Vue d\'ensemble',
+          type: 'item',
+          url: '/budgetEvenementiel'
+        },
+        {
+          id: 'AddEvenementielBudget',
+          title: 'Ajouter une EventBudget',
+          type: 'item',
+          url: '/AddBudgetEvenementiel',
+        },
+        {
+          id: 'AllEvenementielBudget',
+          title: 'Liste des EventBudgets',
+          type: 'item',
+          url: '/budgetEvenementielAll',
+        },
+        {
+          id: 'AllEvenementielBudgetExpense',
+          title: 'Liste des EventBudgets Dépenses',
+          type: 'item',
+          url: '/BudgetEventExpense',
+        }
       ]
     },
     {
