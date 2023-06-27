@@ -1,51 +1,74 @@
-# [React Router Example](https://reacttraining.com/react-router/web/guides/quick-start)
+# Getting Started with Create React App
 
-<p>
-  <!-- iOS -->
-  <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-4630EB.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
-  <!-- Android -->
-  <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-4630EB.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
-  <!-- Web -->
-  <img alt="Supports Expo Web" longdesc="Supports Expo Web" src="https://img.shields.io/badge/web-4630EB.svg?style=flat-square&logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff" />
-</p>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-React Router is a universal routing solution that you can use with Expo!
-This demo shows you how to setup your universal application to switch between web and native routers.
+## Available Scripts
 
-### ⚽️ Running in the browser
+In the project directory, you can run:
 
-- Create Expo project `expo init`
-- Install the plugin: `yarn add react-router-dom react-router-native` or `npm install --save react-router-dom react-router-native`
-- Create platform specific files to switch between web and native:
-  - [`react-router.js`](https://github.com/expo/examples/blob/master/with-react-router/react-router.js) for web.
-  - [`react-router.native.js`](https://github.com/expo/examples/blob/master/with-react-router/react-router.native.js) for iOS and Android.
-- Now you can use these files to create your universal routes! [Basic Example](App.js)
-  - [Deployed example](https://5e20d26f3f285b0766a74be2--stupefied-perlman-ca9443.netlify.com/about)
+### `npm install`
 
-![react-router-native-expo-web-example](https://i.imgur.com/XSCAX19.png "React Router native expo web example")
-![react-router-dom-expo-web-example](https://i.imgur.com/xl1yYmm.png "React Router dom expo web example")
+Install packages
 
-### Deploying to Netlify
+### `npm start`
 
-You may find get the following error when visiting URLs other than '/' on when your single page application (SPA) is deployed to Netlify:
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-![netlify-error](https://i.imgur.com/BKFNGzH.png "Netlify: Page Not Found error")
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-> **Page Not Found**
-> Looks like you've followed a broken link or entered a URL that doesn't exist on this site.
+### `npm test`
 
-The problem is that `react-router` creates the routes on the client side so when you visit pages other than the root (ex: `coolproject.netlify.com/about`), Netlify won't know how to redirect the route.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Luckily the solution for this is simple! We can use the [redirects API](https://www.netlify.com/docs/redirects/) provided by Netlify.
+### `npm run build`
 
-- Create a [`web/_redirects`](web/_redirects) to redirect all routes to the `index.html`:
-  ```
-  /*    /index.html   200
-  ```
-  - Creating files in the `web/` folder will copy them to the build folder (`web-build/`). Think of this like `public/` in Create React App projects.
-- Now simply rebuild (`expo build:web`) and deploy your web app (`netlify deploy --dir web-build`)!
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-#### Example
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- ❌ Example deploying [**without** \_redirects](https://5e20d1844d610eee07f5c10e--stupefied-perlman-ca9443.netlify.com/about)
-- ✅ Example deploying [**with** \_redirects](https://5e20d26f3f285b0766a74be2--stupefied-perlman-ca9443.netlify.com/about)
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
