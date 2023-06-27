@@ -18,7 +18,7 @@ const BugetEvent = () =>{
     }, []);
 
     return(
-        <Grid container>
+        <Grid container alignItems="flex-start" spacing={3}>
             <h1>Budget event</h1>
             <Grid item xs={12}>
                 <CreateButton to="/AddBudgetEvenementiel" title="Ajouter un budget Evenementiel" />
@@ -35,6 +35,7 @@ const BugetEvent = () =>{
             <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
                 <MainCard>
                     <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+                        <h1>My BudgetEvent</h1>
                         <Table>
                             <TableHead>
                                 <TableRow>

@@ -9,10 +9,12 @@ import {
     TableCell,
     TableContainer,
     TableHead,
-    TableRow
+    TableRow,
 } from "@mui/material";
 import {gridSpacing} from "../../../store/constant";
 import Data from "views/dashboard/BudgetEvent/BudgetEventData";
+import { Link } from 'react-router-dom';
+
 const BugetEventIndex = () =>{
     const redirecter = (id)=>{
         console.log(id)
@@ -42,7 +44,7 @@ const BugetEventIndex = () =>{
                                             <TableCell align="center">{row.startDate}</TableCell>
                                             <TableCell align="center">{row.endDate}</TableCell>
                                             <TableCell align="center">
-                                                <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
+                                                <Button component={Link} variant="outlined" color="primary" to={'/budgetEvent/'+row.id} sx={{ marginRight: '8px' }}>
                                                     Voir
                                                 </Button>
                                                 <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
