@@ -6,6 +6,16 @@ import { CreateBudgetDto, UpdateBudgetDto } from './budget.request';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
+interface BudgetResponse {
+  id: string;
+  name: string;
+  amount: number;
+  startDate: Date;
+  endDate: Date;
+  userId: string;
+  category: []; // Include the category object
+}
+
 @Injectable()
 export class AppService {
   constructor(
@@ -46,17 +56,83 @@ export class AppService {
     return { message: 'Budget created successfully' };
   }
 
-  async getById(id: string): Promise<Budget | null> {
-    return this.budgetRepository.findOneBy({ id });
+  async getById(id: string): Promise<BudgetResponse | null> {
+    const budget = await this.budgetRepository.findOneBy({ id });
+    if (!budget) {
+      return null; // Budget with the given ID not found
+    }
+    const category = await firstValueFrom(
+      this.categoryService.send(
+        { service: 'category', action: 'getById' },
+        budget.categoryId,
+      ),
+    );
+    const budgetResponse: BudgetResponse = {
+      id: budget.id,
+      name: budget.name,
+      amount: budget.amount,
+      startDate: budget.startDate,
+      endDate: budget.endDate,
+      userId: budget.userId,
+      category: category,
+    };
+    return budgetResponse;
   }
 
-  async getAll(): Promise<Budget[]> {
-    return this.budgetRepository.find();
+  async getAll(): Promise<BudgetResponse[]> {
+    const budgets = await this.budgetRepository.find();
+    const budgetResponses: BudgetResponse[] = [];
+
+    for (const budget of budgets) {
+      const category = await firstValueFrom(
+        this.categoryService.send(
+          { service: 'category', action: 'getById' },
+          budget.categoryId,
+        ),
+      );
+
+      const budgetResponse: BudgetResponse = {
+        id: budget.id,
+        name: budget.name,
+        amount: budget.amount,
+        startDate: budget.startDate,
+        endDate: budget.endDate,
+        userId: budget.userId,
+        category: category, // Assign the category object
+      };
+
+      budgetResponses.push(budgetResponse);
+    }
+
+    return budgetResponses;
   }
 
-  async getAllByUser(userId: string): Promise<Budget[]> {
+  async getAllByUser(userId: string): Promise<BudgetResponse[]> {
     const budgets = await this.budgetRepository.find({ where: { userId } });
-    return budgets;
+    const budgetResponses: BudgetResponse[] = [];
+
+    for (const budget of budgets) {
+      const category = await firstValueFrom(
+        this.categoryService.send(
+          { service: 'category', action: 'getById' },
+          budget.categoryId,
+        ),
+      );
+
+      const budgetResponse: BudgetResponse = {
+        id: budget.id,
+        name: budget.name,
+        amount: budget.amount,
+        startDate: budget.startDate,
+        endDate: budget.endDate,
+        userId: budget.userId,
+        category: category, // Assign the category object
+      };
+
+      budgetResponses.push(budgetResponse);
+    }
+    console.log('budgetResponses', budgetResponses);
+    return budgetResponses;
   }
 
   async update(

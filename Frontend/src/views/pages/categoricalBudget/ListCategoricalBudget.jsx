@@ -88,7 +88,12 @@ const ListCategoricalBudget = ({ setNbCategoricalBudgetFinished, setNbCategorica
     { field: 'amount', headerName: 'Montant alloué', width: 130 },
     { field: 'startDate', headerName: 'Débute le', width: 180 },
     { field: 'endDate', headerName: 'Se termine le', width: 180 },
-    { field: 'categoryId', headerName: 'Catégorie', width: 200 },
+    {
+      field: 'category',
+      headerName: 'Catégorie',
+      width: 200,
+      renderCell: (params) => params.row.category?.name || 'N/A'
+    },
     { field: 'tracking', headerName: 'Suivi', width: 200 },
     {
       field: 'status',
