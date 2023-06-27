@@ -1,0 +1,168 @@
+version: "3"
+
+services:
+  challenge-gateway-service:
+    build:
+      context: services/gateway
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    ports:
+      - 3000:3000
+    volumes:
+      - ./services/gateway:/home/node
+
+  challenge-alerts-service:
+    build:
+      context: services/alerts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/alerts:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameAlerts challengealerts
+      POSTGRES_USER: &challengeDatabaseUser challengeuser
+      POSTGRES_PASSWORD: &challengeDatabasePassword challengepass
+
+  challenge-categories-service:
+    build:
+      context: services/categories
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/categories:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameCategories challengecategories 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-events-service:
+    build:
+      context: services/events
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/events:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameEvents challengeevents 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-debts-service:
+    build:
+      context: services/debts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/debts:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameDebts challengedebts 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-budgets-service:
+    build:
+      context: services/budgets
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/budgets:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameBudgets challengebudgets 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-expenses-service:
+    build:
+      context: services/expenses
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/expenses:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameExpenses challengeexpenses 
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword
+
+  challenge-incomes-service:
+    build:
+      context: services/incomes
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/incomes:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameIncomes challengeincomes
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  challenge-users-service:
+    build:
+      context: services/users
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/users:/home/node
+    environment:
+      POSTGRES_DB: &challengeDatabaseNameUsers challengeusers
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword
+      
+    depends_on:
+      - challenge-database
+
+  challenge-database:
+    build:
+      context: services/database
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_MULTIPLE_DATABASES1: *challengeDatabaseNameAlerts 
+      POSTGRES_MULTIPLE_DATABASES2: *challengeDatabaseNameUsers 
+      POSTGRES_MULTIPLE_DATABASES3: *challengeDatabaseNameIncomes
+      POSTGRES_MULTIPLE_DATABASES4: *challengeDatabaseNameExpenses
+      POSTGRES_MULTIPLE_DATABASES5: *challengeDatabaseNameBudgets
+      POSTGRES_MULTIPLE_DATABASES6: *challengeDatabaseNameDebts
+      POSTGRES_MULTIPLE_DATABASES7: *challengeDatabaseNameEvents
+      POSTGRES_MULTIPLE_DATABASES8: *challengeDatabaseNameCategories
+
+      POSTGRES_USER: *challengeDatabaseUser
+      POSTGRES_PASSWORD: *challengeDatabasePassword
+
+  posts-service:
+    build:
+      context: services/posts
+      dockerfile: Dockerfile
+      target: development
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./services/posts:/home/node
+    environment:
+      POSTGRES_USER: *challengeDatabaseUser 
+      POSTGRES_PASSWORD: *challengeDatabasePassword 
+
+  adminer:
+      image: adminer:latest
+      ports:
+        - 8080:8080
+      environment:
+        - ADMINER_DESIGN=dracula
+      depends_on:
+        - challenge-database
