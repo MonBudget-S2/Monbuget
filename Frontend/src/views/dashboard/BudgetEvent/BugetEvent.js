@@ -85,7 +85,7 @@ const BugetEvent = () =>{
                             </TableBody>
                         </Table>
                         {datas.length > 5 && (
-                            <SeeAllButton to="/listcategoricalbudget/" title="Tout afficher" sx={{ marginTop: '16px' }} />
+                            <SeeAllButton to="/BudgetEventExpense" title="Tout afficher" sx={{ marginTop: '16px' }} />
                         )}
                     </TableContainer>
                 </MainCard>

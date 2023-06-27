@@ -15,7 +15,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:3,
-        eventBudgetName: 'Vacance Espagne',
+        : 'Vacance Espagne',
         amount: 33,
         description:'Casquette',
         date:"12/05/2023"
