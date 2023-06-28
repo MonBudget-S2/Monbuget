@@ -8,7 +8,8 @@ import categoricalBudgetService from 'service/categoricalBudgetService';
 
 const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOpen, setIsAddFormOpen, budget = null }) => {
   const theme = useTheme();
-  const isEditing = Boolean(budget);
+  const isEditing = Boolean(budget !== null);
+  console.log('edit budget', budget);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [customCategory, setCustomCategory] = useState('');
   const [categories, setCategories] = useState([]);
