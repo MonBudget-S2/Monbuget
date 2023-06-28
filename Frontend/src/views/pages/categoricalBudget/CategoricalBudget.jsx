@@ -93,8 +93,13 @@ const CategoricalBudget = () => {
       </Grid>
       <Grid item xs={12}>
         <ListCategoricalBudget
+          setAlertMessage={setAlertMessage}
+          setIsBudgetChanged={setIsBudgetChanged}
+          isAddFormOpen={isAddFormOpen}
+          setIsAddFormOpen={setIsAddFormOpen}
           setNbCategoricalBudgetFinished={setNbCategoricalBudgetFinished}
           setNbCategoricalBudgetActive={setNbCategoricalBudgetActive}
+          key={isBudgetChanged}
         />
       </Grid>
     </Grid>

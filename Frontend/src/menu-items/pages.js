@@ -22,7 +22,6 @@ const pages = {
       id: 'ManageIncome',
       title: 'Gestion des revenus',
       type: 'collapse',
-      url: 'income',
       icon: icons.IconMoneybag,
 
       children: [
