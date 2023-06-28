@@ -28,11 +28,13 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authService from 'service/authService';
 // import { authenticateUser } from 'store/authSlice';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import { getToken } from 'store/authSlice';
+import { useEffect } from 'react';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -41,6 +43,7 @@ const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
+  const token = useSelector(getToken);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -75,6 +78,12 @@ const AuthLogin = ({ ...others }) => {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [token]);
 
   return (
     <>

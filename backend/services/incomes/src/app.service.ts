@@ -33,7 +33,8 @@ export class AppService {
     console.log('userId', userId);
     const incomes = await this.incomeRepository.find({ where: { userId } });
     console.log('incomes', incomes);
-    return this.incomeRepository.find({ where: { userId } });
+    // return this.incomeRepository.find({ where: { userId } });
+    return incomes;
   }
 
   async update(

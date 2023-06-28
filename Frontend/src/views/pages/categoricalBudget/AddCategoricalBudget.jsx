@@ -46,7 +46,7 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
         setAlertMessage({ open: true, type: 'error', message: response.data.message });
       }
     } else {
-      const response = await incomeService.updateBudget(income.id, dataBudget);
+      const response = await categoricalBudgetService.updateBudget(budget.id, dataBudget);
       if (response.status === 200) {
         setStatus({ success: true });
         setSubmitting(false);
@@ -76,12 +76,12 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
     <>
       <Formik
         initialValues={{
-          budgetName: '',
-          periodStart: '',
-          periodEnd: '',
-          selectedCategory: '',
-          customCategory: '',
-          totalAllocation: '',
+          budgetName: isEditing ? budget.name : '',
+          periodStart: isEditing ? budget.startDate : '',
+          periodEnd: isEditing ? budget.endDate : '',
+          selectedCategory: isEditing ? budget.category.id : '',
+          customCategory: isEditing ? budget.customCategory : '',
+          totalAllocation: isEditing ? budget.amount : '',
           submit: null
         }}
         onSubmit={handleSubmit}
@@ -170,7 +170,7 @@ const AddCategoricalBudget = ({ setAlertMessage, setIsBudgetChanged, isAddFormOp
                   handleChange(event);
                 }}
                 label="Sélectionner une catégorie"
-                disabled={values.customCategory.length > 0}
+                disabled={isEditing ? false : values.customCategory.length > 0}
               >
                 <MenuItem value="">Sélectionner une catégorie</MenuItem>
                 {categories.map((category) => (

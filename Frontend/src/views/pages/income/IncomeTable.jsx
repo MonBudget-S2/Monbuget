@@ -13,14 +13,10 @@ import UpdateButton from 'ui-component/buttons/UpdateButton';
 import DeleteButton from 'ui-component/buttons/DeleteButton';
 import DataTable from 'ui-component/table/DataTable';
 
-import incomeData from './income-data'
-
-
-const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen, isLoading }) => {
+const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen }) => {
   const [incomes, setIncomes] = useState([{}]);
   const [editingIncome, setEditingIncome] = useState(null);
-  
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +25,10 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
       if (response.status === 200) {
         console.log('test', response.data);
         setIncomes(response.data);
+        setIsLoading(false);
       } else {
         console.log('Erreur lors de la récupération des revenus');
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -50,12 +48,9 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
           <UpdateButton to="/listexpense" onClick={() => onEdit(params.row.id)} />
           <DeleteButton to="listexpense" onClick={() => onDelete(params.row.id)} />
         </Box>
-      ),
-    },
-
+      )
+    }
   ];
-
-  
 
   const onEdit = (id) => {
     const income = incomes.find((income) => income.id === id);
@@ -94,7 +89,7 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
           <CardContent>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12}>
-                  <DataTable rows={incomeData} columns={columns} />
+                <DataTable rows={incomes} columns={columns} isLoading={isLoading} />
               </Grid>
             </Grid>
           </CardContent>
@@ -105,7 +100,7 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
 };
 
 IncomeTable.propTypes = {
-  isLoading: PropTypes.bool,
+  isLoading: PropTypes.bool
 };
 
 export default IncomeTable;
