@@ -14,7 +14,7 @@ import Chart from 'react-apexcharts';
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import incomService from 'service/incomeService';
+import incomeService from 'service/incomeService';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 // import data from 'ui-component/table/data';
 
@@ -131,7 +131,7 @@ const IncomeChart = ({ isLoading }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await incomService.getIncomeByTypeForYear(year);
+      const res = await incomeService.getIncomeByTypeForYear(year);
 
       if (res.data) {
         const series = Object.entries(res.data.incomesByType).map(([name, data]) => ({
