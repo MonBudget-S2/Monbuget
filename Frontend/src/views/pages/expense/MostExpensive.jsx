@@ -9,10 +9,10 @@ import { Card, Grid, Typography } from '@mui/material';
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-// project imports
+// data
 import expenseHistoryData from './expensive-history-data';
 
-// ===========================|| DASHBOARD DEFAULT - BAJAJ AREA CHART CARD ||=========================== //
+// ===========================|| MOST EXPENSIVE CHART ||=========================== //
 
 const MostExpensive = () => {
     const theme = useTheme();
@@ -49,7 +49,7 @@ const MostExpensive = () => {
     }, { amount: 0 });
 
     return (
-        <Card sx={{ bgcolor: 'secondary.light' }}>
+        <Card >
             <Grid container sx={{ p: 2, pb: 0, color: '#fff' }}>
                 <Grid item xs={12}>
                     <Grid container alignItems="center" justifyContent="space-between">
@@ -58,7 +58,7 @@ const MostExpensive = () => {
                                 Dépense la plus chère
                             </Typography>
                             <Typography variant="subtitle2" sx={{ color: theme.palette.secondary }}>
-                            {mostExpensiveExpense.expenseCategory}
+                                {mostExpensiveExpense.expenseCategory}
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -66,14 +66,17 @@ const MostExpensive = () => {
                                 {mostExpensiveExpense.amount}€
                             </Typography>
                         </Grid>
-                        
+
                     </Grid>
                 </Grid>
             </Grid>
             <Chart
                 options={{
                     chart: {
-                        id: 'area-chart'
+                        id: 'area-chart',
+                        toolbar: {
+                            show: true // Masquer la barre d'outils du graphique
+                        }
                     },
                     xaxis: {
                         type: 'datetime',
@@ -84,6 +87,30 @@ const MostExpensive = () => {
                             format: 'dd/MM/yyyy',
                         },
                     },
+                    colors: ['#FF4560'], // Couleur de la série de données
+                    dataLabels: {
+                        enabled: false // Masquer les étiquettes de données sur le graphique
+                    },
+                    stroke: {
+                        curve: 'smooth' // Courbe lissée pour les lignes du graphique
+                    },
+                    fill: {
+                        type: 'gradient', // Utiliser un dégradé pour remplir l'aire sous la courbe
+                        gradient: {
+                            shadeIntensity: 1,
+                            opacityFrom: 0.7,
+                            opacityTo: 0.9,
+                            stops: [0, 90, 100]
+                        }
+                    },
+                    markers: {
+                        size: 4, // Taille des marqueurs sur les points de données
+                        colors: ['#FF4560'], // Couleur des marqueurs
+                        strokeWidth: 0, // Largeur de la bordure des marqueurs
+                        hover: {
+                            size: 6 // Taille des marqueurs au survol
+                        }
+                    },
                 }}
                 series={[
                     {
@@ -92,8 +119,9 @@ const MostExpensive = () => {
                     }
                 ]}
                 type="area"
-                height={400}
+                height={460}
             />
+
         </Card>
     );
 };
