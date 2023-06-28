@@ -14,7 +14,7 @@ export class AppService {
   async create(createExpenseDto: CreateExpenseDto): Promise<any> {
     const newExpense = this.expenseRepository.create(createExpenseDto);
     await this.expenseRepository.save(newExpense);
-    return { message: 'Expense created successfully' };
+    return { message: 'Expense created successfully', newExpense };
   }
 
   async getById(id: string): Promise<Expense | null> {
@@ -25,17 +25,24 @@ export class AppService {
     return this.expenseRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<Expense[]> {
+    const expenses = await this.expenseRepository.find({ where: { userId } });
+    return expenses;
+  }
+
   async update(
     id: string,
     updateExpenseDto: UpdateExpenseDto,
   ): Promise<Expense | null> {
-    const result = await this.expenseRepository.update(id, updateExpenseDto);
+    const expense = await this.expenseRepository.findOneByOrFail({ id });
+    const updatedExpense = await this.expenseRepository.save({
+      ...expense,
+      ...updateExpenseDto,
+    });
 
-    if (result.affected === 0) {
-      return null; // Expense with the given ID not found
-    }
+    console.log('updatedExpense', updatedExpense);
 
-    return this.expenseRepository.findOneBy({ id });
+    return updatedExpense;
   }
 
   async delete(id: string): Promise<boolean> {

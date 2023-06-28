@@ -13,12 +13,12 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'income', action: 'getAll' })
-  getAllBudgets() {
+  getAllIncomes() {
     return this.appService.getAll();
   }
 
   @MessagePattern({ service: 'income', action: 'getAllByUser' })
-  getAllBudgetsByUser(userId: string) {
+  getAllIncomesByUser(userId: string) {
     return this.appService.getAllByUser(userId);
   }
 
