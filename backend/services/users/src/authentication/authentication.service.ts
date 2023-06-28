@@ -20,8 +20,6 @@ export class AuthenticationService {
       loginRequest.username,
     );
 
-    
-
     if (!user) {
       throw new BadRequestException('Invalid email or password');
     }
@@ -78,8 +76,8 @@ export class AuthenticationService {
         userInfo: {
           username: user.username,
           email: user.email,
-          prenom: user.firstname,
-          nom: user.lastname,
+          firstname: user.firstname,
+          lastname: user.lastname,
           balance: user.balance,
         },
       };
