@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-
-// material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
-
-// project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
-
-// assets
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
+// data
+import data from './expensive-history-data';
+
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-  background: `linear-gradient(45deg, ${theme.palette.error.dark}, ${theme.palette.primary[800]})`,
+  background: `linear-gradient(45deg, #FF00FF, #00FFFF)`,
   color: '#fff',
   overflow: 'hidden',
   position: 'relative',
@@ -55,8 +51,6 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   }
 }));
 
-// ==============================|| EXPENSE - TOTAL EXPENSE LINE CHART CARD ||============================== //
-
 const TotalExpenseByMonth = ({ isLoading }) => {
   const theme = useTheme();
 
@@ -65,41 +59,8 @@ const TotalExpenseByMonth = ({ isLoading }) => {
     setTimeValue(newValue);
   };
 
-  const chartData = {
-    options: {
-      tooltip: {
-        y: {
-          formatter: function (value) {
-            return value + ' €'; 
-          },
-        },
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function (val) {
-          const depenseTotal = 200
-          return (val/depenseTotal)*100 + "%"
-        }
-      },
-      chart: {
-        id: 'donut-chart'
-      },
-      labels: ['Ciné', 'Courses', 'Shopping', 'Jeux video'],
-      colors: ['#00E396', '#775DD0', '#FF4560', '#D3D3D3'],
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.9,
-          stops: [0, 90, 100]
-        }
-      }
-    },
-    series: [40, 25, 15, 120],
-    type: 'donut',
-    height: 400
-  };
+  const expenseCountByMonth = data.length;
+  const expenseCountByYear = data.length * 12;
 
   return (
     <>
@@ -111,20 +72,6 @@ const TotalExpenseByMonth = ({ isLoading }) => {
             <Grid container direction="column">
               <Grid item>
                 <Grid container justifyContent="space-between">
-                  <Grid item>
-                    <Avatar
-                      variant="rounded"
-                      sx={{
-                        ...theme.typography.commonAvatar,
-                        ...theme.typography.largeAvatar,
-                        backgroundColor: theme.palette.primary[800],
-                        color: '#fff',
-                        mt: 1
-                      }}
-                    >
-                      <LocalMallOutlinedIcon fontSize="inherit" />
-                    </Avatar>
-                  </Grid>
                   <Grid item>
                     <Button
                       disableElevation
@@ -153,7 +100,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                     <Grid container alignItems="center">
                       <Grid item>
                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                          {timeValue ? `${chartData.series.reduce((acc, val) => acc + val, 0)}€` : `${chartData.series.reduce((acc, val) => acc + val, 0) * 12}€`}
+                          {timeValue ? expenseCountByMonth : expenseCountByYear}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -176,7 +123,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          Total Dépenses {timeValue ? '/ mois' : '/ année'}
+                          Nombre de dépenses {timeValue ? 'mois' : 'année'}
                         </Typography>
                       </Grid>
                     </Grid>

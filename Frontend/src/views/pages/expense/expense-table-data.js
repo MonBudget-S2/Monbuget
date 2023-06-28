@@ -1,28 +1,29 @@
 const expenseHistoryData = [
     {
-        expenseCategory : 'EDF',
+        expenseCategory: 'EDF',
         amount: 140,
-        dateReception: 10/10/2020,
+        dateReception: '2022-03-15', // 15/03/2022
     },
     {
-        expenseCategory : 'Amende',
+        expenseCategory: 'Amende',
         amount: 240,
-        dateReception: 5/10/2020,
+        dateReception: '2021-06-28', // 28/06/2021
     },
     {
-        expenseCategory : 'Activité',
+        expenseCategory: 'Activité',
         amount: 350,
-        dateReception: 15/10/2020,
+        dateReception: '2023-11-10', // 10/11/2023
     },
     {
-        expenseCategory : 'Dentiste',
+        expenseCategory: 'Dentiste',
         amount: 65,
-        dateReception: 20/10/2020,
+        dateReception: '2022-09-05', // 05/09/2022
     },
     {
-        expenseCategory : 'Loyer',
+        expenseCategory: 'Loyer',
         amount: 650,
-        dateReception: 8/10/2020,
-    }
+        dateReception: '2021-12-20', // 20/12/2021
+    },
 ];
-export default expenseHistoryData 
+
+export default expenseHistoryData;

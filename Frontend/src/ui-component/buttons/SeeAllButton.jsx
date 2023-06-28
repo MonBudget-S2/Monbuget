@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, CardActions } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { CardActions } from '@mui/material';
 
 const SeeAllButton = ({ to, title }) => {
     return (

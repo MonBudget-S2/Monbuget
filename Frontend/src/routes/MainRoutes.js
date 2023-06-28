@@ -19,6 +19,7 @@ import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex';
 import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpense';
 import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
+import Profil from 'views/pages/profil/Profil';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -110,6 +111,10 @@ const MainRoutes = {
     {
       path: 'detailcategoricalbudget',
       element: <DetailCategoricalBudget />
+    },
+    {
+      path: 'profil',
+      element: <Profil />
     },
     {
       path: 'settings',

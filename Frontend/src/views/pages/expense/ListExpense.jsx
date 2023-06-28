@@ -86,6 +86,10 @@ const ListExpense = ({ isLoading }) => {
                       </Grid>
                     ) : (
                       <DataGrid
+                        initialState={{
+                          ...expenseData.initialState,
+                          pagination: { paginationModel: { pageSize: 5 } },
+                        }}
                         rows={expenseData}
                         columns={columns}
                         slots={{ toolbar: GridToolbar }}
