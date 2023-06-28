@@ -21,14 +21,14 @@ import { IncomeModule } from "./incomes/income.module";
         },
       },
 
-      {
-        name: "EXPENSE_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-expenses-service",
-          port: 3004,
-        },
-      },
+      // {
+      //   name: "EXPENSE_SERVICE",
+      //   transport: Transport.TCP,
+      //   options: {
+      //     host: "challenge-expenses-service",
+      //     port: 3004,
+      //   },
+      // },
 
       {
         name: "DEBT_SERVICE",
