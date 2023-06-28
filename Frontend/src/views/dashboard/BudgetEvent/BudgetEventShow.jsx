@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Grid from "@mui/material/Grid"
 import ExpenseCard from "../../pages/expense/ExpenseCard";
 import chartData from "views/pages/expense/expense-chart-data";
-import DataBudget from "views/dashboard/BudgetEvent/BudgetEventData"
+import DataBudget from "views/dashboard/BudgetEvent/BudgetEventData";
+import BudgetEventParticipate from "./BudgetEventParticipate";
 
 export default function BudgetEventShow(){
     const [totalRealExpenses, setTotalRealExpenses] = useState(0);
@@ -26,6 +27,9 @@ export default function BudgetEventShow(){
             </Grid>
             <Grid item lg={4} md={6} sm={6} xs={12}>
                 <ExpenseCard isLoading={isLoading} title="Budget Fixée" total={budgetFixee} />
+            </Grid>
+            <Grid item lg={4} md={6} sm={6} xs={12}>
+                <BudgetEventParticipate />
             </Grid>
         </Grid>
     );
