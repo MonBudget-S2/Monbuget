@@ -101,17 +101,7 @@ const CategoricalBudgetChart = ({ isBudgetChanged }) => {
   useEffect(() => {
     ApexCharts.exec('donut-chart', 'updateOptions', {
       labels: chartData.labels,
-      series: chartData.series,
-      options:{
-        ...chartData.options,
-        dataLabels: {
-          enabled: true,
-          formatter: function (val) {
-            const depenseTotal = chartData.series.reduce((sum, value) => sum + value, 0);
-            return (val / depenseTotal) * 100 + '%';
-          }
-        }
-      }
+      series: chartData.series
     });
   }, [chartData]);
 
