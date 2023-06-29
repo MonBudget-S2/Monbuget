@@ -16,11 +16,19 @@ const deleteExpense = async (id) => {
   return await axiosInstance.delete(`/expenses/${id}`);
 };
 
+const getExpensesByCategoryAndPeriod = async (year, month) => {
+  if (!month) {
+    return await axiosInstance.get(`/expenses/categories/${year}`);
+  }
+  return await axiosInstance.get(`/expenses/categories/${year}/${month}`);
+};
+
 const expenseService = {
   addExpense,
   updateExpense,
   getExpenses,
-  deleteExpense
+  deleteExpense,
+  getExpensesByCategoryAndPeriod
 };
 
 export default expenseService;

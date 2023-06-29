@@ -74,23 +74,27 @@ export class ExpenseService {
     );
   }
 
-  // async getAllExpensesByTypeForYear(user, year?: number) {
-  //   const currentYear = year || new Date().getFullYear();
-  //   const isAdmin = user.role === Role.ADMIN;
-  //   if (isAdmin) {
-  //     return await firstValueFrom(
-  //       this.expenseService.send(
-  //         { service: "expense", action: "getAllExpensesByTypeForYear" },
-  //         { currentYear }
-  //       )
-  //     );
-  //   }
+  async getAllExpensesByCategoryAndPeriode(
+    user,
+    year?: number,
+    month?: number
+  ) {
+    const currentYear = year || new Date().getFullYear();
+    const isAdmin = user.role === Role.ADMIN;
+    if (isAdmin) {
+      return await firstValueFrom(
+        this.expenseService.send(
+          { service: "expense", action: "getTotalAmountByCategoryAndPeriode" },
+          { currentYear }
+        )
+      );
+    }
 
-  //   return await firstValueFrom(
-  //     this.expenseService.send(
-  //       { service: "expense", action: "getAllExpensesByTypeForYear" },
-  //       { year: currentYear, userId: user.id }
-  //     )
-  //   );
-  // }
+    return await firstValueFrom(
+      this.expenseService.send(
+        { service: "expense", action: "getTotalAmountByCategoryAndPeriode" },
+        { userId: user.id, year, month }
+      )
+    );
+  }
 }

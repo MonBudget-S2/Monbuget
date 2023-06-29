@@ -88,7 +88,7 @@ const Expense = () => {
         <MostExpensive />
       </Grid>
       <Grid item xs={12} md={6}>
-        <ExpenseByCategory expenses={expenseByCategoryData} series={chartData.series} isLoading={isLoading} />
+        <ExpenseByCategory key={isExpenseChanged}/>
       </Grid>
       {/* <Grid item xs={12} md={6}>
         <ExpenseChart series={chartData.series} isLoading={isLoading} />
@@ -99,7 +99,6 @@ const Expense = () => {
           isLoading={isLoading}
           setAlertMessage={setAlertMessage}
           setIsExpenseChanged={setIsExpenseChanged}
-          key={isExpenseChanged}
         />
       </Grid>
     </Grid>

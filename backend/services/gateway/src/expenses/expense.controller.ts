@@ -1,9 +1,11 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Req,
@@ -59,12 +61,29 @@ export class ExpenseController {
     return this.expenseService.deleteExpense(id, user);
   }
 
-  // @Get("types/:year")
-  // getAllExpensesByTypeForYear(
-  //   @Param("year") year: number,
-  //   @Req() request: CustomRequest
-  // ) {
-  //   const user = request.user;
-  //   return this.expenseService.getAllExpensesByTypeForYear(user, year);
-  // }
+  @Get("categories/:year/:month?")
+  getAllExpensesByTypeForYear(
+    @Req() request: CustomRequest,
+    @Param("year", ParseIntPipe) year: number,
+    @Param("month") month?: string
+  ) {
+    let parsedMonth: number | undefined;
+
+    if (month !== undefined) {
+      parsedMonth = parseInt(month, 10);
+
+      // Validate month parameter
+      if (isNaN(parsedMonth) || parsedMonth < 1 || parsedMonth > 12) {
+        throw new BadRequestException(
+          "Invalid month parameter. Month must be a valid number between 1 and 12."
+        );
+      }
+    }
+    const user = request.user;
+    return this.expenseService.getAllExpensesByCategoryAndPeriode(
+      user,
+      year,
+      parsedMonth
+    );
+  }
 }

@@ -181,4 +181,70 @@ export class AppService {
     const result = await this.expenseRepository.delete(id);
     return result.affected > 0;
   }
+
+  async getTotalAmountByCategoryAndPeriode(
+    userId?: string,
+    year?: number,
+    month?: number,
+  ): Promise<{ category: string; totalAmount: number }[]> {
+    const queryBuilder = this.expenseRepository.createQueryBuilder('expense');
+
+    if (userId) {
+      queryBuilder.andWhere('expense.userId = :userId', { userId });
+    }
+
+    if (year) {
+      queryBuilder.andWhere('EXTRACT(YEAR FROM expense.date) = :year', {
+        year,
+      });
+    }
+
+    if (month) {
+      queryBuilder.andWhere('EXTRACT(MONTH FROM expense.date) = :month', {
+        month,
+      });
+    }
+
+    const expenses = await queryBuilder.getMany();
+
+    const categoryMap = new Map<string, number>();
+
+    for (const expense of expenses) {
+      const categoryId = expense.categoryId;
+
+      if (categoryId) {
+        const [category] = await Promise.all([
+          firstValueFrom(
+            this.categoryService.send(
+              { service: 'category', action: 'getById' },
+              categoryId,
+            ),
+          ),
+        ]);
+
+        if (category) {
+          const categoryName = category.name;
+          const expenseAmount = expense.amount;
+
+          if (categoryMap.has(categoryName)) {
+            categoryMap.set(
+              categoryName,
+              categoryMap.get(categoryName) + expenseAmount,
+            );
+          } else {
+            categoryMap.set(categoryName, expenseAmount);
+          }
+        }
+      }
+    }
+
+    const totalAmountByCategory: { category: string; totalAmount: number }[] =
+      [];
+
+    for (const [categoryName, totalAmount] of categoryMap.entries()) {
+      totalAmountByCategory.push({ category: categoryName, totalAmount });
+    }
+
+    return totalAmountByCategory;
+  }
 }

@@ -116,7 +116,7 @@ const IncomeChart = ({ isLoading }) => {
     const newYear = year + increment;
     setYear(newYear);
   };
-  const [periode, setPeriode] = useState(status[0].value);
+  const [period, setPeriode] = useState(status[0].value);
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
@@ -147,7 +147,7 @@ const IncomeChart = ({ isLoading }) => {
       }
     };
     getData();
-  }, [periode, year]);
+  }, [period, year]);
 
   useEffect(() => {
     chartData.options.colors = [primary200, primaryDark, secondaryMain, primary];
@@ -189,7 +189,7 @@ const IncomeChart = ({ isLoading }) => {
                   </div>
                 </Grid>
                 <Grid item>
-                  <TextField id="standard-select-currency" select periode={periode} onChange={(e) => setPeriode(e.target.value)}>
+                  <TextField id="standard-select-currency" select period={period} onChange={(e) => setPeriode(e.target.value)}>
                     {status.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}

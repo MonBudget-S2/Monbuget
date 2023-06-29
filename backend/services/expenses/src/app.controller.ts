@@ -39,4 +39,19 @@ export class AppController {
   deleteExpense(id: string) {
     return this.appService.delete(id);
   }
+
+  @MessagePattern({
+    service: 'expense',
+    action: 'getTotalAmountByCategoryAndPeriode',
+  })
+  getTotalAmountByCategory(
+    @Payload() payload: { userId?: string; year?: number; month?: number },
+  ) {
+    const { userId, year, month } = payload;
+    return this.appService.getTotalAmountByCategoryAndPeriode(
+      userId,
+      year,
+      month,
+    );
+  }
 }
