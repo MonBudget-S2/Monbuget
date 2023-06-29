@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate, IsBoolean } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsBoolean, IsUUID } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsString()
@@ -16,14 +16,14 @@ export class CreateExpenseDto {
   @IsString()
   receiptImage?: string;
 
-  @IsString()
+  @IsUUID()
   userId?: string;
 
-  @IsNumber()
-  categoryId: number;
+  @IsUUID()
+  categoryId: string;
 
-  @IsNumber()
-  eventBudgetId?: number;
+  @IsUUID()
+  eventBudgetId?: string;
 }
 
 export class UpdateExpenseDto {
@@ -42,12 +42,12 @@ export class UpdateExpenseDto {
   @IsString()
   receiptImage?: string;
 
-  @IsString()
+  @IsUUID()
   userId?: string;
 
-  @IsNumber()
-  categoryId?: number;
+  @IsUUID()
+  categoryId?: string;
 
-  @IsNumber()
-  eventBudgetId?: number;
+  @IsUUID()
+  eventBudgetId?: string;
 }

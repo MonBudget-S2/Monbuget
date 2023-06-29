@@ -39,10 +39,10 @@ export class Expense {
   userId: string;
 
   @Column({ name: 'category_id', nullable: true })
-  categoryId: number;
+  categoryId: string;
 
   @Column({ name: 'event_budget_id', nullable: true })
-  eventBudgetId: number;
+  eventBudgetId: string;
 
   @BeforeInsert()
   private setCreatedAt() {

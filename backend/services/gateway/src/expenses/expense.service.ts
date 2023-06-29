@@ -16,6 +16,7 @@ export class ExpenseService {
   ) {}
 
   async createExpense(createExpenseDto: CreateExpenseDto) {
+    console.log("createExpenseDto", createExpenseDto);
     return await firstValueFrom(
       this.expenseService.send(
         { service: "expense", action: "create" },

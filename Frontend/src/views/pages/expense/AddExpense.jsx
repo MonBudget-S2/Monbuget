@@ -25,6 +25,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
   };
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
+    const { expenseCategory, expenseEventBudget, amountSpent, dateSpent, description, location } = values;
     if (!expenseCategory) {
       setErrors({ expenseCategory: 'Please select a category' });
       return;
@@ -34,9 +35,8 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
       setErrors({ amountSpent: 'Please enter the amount spent' });
       return;
     }
-    const { expenseCategory, expenseEventBudget, amountSpent, dateSpent, description, location } = values;
     const dataExpense = {
-      category: expenseCategory,
+      categoryId: expenseCategory,
       eventBudget: expenseEventBudget,
       amount: amountSpent,
       date: dateSpent,
