@@ -74,26 +74,42 @@ export class ExpenseService {
     );
   }
 
-  async getAllExpensesByCategoryAndPeriode(
-    user,
-    year?: number,
-    month?: number
-  ) {
+  async getAllExpensesByCategoryAndPeriod(user, year?: number, month?: number) {
     const currentYear = year || new Date().getFullYear();
     const isAdmin = user.role === Role.ADMIN;
     if (isAdmin) {
       return await firstValueFrom(
         this.expenseService.send(
-          { service: "expense", action: "getTotalAmountByCategoryAndPeriode" },
-          { currentYear }
+          { service: "expense", action: "getTotalAmountByCategoryAndPeriod" },
+          { year: currentYear, month }
         )
       );
     }
 
     return await firstValueFrom(
       this.expenseService.send(
-        { service: "expense", action: "getTotalAmountByCategoryAndPeriode" },
-        { userId: user.id, year, month }
+        { service: "expense", action: "getTotalAmountByCategoryAndPeriod" },
+        { userId: user.id, year: currentYear, month }
+      )
+    );
+  }
+
+  async getTotalAmountByPeriod(user, year?: number, month?: number) {
+    const currentYear = year || new Date().getFullYear();
+    const isAdmin = user.role === Role.ADMIN;
+    if (isAdmin) {
+      return await firstValueFrom(
+        this.expenseService.send(
+          { service: "expense", action: "getTotalAmountByPeriod" },
+          { year: currentYear, month }
+        )
+      );
+    }
+
+    return await firstValueFrom(
+      this.expenseService.send(
+        { service: "expense", action: "getTotalAmountByPeriod" },
+        { userId: user.id, year: currentYear, month }
       )
     );
   }

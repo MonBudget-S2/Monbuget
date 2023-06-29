@@ -182,7 +182,7 @@ export class AppService {
     return result.affected > 0;
   }
 
-  async getTotalAmountByCategoryAndPeriode(
+  async getTotalAmountByCategoryAndPeriod(
     userId?: string,
     year?: number,
     month?: number,
@@ -246,5 +246,76 @@ export class AppService {
     }
 
     return totalAmountByCategory;
+  }
+
+  async getTotalAmountByPeriod(
+    userId?: string,
+    year?: number,
+    month?: number,
+  ): Promise<{ period: string; totalAmount: number }[]> {
+    const queryBuilder = this.expenseRepository.createQueryBuilder('expense');
+
+    if (userId) {
+      queryBuilder.andWhere('expense.userId = :userId', { userId });
+    }
+
+    if (year && !month) {
+      queryBuilder
+        .select(
+          `TO_CHAR(expense.date, 'YYYY-MM') as period, SUM(expense.amount) as totalamount`,
+        )
+        .andWhere('EXTRACT(YEAR FROM expense.date) = :year', { year })
+        .groupBy(`TO_CHAR(expense.date, 'YYYY-MM')`)
+        .orderBy(`TO_CHAR(expense.date, 'YYYY-MM')`);
+    } else if (year && month) {
+      const startDate = new Date(year, month - 1, 1);
+      const endDate = new Date(year, month, 0);
+
+      queryBuilder
+        .select(
+          `TO_CHAR(expense.date, 'YYYY-MM-DD') as period, SUM(expense.amount) as totalamount`,
+        )
+        .andWhere('expense.date >= :startDate', { startDate })
+        .andWhere('expense.date <= :endDate', { endDate })
+        .groupBy(`TO_CHAR(expense.date, 'YYYY-MM-DD')`)
+        .orderBy(`TO_CHAR(expense.date, 'YYYY-MM-DD')`);
+
+      // Fill in missing dates with 0 totalAmount
+      const expenses = await queryBuilder.getRawMany();
+      const totalAmountByPeriod: { period: string; totalAmount: number }[] = [];
+      const expenseMap = new Map<string, number>();
+
+      for (const expense of expenses) {
+        const period = expense.period;
+        expenseMap.set(period, expense.totalamount);
+      }
+
+      const currentDate = new Date(year, month - 1, 1);
+      while (currentDate <= endDate) {
+        const period = currentDate.toISOString().substr(0, 10); // Get date in "YYYY-MM-DD" format
+        const totalAmount = expenseMap.get(period) || 0;
+        totalAmountByPeriod.push({ period, totalAmount });
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return totalAmountByPeriod;
+    }
+
+    const expenses = await queryBuilder.getRawMany();
+
+    console.log('expenses', expenses);
+
+    const totalAmountByPeriod: { period: string; totalAmount: number }[] = [];
+
+    for (const expense of expenses) {
+      const period = expense.period || ''; // Access period from query result
+      const totalAmount = expense.totalamount;
+
+      totalAmountByPeriod.push({ period, totalAmount });
+    }
+
+    console.log('totalAmountByPeriod', totalAmountByPeriod);
+
+    return totalAmountByPeriod;
   }
 }

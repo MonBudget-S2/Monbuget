@@ -17,18 +17,18 @@ import expenseData from './expensive-history-data';
 const MostExpensive = () => {
     const theme = useTheme();
 
-    const [viewMode, setViewMode] = useState('month');
+    const [period, setPeriod] = useState('month');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [expenseHistoryData, setExpenseHistoryData] = useState(expenseData);
 
     const status = [
         {
             value: 'month',
-            label: 'Ce mois-ci'
+            label: 'Mois'
         },
         {
             value: 'year',
-            label: 'Cette année'
+            label: 'Année'
         }
     ];
 
@@ -45,9 +45,9 @@ const MostExpensive = () => {
     const handleDateChange = (change) => {
         setSelectedDate((prevDate) => {
             const newDate = new Date(prevDate);
-            if (viewMode === 'month') {
+            if (period === 'month') {
                 newDate.setMonth(newDate.getMonth() + change);
-            } else if (viewMode === 'year') {
+            } else if (period === 'year') {
                 newDate.setFullYear(newDate.getFullYear() + change);
             }
             return newDate;
@@ -55,7 +55,7 @@ const MostExpensive = () => {
     };
 
     const getViewModeData = () => {
-        if (viewMode === 'month') {
+        if (period === 'month') {
             // Logique pour afficher les jours du mois sélectionné
             const year = selectedDate.getFullYear();
             const month = selectedDate.getMonth();
@@ -70,7 +70,7 @@ const MostExpensive = () => {
                 x: new Date(data.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }),
                 y: data.amount,
             }));
-        } else if (viewMode === 'year') {
+        } else if (period === 'year') {
             // Logique pour afficher les mois sur une période d'un an
             const months = [
                 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -115,8 +115,8 @@ const MostExpensive = () => {
                         <TextField
                             id="view-mode-select"
                             select
-                            value={viewMode}
-                            onChange={(e) => setViewMode(e.target.value)}
+                            value={period}
+                            onChange={(e) => setPeriod(e.target.value)}
                         >
                             {status.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
@@ -132,7 +132,7 @@ const MostExpensive = () => {
                             <ArrowBackIcon />
                         </IconButton>
                         <Typography variant="subtitle2">
-                            {viewMode === 'year' ? selectedDate.getFullYear() : selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                            {period === 'year' ? selectedDate.getFullYear() : selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
                         </Typography>
                         <IconButton onClick={() => handleDateChange(1)}>
                             <ArrowForwardIcon />
@@ -160,7 +160,7 @@ const MostExpensive = () => {
 
                                 tooltip: {
                                     x: {
-                                        format: viewMode === 'year' ? undefined : 'dd/MM/yyyy',
+                                        format: period === 'year' ? undefined : 'dd/MM/yyyy',
                                     },
                                 },
                                 colors: ['#FF4560'], // Couleur de la série de données

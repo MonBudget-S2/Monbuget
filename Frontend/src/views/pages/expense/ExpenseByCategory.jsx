@@ -59,7 +59,7 @@ const chartConfig = {
 
 const ExpenseByCategory = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [period, setPeriode] = useState('month');
+  const [period, setPeriod] = useState('month');
   const [totalExpense, setTotalExpense] = useState(0);
   const customization = useSelector((state) => state.customization);
   console.log(customization);
@@ -255,7 +255,7 @@ const ExpenseByCategory = () => {
                   </Grid>
                 </Grid>
                 <Grid item>
-                  <TextField id="standard-select-currency" select value={period} onChange={(e) => setPeriode(e.target.value)}>
+                  <TextField id="standard-select-currency" select value={period} onChange={(e) => setPeriod(e.target.value)}>
                     {status.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}

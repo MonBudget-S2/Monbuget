@@ -42,16 +42,28 @@ export class AppController {
 
   @MessagePattern({
     service: 'expense',
-    action: 'getTotalAmountByCategoryAndPeriode',
+    action: 'getTotalAmountByCategoryAndPeriod',
   })
   getTotalAmountByCategory(
     @Payload() payload: { userId?: string; year?: number; month?: number },
   ) {
     const { userId, year, month } = payload;
-    return this.appService.getTotalAmountByCategoryAndPeriode(
+    return this.appService.getTotalAmountByCategoryAndPeriod(
       userId,
       year,
       month,
     );
+  }
+
+  @MessagePattern({
+    service: 'expense',
+    action: 'getTotalAmountByPeriod',
+  })
+  getTotalAmountByPeriod(
+    @Payload() payload: { userId?: string; year?: number; month?: number },
+  ) {
+    console.log('payload--------');
+    const { userId, year, month } = payload;
+    return this.appService.getTotalAmountByPeriod(userId, year, month);
   }
 }

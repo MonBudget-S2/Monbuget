@@ -62,7 +62,7 @@ export class ExpenseController {
   }
 
   @Get("categories/:year/:month?")
-  getAllExpensesByTypeForYear(
+  getAllExpensesByCategoryAndPeriod(
     @Req() request: CustomRequest,
     @Param("year", ParseIntPipe) year: number,
     @Param("month") month?: string
@@ -80,10 +80,32 @@ export class ExpenseController {
       }
     }
     const user = request.user;
-    return this.expenseService.getAllExpensesByCategoryAndPeriode(
+    return this.expenseService.getAllExpensesByCategoryAndPeriod(
       user,
       year,
       parsedMonth
     );
+  }
+
+  @Get("total/:year/:month?")
+  getAllExpensesByPeriod(
+    @Req() request: CustomRequest,
+    @Param("year", ParseIntPipe) year: number,
+    @Param("month") month?: string
+  ) {
+    let parsedMonth: number | undefined;
+
+    if (month !== undefined) {
+      parsedMonth = parseInt(month, 10);
+
+      // Validate month parameter
+      if (isNaN(parsedMonth) || parsedMonth < 1 || parsedMonth > 12) {
+        throw new BadRequestException(
+          "Invalid month parameter. Month must be a valid number between 1 and 12."
+        );
+      }
+    }
+    const user = request.user;
+    return this.expenseService.getTotalAmountByPeriod(user, year, parsedMonth);
   }
 }
