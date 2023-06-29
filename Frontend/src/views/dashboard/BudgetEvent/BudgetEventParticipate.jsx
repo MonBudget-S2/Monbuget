@@ -9,21 +9,21 @@ const BudgetEventParticipate = () =>{
             <CardContent>
                 <Grid container spacing={gridSpacing}>
                     <Typography variant="h2">
-                        Les Participants
+                        Les Participants et Dépenses
                     </Typography>
                     <Grid container direction="row" >
                         {ParticipantData.map((row) =>(
                             <Grid container key={row.id} alignItems="center"  sx={{ mt:2 , justifyContent:"space-between"}}>
                                 <Grid items xs={6}>
                                     <Grid container alignItems="center">
-                                        <Avatar key={row.id} alt="Avatar" src={row.img} sx={{ mr: 2 }}></Avatar>
-                                        <Typography variant="h4" key={row.id}>
+                                        <Avatar alt="Avatar" src={row.img} sx={{ mr: 2 }}></Avatar>
+                                        <Typography variant="h4">
                                             {row.nom}
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid items xs={6}>
-                                    <Typography variant="h4" key={row.id} sx={{ textAlign: 'right' }}>
+                                    <Typography variant="h4" sx={{ textAlign: 'right' }}>
                                         {row.TotalExpense} €
                                     </Typography>
                                 </Grid>
