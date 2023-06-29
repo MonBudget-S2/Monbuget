@@ -1,5 +1,5 @@
 // assets
-import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics } from '@tabler/icons';
+import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -8,7 +8,8 @@ const icons = {
   IconBusinessplan,
   IconBrightness,
   IconSettings,
-  IconOlympics
+  IconOlympics,
+  IconReportMoney
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -124,6 +125,20 @@ const pages = {
           title: 'Liste des EventBudgets Dépenses',
           type: 'item',
           url: 'BudgetEventExpense'
+        }
+      ]
+    },
+    {
+      id: 'ManageDebt',
+      title: 'Gestion des Dettes',
+      type: 'collapse',
+      icon: icons.IconReportMoney,
+      children: [
+        {
+          id: 'Debt',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: 'debt'
         }
       ]
     },

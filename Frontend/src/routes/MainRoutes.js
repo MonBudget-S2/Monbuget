@@ -18,6 +18,7 @@ import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex';
 import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpense';
+import Debt from 'views/pages/debt/Debt';
 import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
 /*
@@ -111,6 +112,10 @@ const MainRoutes = {
     {
       path: 'detailcategoricalbudget',
       element: <DetailCategoricalBudget />
+    },
+    {
+      path: 'debt',
+      element: <Debt />
     },
     {
       path: 'profil',
