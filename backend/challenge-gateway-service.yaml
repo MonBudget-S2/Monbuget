@@ -1,0 +1,525 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-gateway-service
+spec:
+  selector:
+    app: challenge-gateway-service
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 3000
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-gateway-service
+  namespace: challenge-service
+  labels:
+    app: challenge-gateway-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-gateway-service
+  template:
+    metadata:
+      labels:
+        app: challenge-gateway-service
+    spec:
+      containers:
+      - name: challenge-gateway-service
+        image: ronantr/challenge-gateway-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-alerts-service
+spec:
+  selector:
+    app: challenge-alerts-service
+  ports:
+    - protocol: TCP
+      port: 3006
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-alerts-service
+  namespace: challenge-service
+  labels:
+    app: challenge-alerts-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-alerts-service
+  template:
+    metadata:
+      labels:
+        app: challenge-alerts-service
+    spec:
+      containers:
+      - name: challenge-alerts-service
+        image: ronantr/challenge-alerts-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3006
+        readinessProbe:
+          tcpSocket:
+            port: 3006
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-budgets-service
+spec:
+  selector:
+    app: challenge-budgets-service
+  ports:
+    - protocol: TCP
+      port: 3005
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-budgets-service
+  namespace: challenge-service
+  labels:
+    app: challenge-budgets-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-budgets-service
+  template:
+    metadata:
+      labels:
+        app: challenge-budgets-service
+    spec:
+      containers:
+      - name: challenge-budgets-service
+        image: ronantr/challenge-budgets-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3005
+        readinessProbe:
+          tcpSocket:
+            port: 3005
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-debts-service
+spec:
+  selector:
+    app: challenge-debts-service
+  ports:
+    - protocol: TCP
+      port: 3008
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-debts-service
+  namespace: challenge-service
+  labels:
+    app: challenge-debts-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-debts-service
+  template:
+    metadata:
+      labels:
+        app: challenge-debts-service
+    spec:
+      containers:
+      - name: challenge-debts-service
+        image: ronantr/challenge-debts-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3008
+        readinessProbe:
+          tcpSocket:
+            port: 3008
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-events-service
+spec:
+  selector:
+    app: challenge-events-service
+  ports:
+    - protocol: TCP
+      port: 3009
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-events-service
+  namespace: challenge-service
+  labels:
+    app: challenge-events-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-events-service
+  template:
+    metadata:
+      labels:
+        app: challenge-events-service
+    spec:
+      containers:
+      - name: challenge-events-service
+        image: ronantr/challenge-events-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3009
+        readinessProbe:
+          tcpSocket:
+            port: 3009
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-expenses-service
+spec:
+  selector:
+    app: challenge-expenses-service
+  ports:
+    - protocol: TCP
+      port: 3004
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-expenses-service
+  namespace: challenge-service
+  labels:
+    app: challenge-expenses-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-expenses-service
+  template:
+    metadata:
+      labels:
+        app: challenge-expenses-service
+    spec:
+      containers:
+      - name: challenge-expenses-service
+        image: ronantr/challenge-expenses-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3004
+        readinessProbe:
+          tcpSocket:
+            port: 3004
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-incomes-service
+spec:
+  selector:
+    app: challenge-incomes-service
+  ports:
+    - protocol: TCP
+      port: 3010
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-incomes-service
+  namespace: challenge-service
+  labels:
+    app: challenge-incomes-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-incomes-service
+  template:
+    metadata:
+      labels:
+        app: challenge-incomes-service
+    spec:
+      containers:
+      - name: challenge-incomes-service
+        image: ronantr/challenge-incomes-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3010
+        readinessProbe:
+          tcpSocket:
+            port: 3010
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-users-service
+spec:
+  selector:
+    app: challenge-users-service
+  ports:
+    - protocol: TCP
+      port: 3002
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-users-service
+  namespace: challenge-service
+  labels:
+    app: challenge-users-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-users-service
+  template:
+    metadata:
+      labels:
+        app: challenge-users-service
+    spec:
+      containers:
+      - name: challenge-users-service
+        image: ronantr/challenge-users-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3002
+        readinessProbe:
+          tcpSocket:
+            port: 3002
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-categories-service
+spec:
+  selector:
+    app: challenge-categories-service
+  ports:
+    - protocol: TCP
+      port: 3007
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-categories-service
+  namespace: challenge-service
+  labels:
+    app: challenge-categories-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: challenge-categories-service
+  template:
+    metadata:
+      labels:
+        app: challenge-categories-service
+    spec:
+      containers:
+      - name: challenge-categories-service
+        image: ronantr/challenge-categories-service:0.2.0
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3007
+        readinessProbe:
+          tcpSocket:
+            port: 3007
+          initialDelaySeconds: 5
+          periodSeconds: 5

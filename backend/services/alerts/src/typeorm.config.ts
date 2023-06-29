@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {host , username ,password,port } from './env';
 
-const host = 'challenge-database';
 
 const config: TypeOrmModuleOptions = {
   type: 'postgres',
   host: host,
-  port: 5432,
-  username: 'challengeuser',
-  password: 'challengepass',
+  port: port,
+  username: username,
+  password: password,
   database: 'challengealerts',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,
