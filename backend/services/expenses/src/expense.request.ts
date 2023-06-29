@@ -11,22 +11,19 @@ export class CreateExpenseDto {
   date: Date;
 
   @IsString()
-  paymentMethod: string;
+  location?: string;
 
   @IsString()
-  location: string;
+  receiptImage?: string;
 
   @IsString()
-  receiptImage: string;
-
-  @IsString()
-  userId: string;
+  userId?: string;
 
   @IsNumber()
   categoryId: number;
 
   @IsNumber()
-  eventBudgetId: number;
+  eventBudgetId?: number;
 }
 
 export class UpdateExpenseDto {
@@ -38,9 +35,6 @@ export class UpdateExpenseDto {
 
   @IsDate()
   date?: Date;
-
-  @IsString()
-  paymentMethod?: string;
 
   @IsString()
   location?: string;

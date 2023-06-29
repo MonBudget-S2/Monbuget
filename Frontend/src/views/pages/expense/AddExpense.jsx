@@ -1,25 +1,49 @@
-import { Box, Button, FormControl, InputLabel, OutlinedInput, FormHelperText } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, FormControl, InputLabel, OutlinedInput, FormHelperText, Select, MenuItem } from '@mui/material';
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import { getUserId } from 'store/authSlice';
 import expenseService from 'service/expenseService';
 import DialogForm from 'ui-component/modal/DialogForm';
+import categoricalBudgetService from 'service/categoricalBudgetService';
+import { useEffect } from 'react';
 
 const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIsAddFormOpen, expense = null }) => {
   const theme = useTheme();
   const isEditing = Boolean(expense);
+  const userId = useSelector(getUserId);
 
-  const userId = useSelector( getUserId);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const [categories, setCategories] = useState([]);
+  const [budgetEvents, setBudgetEvents] = useState([]);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
 
   const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
-    const { expenseCategory, amountSpent, dateSpent, description } = values;
+    if (!expenseCategory) {
+      setErrors({ expenseCategory: 'Please select a category' });
+      return;
+    }
+
+    if (!amountSpent) {
+      setErrors({ amountSpent: 'Please enter the amount spent' });
+      return;
+    }
+    const { expenseCategory, expenseEventBudget, amountSpent, dateSpent, description, location } = values;
     const dataExpense = {
       category: expenseCategory,
+      eventBudget: expenseEventBudget,
       amount: amountSpent,
       date: dateSpent,
       description: description,
-      userId: userId
+      location: location,
+      userId: userId,
+      receiptImage: selectedImage // Include the selected image in the data
     };
 
     if (!isEditing) {
@@ -29,13 +53,21 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
         setStatus({ success: true });
         setSubmitting(false);
         setIsAddFormOpen(false);
-        setAlertMessage({ open: true, type: 'success', message: 'Revenu ajouté avec succès' });
+        setAlertMessage({
+          open: true,
+          type: 'success',
+          message: 'Expense added successfully'
+        });
         setIsExpenseChanged(true);
       } else {
         setStatus({ success: false });
         setErrors({ submit: response.data.message });
         setSubmitting(false);
-        setAlertMessage({ open: true, type: 'error', message: response.data.message });
+        setAlertMessage({
+          open: true,
+          type: 'error',
+          message: response.data.message
+        });
       }
     } else {
       const response = await expenseService.updateExpense(expense.id, dataExpense);
@@ -43,25 +75,59 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
         setStatus({ success: true });
         setSubmitting(false);
         setIsAddFormOpen(false);
-        setAlertMessage({ open: true, type: 'success', message: 'Revenu modifié avec succès' });
+        setAlertMessage({
+          open: true,
+          type: 'success',
+          message: 'Expense updated successfully'
+        });
         setIsExpenseChanged(true);
       } else {
         setStatus({ success: false });
         setErrors({ submit: response.data.message });
         setSubmitting(false);
-        setAlertMessage({ open: true, type: 'error', message: response.data.message });
+        setAlertMessage({
+          open: true,
+          type: 'error',
+          message: response.data.message
+        });
       }
     }
   };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await categoricalBudgetService.getCategories();
+        setCategories(response.data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    const fetchBudgetEvents = async () => {
+      try {
+        const response = await categoricalBudgetService.getCategories();
+        setBudgetEvents(response.data);
+      } catch (error) {
+        console.error('Error fetching budget events:', error);
+      }
+    };
+
+    fetchCategories();
+    fetchBudgetEvents();
+  }, []);
 
   return (
     <>
       <Formik
         initialValues={{
-          expenseCategory: isEditing ? expense.category : '',
+          expenseCategory: isEditing ? expense.category?.id : '',
+          expenseBudget: isEditing ? expense.budget?.id : '',
           amountSpent: isEditing ? expense.amount : '',
           dateSpent: isEditing ? expense.date : '',
           description: isEditing ? expense.description : '',
+          location: isEditing ? expense.location : '',
+          recieptImage: isEditing ? expense.recieptImage : '',
           submit: null
         }}
         onSubmit={handleSubmit}
@@ -80,19 +146,50 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
               sx={{ ...theme.typography.customInput }}
             >
               <InputLabel htmlFor="outlined-adornment-expenseCategory">Catégorie de dépense</InputLabel>
-              <OutlinedInput
+              <Select
                 id="outlined-adornment-expenseCategory"
-                type="text"
                 value={values.expenseCategory}
                 name="expenseCategory"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label="Catégorie de dépense"
-                inputProps={{}}
-              />
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
               {touched.expenseCategory && errors.expenseCategory && (
                 <FormHelperText error id="standard-weight-helper-text-expenseCategory">
                   {errors.expenseCategory}
+                </FormHelperText>
+              )}
+            </FormControl>
+
+            <FormControl
+              fullWidth
+              error={Boolean(touched.expenseEventBudget && errors.expenseEventBudget)}
+              sx={{ ...theme.typography.customInput }}
+            >
+              <InputLabel htmlFor="outlined-adornment-expenseEventBudget">Budget Event</InputLabel>
+              <Select
+                id="outlined-adornment-expenseEventBudget"
+                value={values.expenseEventBudget}
+                name="expenseEventBudget"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label="Budget Event"
+              >
+                {budgetEvents.map((event) => (
+                  <MenuItem key={event.id} value={event.id}>
+                    {event.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {touched.expenseEventBudget && errors.expenseEventBudget && (
+                <FormHelperText error id="standard-weight-helper-text-expenseEventBudget">
+                  {errors.expenseEventBudget}
                 </FormHelperText>
               )}
             </FormControl>
@@ -154,18 +251,54 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
               )}
             </FormControl>
 
+            <FormControl fullWidth error={Boolean(touched.location && errors.location)} sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-location">Lieu</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-location"
+                type="text"
+                value={values.location}
+                name="location"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label="Lieu"
+                inputProps={{}}
+              />
+              {touched.location && errors.location && (
+                <FormHelperText error id="standard-weight-helper-text-location">
+                  {errors.location}
+                </FormHelperText>
+              )}
+            </FormControl>
+            <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
+              <InputLabel htmlFor="outlined-adornment-receiptImage">Receipt Image</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-receiptImage"
+                type="file"
+                name="receiptImage"
+                onBlur={handleBlur}
+                onChange={(event) => {
+                  handleChange(event);
+                  handleImageChange(event); // Update selectedImage state
+                }}
+                label="Receipt Image"
+                inputProps={{}}
+              />
+              {selectedImage && (
+                <img src={URL.createObjectURL(selectedImage)} alt="Receipt Preview" style={{ width: '100%', marginTop: '1rem' }} />
+              )}
+              {touched.receiptImage && errors.receiptImage && (
+                <FormHelperText error id="standard-weight-helper-text-receiptImage">
+                  {errors.receiptImage}
+                </FormHelperText>
+              )}
+            </FormControl>
+
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
-
-            <Box sx={{ mt: 2 }}>
-              <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                Ajouter
-              </Button>
-            </Box>
-            </DialogForm>
+          </DialogForm>
         )}
       </Formik>
     </>
