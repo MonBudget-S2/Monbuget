@@ -15,26 +15,40 @@ import chartData from './expense-chart-data';
 import ListExpense from './ListExpense';
 import AddExpense from './AddExpense';
 import CustomAlert from 'ui-component/alert/CustomAlert';
+import expenseService from 'service/expenseService';
 
 const Expense = () => {
-  const [totalRealExpenses, setTotalRealExpenses] = useState(0);
-  const [isLoading, setLoading] = useState(true);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [expenses, setExpenses] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isExpenseChanged, setIsExpenseChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   useEffect(() => {
-    setLoading(false);
+    const fetchData = async () => {
+      const response = await expenseService.getExpenses();
 
-    const realExpenses = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
-    setTotalRealExpenses(realExpenses);
-  }, []);
+      if (response.status === 200) {
+        console.log('test', response.data);
+        setExpenses(response.data);
+        const totalAmount = response.data.reduce((acc, value) => acc + value.amount, 0);
+        console.log('totalAmount', totalAmount);
+        setTotalExpense(totalAmount);
+      } else {
+        console.log('Erreur lors de la récupération des dépenses');
+      }
+      setIsLoading(false);
+    };
+    fetchData();
+  }, [isExpenseChanged]);
 
   const handleClickOpen = () => {
     setIsAddFormOpen(true);
   };
 
   useEffect(() => {
+    console.log('isExpenseChanged', isExpenseChanged);
     if (isExpenseChanged) {
       setIsExpenseChanged(false);
     }
@@ -47,13 +61,13 @@ const Expense = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <ExpenseCard isLoading={isLoading} title="Total des dépenses réelles" total={totalRealExpenses} />
+            <ExpenseCard isLoading={isLoading} title="Total des dépenses réelles" total={totalExpense} />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <AverageExpenseByMonth isLoading={isLoading} />
+            <AverageExpenseByMonth isLoading={isLoading} key={isExpenseChanged} />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <NbExpenseByMonth isLoading={isLoading} />
+            <NbExpenseByMonth isLoading={isLoading} key={isExpenseChanged} />
           </Grid>
         </Grid>
       </Grid>
@@ -80,7 +94,13 @@ const Expense = () => {
         <ExpenseChart series={chartData.series} isLoading={isLoading} />
       </Grid> */}
       <Grid item xs={12}>
-        <ListExpense />
+        <ListExpense
+          expenses={expenses}
+          isLoading={isLoading}
+          setAlertMessage={setAlertMessage}
+          setIsExpenseChanged={setIsExpenseChanged}
+          key={isExpenseChanged}
+        />
       </Grid>
     </Grid>
   );

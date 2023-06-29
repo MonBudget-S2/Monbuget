@@ -1,115 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { CardContent, Grid, Paper, Typography, CircularProgress } from '@mui/material';
-import { DataGrid, frFR, GridToolbar } from '@mui/x-data-grid';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CardContent, Grid, IconButton } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
-import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
-import expenseData from './expensive-history-data';
+import DataTable from 'ui-component/table/DataTable';
+import expenseService from 'service/expenseService';
+import { Box } from '@mui/system';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AddExpense from './AddExpense';
+import { useState } from 'react';
+import { format, parseISO } from 'date-fns';
 
-const ListExpense = ({ isLoading }) => {
-  const [showTable, setShowTable] = useState(false);
-
-  useEffect(() => {
-    // Simulate loading for 2 seconds
-    const timer = setTimeout(() => {
-      setShowTable(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
+const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged }) => {
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const columns = [
-    { field: 'expenseCategory', headerName: 'Catégorie de dépense', width: 200, resizable: true },
+    {
+      field: 'actions',
+      sortable: false,
+      headerName: 'Actions',
+      renderCell: (params) => (
+        <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+          <IconButton color="info" aria-label="Modifier" onClick={() => onEdit(params.row.id)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton color="error" aria-label="Supprimer" onClick={() => onDelete(params.row.id)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      )
+    },
+    { field: 'expenseCategory', headerName: 'Catégorie de dépense' },
     {
       field: 'amount',
       headerName: 'Montant',
-      width: 130,
-      valueFormatter: (params) => `- ${params.value}€`,
+      valueFormatter: (params) => `- ${params.value}€`
     },
-    { field: 'date', headerName: 'Date de réception', width: 180, headerAlign: 'center' },
-    { field: 'description', headerName: 'Description', width: 200, headerAlign: 'center' },
-    { field: 'paymentMethod', headerName: 'Méthode de paiement', width: 200, headerAlign: 'center' },
-    { field: 'location', headerName: 'Lieu', width: 200, headerAlign: 'center' },
-    { field: 'receiptImage', headerName: 'Image du reçu', width: 200, headerAlign: 'center' },
-    { field: 'createdAt', headerName: 'Créé le', width: 200, headerAlign: 'center' },
-    { field: 'updatedAt', headerName: 'Mis à jour le', width: 200, headerAlign: 'center' },
-    { field: 'userId', headerName: 'Utilisateur', width: 200, headerAlign: 'center' },
-    { field: 'categoryId', headerName: 'Catégorie', width: 200, headerAlign: 'center' },
-    { field: 'eventBudgetId', headerName: 'Budget', width: 200, headerAlign: 'center' },
+    { field: 'date', headerName: 'Date de réception', headerAlign: 'center' },
+    { field: 'description', headerName: 'Description', headerAlign: 'center' },
+    { field: 'paymentMethod', headerName: 'Méthode de paiement', headerAlign: 'center' },
+    { field: 'location', headerName: 'Lieu', headerAlign: 'center' },
+    { field: 'receiptImage', headerName: 'Image du reçu', headerAlign: 'center' },
+    { field: 'createdAt', headerName: 'Créé le', headerAlign: 'center' },
+    { field: 'updatedAt', headerName: 'Mis à jour le', headerAlign: 'center' },
+    { field: 'categoryId', headerName: 'Catégorie', headerAlign: 'center' },
+    { field: 'eventBudgetId', headerName: 'Budget', headerAlign: 'center' }
   ];
 
-  const theme = createTheme(
-    {
-      palette: {
-        primary: { main: '#1976d2' },
-      },
-      components: {
-        MuiDataGrid: {
-          styleOverrides: {
-            root: {
-              '& .MuiDataGrid-cell': {
-                color: '#333',
-              },
-              '& .MuiDataGrid-row:hover .MuiDataGrid-cell': {
-                backgroundColor: '#f5f5f5',
-              },
-              '& .MuiDataGrid-row.Mui-selected .MuiDataGrid-cell': {
-                backgroundColor: '#e3f2fd',
-              },
-            },
-          },
-        },
-      },
-    },
-    frFR
-  );
+  const onEdit = (id) => {
+    const expense = expenses.find((expense) => expense.id === id);
+    expense.date = format(parseISO(expense.date), 'yyyy-MM-dd');
+    setEditingExpense(expense); // Set the editing expense data
+    setIsAddFormOpen(true); // Open the form
+  };
+
+  const onDelete = async (id) => {
+    const response = await expenseService.deleteExpense(id);
+    console.log('response', response);
+    if (response.status === 200) {
+      console.log('Expense deleted');
+      setAlertMessage({ open: true, message: 'La dépense a été supprimée avec succès', type: 'success' });
+      setIsExpenseChanged(true);
+    } else {
+      setAlertMessage({ open: true, message: 'Erreur lors de la suppression de la dépense', type: 'error' });
+    }
+  };
 
   return (
     <>
-      {isLoading ? (
-        <SkeletonPopularCard />
-      ) : (
-        <MainCard content={false}>
-          <CardContent>
-            <Grid container spacing={gridSpacing}>
-              <Grid item xs={12}>
-                <Paper sx={{ boxShadow: 'none' }}>
-                  <ThemeProvider theme={theme}>
-                    {!showTable ? (
-                      <Grid container justifyContent="center" alignItems="center" sx={{ height: 400 }}>
-                        <CircularProgress />
-                        <Typography variant="body2" align="center">
-                          Chargement en cours...
-                        </Typography>
-                      </Grid>
-                    ) : (
-                      <DataGrid
-                        initialState={{
-                          ...expenseData.initialState,
-                          pagination: { paginationModel: { pageSize: 5 } },
-                        }}
-                        rows={expenseData}
-                        columns={columns}
-                        slots={{ toolbar: GridToolbar }}
-                        autoHeight
-                        style={{ animation: 'fadeIn 0.5s' }}
-                      />
-                    )}
-                  </ThemeProvider>
-                </Paper>
-              </Grid>
+      <MainCard content={false}>
+        {isAddFormOpen && (
+          <AddExpense
+            setAlertMessage={setAlertMessage}
+            setIsExpenseChanged={setIsExpenseChanged}
+            isAddFormOpen={isAddFormOpen}
+            setIsAddFormOpen={setIsAddFormOpen}
+            expense={editingExpense}
+          />
+        )}
+        <CardContent>
+          <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+              <DataTable rows={expenses} columns={columns} isLoading={isLoading} />
             </Grid>
-          </CardContent>
-        </MainCard>
-      )}
+          </Grid>
+        </CardContent>
+      </MainCard>
     </>
   );
 };
 
 ListExpense.propTypes = {
-  isLoading: PropTypes.bool,
+  expenses: PropTypes.array,
+  isLoading: PropTypes.bool
 };
 
 export default ListExpense;
