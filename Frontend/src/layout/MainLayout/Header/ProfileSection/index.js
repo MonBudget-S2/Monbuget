@@ -166,7 +166,7 @@ const ProfileSection = () => {
                       </Stack>
                       <Typography variant="subtitle2">{user.role}</Typography>
                     </Stack>
-                    
+
                     <Divider />
                   </Box>
                   <PerfectScrollbar style={{ height: '100%', maxHeight: 'calc(100vh - 250px)', overflowX: 'hidden' }}>
@@ -189,7 +189,6 @@ const ProfileSection = () => {
                           }
                         }}
                       >
-                        
                         <ListItemButton
                           sx={{ borderRadius: `${customization.borderRadius}px` }}
                           selected={selectedIndex === 1}

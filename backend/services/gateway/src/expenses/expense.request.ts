@@ -19,9 +19,6 @@ export class CreateExpenseDto {
   @IsString()
   receiptImage: string;
 
-  @IsBoolean()
-  isPersonal: boolean;
-
   @IsString()
   userId: string;
 
@@ -50,9 +47,6 @@ export class UpdateExpenseDto {
 
   @IsString()
   receiptImage?: string;
-
-  @IsBoolean()
-  isPersonal?: boolean;
 
   @IsString()
   userId?: string;

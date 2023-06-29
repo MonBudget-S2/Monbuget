@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Button, Typography } from '@mui/material';
 import { gridSpacing } from 'store/constant';
 // import ExpenseChart from './ExpenseChart';
 import ExpenseCard from './ExpenseCard';
 import ExpenseByCategory from './ExpenseByCategory';
-import CreateButton from 'ui-component/buttons/CreateButton';
+// import CreateButton from 'ui-component/buttons/CreateButton';
 import AverageExpenseByMonth from './AverageExpenseByMonth';
 import MostExpensive from './MostExpensive';
 import NbExpenseByMonth from './NbExpenseByMonth';
@@ -13,21 +13,37 @@ import NbExpenseByMonth from './NbExpenseByMonth';
 import expenseByCategoryData from './expense-by-category';
 import chartData from './expense-chart-data';
 import ListExpense from './ListExpense';
+import AddExpense from './AddExpense';
+import CustomAlert from 'ui-component/alert/CustomAlert';
 
 const Expense = () => {
   const [totalRealExpenses, setTotalRealExpenses] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+  const [isExpenseChanged, setIsExpenseChanged] = useState(false);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   useEffect(() => {
     setLoading(false);
 
     const realExpenses = chartData.series[0].data.reduce((acc, value) => acc + value, 0);
     setTotalRealExpenses(realExpenses);
-
   }, []);
+
+  const handleClickOpen = () => {
+    setIsAddFormOpen(true);
+  };
+
+  useEffect(() => {
+    if (isExpenseChanged) {
+      setIsExpenseChanged(false);
+    }
+  }, [isExpenseChanged]);
 
   return (
     <Grid container spacing={gridSpacing}>
+      <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
+
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
@@ -42,7 +58,17 @@ const Expense = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <CreateButton to="/addincome" title="Ajouter une dépense" />
+        <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <Typography style={{ color: 'white' }} variant="subtitle1">
+            Ajouter une dépense
+          </Typography>
+        </Button>
+        <AddExpense
+          setAlertMessage={setAlertMessage}
+          setIsExpenseChanged={setIsExpenseChanged}
+          isAddFormOpen={isAddFormOpen}
+          setIsAddFormOpen={setIsAddFormOpen}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
         <MostExpensive />
