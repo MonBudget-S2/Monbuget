@@ -13,6 +13,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 1,
         eventBudgetId: 1,
+        userName:"William",
     },
     {
         id: 2,
@@ -28,6 +29,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 2,
         eventBudgetId: 2,
+        userName:"William",
     },
     {
         id: 3,
@@ -43,6 +45,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 3,
         eventBudgetId: 1,
+        userName:"William",
     },
     {
         id: 4,
@@ -58,6 +61,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 4,
         eventBudgetId: 2,
+        userName:"Ines",
     },
     {
         id: 5,
@@ -73,6 +77,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 5,
         eventBudgetId: 1,
+        userName:"Ines",
     },
     {
         id: 6,
@@ -88,6 +93,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 2,
         eventBudgetId: 2,
+        userName:"Ines",
     },
     {
         id: 7,
@@ -103,6 +109,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 3,
         eventBudgetId: 1,
+        userName:"Ines",
     },
     {
         id: 8,
@@ -118,6 +125,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 4,
         eventBudgetId: 2,
+        userName:"Olympe",
     },
     {
         id: 9,
@@ -133,6 +141,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 5,
         eventBudgetId: 1,
+        userName:"Olympe",
     },
     {
         id: 10,
@@ -148,6 +157,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 2,
         eventBudgetId: 2,
+        userName:"Charles",
     },
     {
         id: 11,
@@ -163,6 +173,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 3,
         eventBudgetId: 1,
+        userName:"Nico",
     },
     {
         id: 12,
@@ -178,6 +189,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 4,
         eventBudgetId: 2,
+        userName:"Elene",
     },
     {
         id: 13,
@@ -193,6 +205,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 5,
         eventBudgetId: 1,
+        userName:"Elene",
     },
     {
         id: 14,
@@ -208,6 +221,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 2,
         eventBudgetId: 2,
+        userName:"Elene",
     },
     {
         id: 15,
@@ -223,6 +237,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 3,
         eventBudgetId: 1,
+        userName:"Elene",
     },
     {
         id: 16,
@@ -238,6 +253,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 4,
         eventBudgetId: 2,
+        userName:"Elene",
     },
     {
         id: 17,
@@ -253,6 +269,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 5,
         eventBudgetId: 1,
+        userName:"Elene",
     },
     {
         id: 18,
@@ -268,6 +285,7 @@ const BudgetParicipantExpenseData = [
         userId: 2,
         categoryId: 2,
         eventBudgetId: 2,
+        userName:"Elene",
     },
     {
         id: 19,
@@ -283,6 +301,7 @@ const BudgetParicipantExpenseData = [
         userId: 1,
         categoryId: 3,
         eventBudgetId: 1,
+        userName:"Elene",
     },
 ];
 

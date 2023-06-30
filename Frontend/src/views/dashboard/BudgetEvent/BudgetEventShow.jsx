@@ -9,6 +9,7 @@ import BudgetEventDateBetweenCard from "./BudgetEventDateBetweenCard";
 import BudgetEventNbParticipantCard from "./BudgetEventNbParticipantCard";
 import {Typography} from "@mui/material";
 import BudgetEventMostExpensiveCard from "./BudgetEventMostExpensiveCard";
+import ListeBudgetExpenseCard from "./ListeBudgetExpenseCard";
 
 export default function BudgetEventShow(){
     const [totalRealExpenses, setTotalRealExpenses] = useState(0);
@@ -59,6 +60,10 @@ export default function BudgetEventShow(){
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <BudgetEventMostExpensiveCard />
+                </Grid>
+                <Grid item xs={12}>
+                    <ListeBudgetExpenseCard
+                    />
                 </Grid>
             </Grid>
         </Grid>
