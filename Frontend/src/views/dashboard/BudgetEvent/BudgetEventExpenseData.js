@@ -1,6 +1,7 @@
 const BudgetEventExpenseData =[
     {
         id:1,
+        userId: "William",
         eventBudgetName: 'Vacance Espagne',
         amount: 100,
         description:'Billet Avion',
@@ -8,6 +9,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:2,
+        userId: "William",
         eventBudgetName: 'Vacance Espagne',
         amount: 50,
         description:'Repas Michelin',
@@ -15,6 +17,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:3,
+        userId: "Ines",
         eventBudgetName: 'Vacance Espagne',
         amount: 33,
         description:'Casquette',
@@ -22,6 +25,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:4,
+        userId: "Ines",
         eventBudgetName: 'Vacance Chine',
         amount: 90,
         description:'Billet Avion',
@@ -29,6 +33,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:5,
+        userId: "Olympe",
         eventBudgetName: 'Vacance Chine',
         amount: 13,
         description:'Sandwich',
@@ -36,6 +41,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:6,
+        userId: "Olympe",
         eventBudgetName: 'Vacance Chine',
         amount: 22,
         description:'Boisson',
@@ -43,6 +49,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:7,
+        userId: "Olympe",
         eventBudgetName: 'Vacance Chine',
         amount: 200,
         description:'Billet de train',
@@ -50,6 +57,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:8,
+        userId: "Charles",
         eventBudgetName: 'Soirée Etretat',
         amount: 550,
         description:'Alcool',
@@ -57,6 +65,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:9,
+        userId: "Nico",
         eventBudgetName: 'Soirée Etretat',
         amount: 125,
         description:'Essence',
@@ -64,6 +73,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:10,
+        userId: "Nico",
         eventBudgetName: 'Anniversaire',
         amount: 36,
         description:'Décoration',
@@ -71,6 +81,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:11,
+        userId: "Nico",
         eventBudgetName: 'Anniversaire',
         amount: 98,
         description:'Bouffe',
@@ -78,6 +89,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:12,
+        userId: "Nico",
         eventBudgetName: 'Anniversaire',
         amount: 199,
         description:'Salle',
@@ -85,6 +97,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:13,
+        userId: "Elene",
         eventBudgetName: 'Sport Airsoft',
         amount: 400,
         description:'Réplique',
@@ -92,6 +105,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:14,
+        userId: "Elene",
         eventBudgetName: 'Sport Airsoft',
         amount: 45,
         description:'Vetement',
@@ -99,6 +113,7 @@ const BudgetEventExpenseData =[
     },
     {
         id:15,
+        userId: "Elene",
         eventBudgetName: 'Billes',
         amount: 66,
         description:'Billet Avion',
