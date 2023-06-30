@@ -5,9 +5,7 @@ import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-
-// Données
-import data from './expensive-history-data';
+import { useEffect } from 'react';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   background: `linear-gradient(45deg, ${theme.palette.error.dark}, ${theme.palette.primary[800]})`,
@@ -51,24 +49,37 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   }
 }));
 
-const TotalExpenseByMonth = ({ isLoading }) => {
+const TotalExpenseByMonth = ({ isLoading, expenses }) => {
   const theme = useTheme();
+
+  const [averageExpenseByMonth, setAverageExpenseByMonth] = useState(0);
+  const [totalExpenseByYear, setTotalExpenseByYear] = useState(0);
 
   const [timeValue, setTimeValue] = useState(false);
   const handleChangeTime = (event, newValue) => {
     setTimeValue(newValue);
   };
 
-  // TODO: revoir la logique des calculs
-  const expenseSumByMonth = data.reduce((sum, item) => sum + item.amount, 0);
-  const expenseSumByYear = data.reduce((sum, item) => sum + item.amount, 0) * 12;
+  useEffect(() => {
+    console.log('expenses', expenses);
+    if (expenses.length === 0) return;
 
-  const expenseCountByMonth = data.length;
-  const expenseCountByYear = data.length * 12;
+    // Calculate total expense of the current year
+    const currentYear = new Date().getFullYear();
+    const currentYearExpenses = expenses.filter((item) => new Date(item.date).getFullYear() === currentYear);
+    const totalExpenseByYear = currentYearExpenses.reduce((sum, item) => sum + item.amount, 0);
 
-  const averageExpenseByMonth = (expenseSumByMonth / expenseCountByMonth).toFixed(2);
-  const averageExpenseByYear = (expenseSumByYear / expenseCountByYear).toFixed(2);
+    // Calculate total number of months passed, including the current month
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const monthsPassed = (currentYear - currentDate.getFullYear()) * 12 + currentMonth;
 
+    // Calculate average expense per month
+    const averageExpenseByMonth = (totalExpenseByYear / monthsPassed).toFixed(2);
+
+    setTotalExpenseByYear(totalExpenseByYear);
+    setAverageExpenseByMonth(averageExpenseByMonth);
+  }, [expenses]);
 
   return (
     <>
@@ -108,7 +119,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                     <Grid container alignItems="center">
                       <Grid item>
                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                          {timeValue ? `${averageExpenseByMonth} €` : `${averageExpenseByYear} €`}
+                          {timeValue ? `${averageExpenseByMonth} €` : `${totalExpenseByYear} €`}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -131,7 +142,7 @@ const TotalExpenseByMonth = ({ isLoading }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          Dépense moyenne {timeValue ? 'mois' : 'année'}
+                          {timeValue === 'mois' ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}
                         </Typography>
                       </Grid>
                     </Grid>

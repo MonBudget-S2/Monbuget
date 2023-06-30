@@ -6,8 +6,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-// data
-import data from './expensive-history-data';
+import { useEffect } from 'react';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   background: `linear-gradient(45deg, #FF00FF, #00FFFF)`,
@@ -51,16 +50,32 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   }
 }));
 
-const TotalExpenseByMonth = ({ isLoading }) => {
+const TotalExpenseByMonth = ({ isLoading, expenses }) => {
   const theme = useTheme();
 
   const [timeValue, setTimeValue] = useState(false);
   const handleChangeTime = (event, newValue) => {
     setTimeValue(newValue);
   };
+  const [expenseCountByMonth, setExpenseCountByMonth] = useState(0);
+  const [expenseCountByYear, setExpenseCountByYear] = useState(0);
 
-  const expenseCountByMonth = data.length;
-  const expenseCountByYear = data.length * 12;
+  useEffect(() => {
+    if (expenses) {
+      let expenseCountByMonth = 0;
+      let expenseCountByYear = 0;
+      expenses.forEach((expense) => {
+        if (new Date(expense.date).getMonth() === new Date().getMonth()) {
+          expenseCountByMonth += 1;
+        }
+        if (new Date(expense.date).getFullYear() === new Date().getFullYear()) {
+          expenseCountByYear += 1;
+        }
+      });
+      setExpenseCountByMonth(expenseCountByMonth);
+      setExpenseCountByYear(expenseCountByYear);
+    }
+  }, [expenses]);
 
   return (
     <>
@@ -139,7 +154,8 @@ const TotalExpenseByMonth = ({ isLoading }) => {
 };
 
 TotalExpenseByMonth.propTypes = {
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  expenses: PropTypes.array
 };
 
 export default TotalExpenseByMonth;

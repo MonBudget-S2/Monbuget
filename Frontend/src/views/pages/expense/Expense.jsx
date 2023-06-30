@@ -62,10 +62,10 @@ const Expense = () => {
             <ExpenseCard isLoading={isLoading} title="Total des dépenses réelles" total={totalExpense} />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <AverageExpenseByMonth isLoading={isLoading} key={isExpenseChanged} />
+            <AverageExpenseByMonth isLoading={isLoading} expenses={expenses} />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <NbExpenseByMonth isLoading={isLoading} key={isExpenseChanged} />
+            <NbExpenseByMonth isLoading={isLoading} expenses={expenses} />
           </Grid>
         </Grid>
       </Grid>
