@@ -179,10 +179,12 @@ const MostExpensive = () => {
   }, [selectedDate, period]);
 
   useEffect(() => {
-    ApexCharts.exec('area-chart', 'updateOptions', {
-      labels: chartData.labels,
-      series: chartData.series
-    });
+    if(chartData.series.length > 0) {
+      ApexCharts.exec('area-chart', 'updateOptions', {
+        labels: chartData.labels,
+        series: chartData.series
+      });
+    }
   }, [chartData]);
   return (
     <Card>

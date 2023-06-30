@@ -47,27 +47,25 @@ const ListDebt = ({ isLoading }) => {
     };
 
     const updateDebtInTable = (updatedDebt) => {
-        const index = debtData.findIndex(debt => debt.id === updatedDebt.id);
+        const index = debtState.findIndex(debt => debt.id === updatedDebt.id);
         if (index !== -1) {
-            // Update the debt in the original table
-            const newDebtData = cloneDeep(debtData);  // Make a deep copy of the data to not mutate the original data
-            newDebtData[index].amount = updatedDebt.amount;  // Updating the 'amount' field in the data table
-            newDebtData[index].remainingAmount = updatedDebt.remainingAmount;
+            // Update the debt in the state
+            const newDebtData = cloneDeep(debtState);  // Make a deep copy of the state to not mutate the original state
+            newDebtData[index] = updatedDebt;
     
             // Update the status of the updated debt
             const status = getStatus({ row: updatedDebt });
             newDebtData[index].status = status;
-            
+    
             // Set the new data
             setDebtState(newDebtData);
-    
+            
             setIsModalOpen(false);
             // Afficher un message d'alerte indiquant que le remboursement a bien été effectué
             alert('Remboursement effectué avec succès !');
-
-             setTotalDebt(calculateTotalDebt(newDebtState)); // Recalculer la valeur totale de la dette mise à jour
         }
     };
+    
 
     const getStatus = (params) => {
         if (params && params.row) {
