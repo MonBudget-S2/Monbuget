@@ -1,13 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { EventBudgetService } from './event-budget.service';
+import { Controller } from '@nestjs/common';
 import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from './event-budget.request';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  EventBudgetResponse,
+  EventBudgetService,
+} from './event-budget.service';
 
 @Controller()
-export class AppController {
+export class EventBudgetController {
   constructor(private readonly appService: EventBudgetService) {}
 
   @MessagePattern({ service: 'eventBudget', action: 'create' })
@@ -16,12 +19,12 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'eventBudget', action: 'getAll' })
-  getAllEventBudgets() {
+  getAllEventBudgets(): Promise<EventBudgetResponse[]> {
     return this.appService.getAll();
   }
 
   @MessagePattern({ service: 'eventBudget', action: 'getAllByUser' })
-  getAllEventBudgetsByUser(userId: string) {
+  getAllEventBudgetsByUser(userId: string): Promise<EventBudgetResponse[]> {
     return this.appService.getAllByUser(userId);
   }
 

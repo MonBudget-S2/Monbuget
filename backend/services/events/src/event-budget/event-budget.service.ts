@@ -9,19 +9,19 @@ import {
 import { EventParticipate } from 'src/event-participate/event-participate.entity';
 import { EventParticipateService } from 'src/event-participate/event-participate.service';
 
-interface EventBudgetResponse extends EventBudget {
+export interface EventBudgetResponse extends EventBudget {
   eventParticipants: EventParticipate[];
 }
 @Injectable()
-export class AppService {
+export class EventBudgetService {
   constructor(
     @InjectRepository(EventBudget)
     private eventBudgetRepository: Repository<EventBudget>,
-    @InjectRepository(EventParticipate)
-    private eventParticipateService: EventParticipateService,
+    private readonly eventParticipateService: EventParticipateService,
   ) {}
 
   async create(createEventBudgetDto: CreateEventBudgetDto): Promise<any> {
+    console.log('createEventBudgetDto', createEventBudgetDto);
     const newEventBudget =
       this.eventBudgetRepository.create(createEventBudgetDto);
     await this.eventBudgetRepository.save(newEventBudget);

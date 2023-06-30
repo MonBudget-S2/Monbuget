@@ -8,6 +8,7 @@ import expenseService from 'service/expenseService';
 import DialogForm from 'ui-component/modal/DialogForm';
 import categoricalBudgetService from 'service/categoricalBudgetService';
 import { useEffect } from 'react';
+import eventService from 'service/eventService';
 
 const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIsAddFormOpen, expense = null }) => {
   const theme = useTheme();
@@ -106,7 +107,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
 
     const fetchBudgetEvents = async () => {
       try {
-        const response = await categoricalBudgetService.getCategories();
+        const response = await eventService.getEvents();
         setBudgetEvents(response.data);
       } catch (error) {
         console.error('Error fetching budget events:', error);
