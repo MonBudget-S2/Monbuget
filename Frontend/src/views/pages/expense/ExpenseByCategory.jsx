@@ -212,20 +212,13 @@ const ExpenseByCategory = () => {
   }, [currentDate, period]);
 
   useEffect(() => {
-    ApexCharts.exec('donut-chart', 'updateOptions', {
-      labels: chartData.labels,
-      series: chartData.series
-      // options: {
-      //   ...chartData.options,
-      //   dataLabels: {
-      //     enabled: true,
-      //     formatter: function (val) {
-      //       const depenseTotal = chartData.series.reduce((sum, value) => sum + value, 0);
-      //       return (val / depenseTotal) * 100 + '%';
-      //     }
-      //   }
-      // }
-    });
+    if (chartData.series.length > 0){
+
+      ApexCharts.exec('donut-chart', 'updateOptions', {
+        labels: chartData.labels,
+        series: chartData.series
+      });
+    }
   }, [chartData]);
 
   return (
