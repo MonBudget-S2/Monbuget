@@ -27,6 +27,25 @@ export class AppController {
     return this.appService.getAllByUser(userId);
   }
 
+  @MessagePattern({ service: 'expense', action: 'getAllByBudget' })
+  getAllExpensesByBudget(
+    @Payload()
+    payload: {
+      categoryId: string;
+      startDate: string;
+      endDate: string;
+    },
+  ) {
+    const { categoryId, startDate, endDate } = payload;
+    const parsedStartDate = new Date(startDate);
+    const parsedEndDate = new Date(endDate);
+    return this.appService.getAllByOnlyCategory(
+      categoryId,
+      parsedStartDate,
+      parsedEndDate,
+    );
+  }
+
   @MessagePattern({ service: 'expense', action: 'update' })
   updateExpense(
     @Payload() payload: { id: string; updateExpenseDto: UpdateExpenseDto },

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Expense } from './expense.entity';
-import { Repository } from 'typeorm';
+import { Between, IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto, UpdateExpenseDto } from './expense.request';
 import { firstValueFrom } from 'rxjs';
@@ -159,6 +159,20 @@ export class AppService {
     return expenseResponses;
   }
 
+  async getAllByOnlyCategory(
+    categoryId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Expense[]> {
+    const expenses = await this.expenseRepository.find({
+      where: {
+        categoryId,
+        eventBudgetId: IsNull(),
+        date: Between(startDate, endDate),
+      },
+    });
+    return expenses;
+  }
   async update(
     id: string,
     updateExpenseDto: UpdateExpenseDto,
@@ -334,89 +348,4 @@ export class AppService {
       return totalAmountByPeriod;
     }
   }
-
-  // async getTotalAmountByPeriod(
-  //   userId?: string,
-  //   year?: number,
-  //   month?: number,
-  // ): Promise<{ period: string; totalAmount: number }[]> {
-  //   const queryBuilder = this.expenseRepository.createQueryBuilder('expense');
-
-  //   if (userId) {
-  //     queryBuilder.andWhere('expense.userId = :userId', { userId });
-  //   }
-
-  //   if (year && !month) {
-  //     queryBuilder
-  //       .select(
-  //         `TO_CHAR(expense.date, 'YYYY-MM') as period, SUM(expense.amount) as totalAmount`,
-  //       )
-  //       .andWhere('EXTRACT(YEAR FROM expense.date) = :year', { year })
-  //       .groupBy(`TO_CHAR(expense.date, 'YYYY-MM')`)
-  //       .orderBy(`TO_CHAR(expense.date, 'YYYY-MM')`);
-  //   } else if (year && month) {
-  //     const startDate = new Date(year, month - 1, 1);
-  //     const endDate = new Date(year, month, 0);
-
-  //     queryBuilder
-  //       .select(
-  //         `TO_CHAR(expense.date, 'YYYY-MM-DD') as period, SUM(expense.amount) as totalAmount`,
-  //       )
-  //       .andWhere('expense.date >= :startDate', { startDate })
-  //       .andWhere('expense.date <= :endDate', { endDate })
-  //       .groupBy(`TO_CHAR(expense.date, 'YYYY-MM-DD')`)
-  //       .orderBy(`TO_CHAR(expense.date, 'YYYY-MM-DD')`);
-
-  //     const expenses = await queryBuilder.getRawMany();
-  //     const totalAmountByPeriod: { period: string; totalAmount: number }[] = [];
-  //     const expenseMap = new Map<string, number>();
-
-  //     for (const expense of expenses) {
-  //       const period = expense.period;
-  //       expenseMap.set(period, expense.totalAmount);
-  //     }
-
-  //     const currentDate = new Date(year, month - 1, 1);
-  //     while (currentDate <= endDate) {
-  //       const period = currentDate.toISOString().substr(0, 10); // Get date in "YYYY-MM-DD" format
-  //       const totalAmount = expenseMap.get(period) || 0;
-  //       totalAmountByPeriod.push({ period, totalAmount });
-  //       currentDate.setDate(currentDate.getDate() + 1);
-  //     }
-
-  //     return totalAmountByPeriod;
-  //   }
-
-  //   const expenses = await queryBuilder.getRawMany();
-
-  //   const totalAmountByPeriod: { period: string; totalAmount: number }[] = [];
-
-  //   for (const expense of expenses) {
-  //     const period = expense.period || ''; // Access period from query result
-  //     const totalAmount = expense.totalAmount;
-
-  //     totalAmountByPeriod.push({ period, totalAmount });
-  //   }
-
-  //   if (year) {
-  //     const startDate = new Date(year, 0, 1);
-  //     const endDate = new Date(year, 11, 31);
-
-  //     const currentDate = new Date(startDate);
-  //     while (currentDate <= endDate) {
-  //       const period = currentDate.toISOString().substr(0, 7); // Get date in "YYYY-MM" format
-  //       const totalAmount = totalAmountByPeriod.find(
-  //         (item) => item.period === period,
-  //       );
-  //       if (!totalAmount) {
-  //         totalAmountByPeriod.push({ period, totalAmount: 0 });
-  //       }
-  //       currentDate.setMonth(currentDate.getMonth() + 1);
-  //     }
-  //   }
-  //   // Sort totalAmountByPeriod in ascending order based on the period
-  //   totalAmountByPeriod.sort((a, b) => (a.period > b.period ? 1 : -1));
-
-  //   return totalAmountByPeriod;
-  // }
 }

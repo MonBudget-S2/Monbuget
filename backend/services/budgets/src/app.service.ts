@@ -14,12 +14,14 @@ export interface BudgetResponse {
   endDate: Date;
   userId: string;
   category: []; // Include the category object
+  expenses: object[]; // Include the expenses array
 }
 
 @Injectable()
 export class AppService {
   constructor(
     @Inject('CATEGORY_SERVICE') private readonly categoryService: ClientProxy,
+    @Inject('EXPENSE_SERVICE') private readonly expenseService: ClientProxy,
     @InjectRepository(Budget)
     private budgetRepository: Repository<Budget>,
   ) {}
@@ -67,6 +69,13 @@ export class AppService {
         budget.categoryId,
       ),
     );
+
+    const expenses = await this.getAllExpensesByBudget(
+      budget.categoryId,
+      budget.startDate,
+      budget.endDate,
+    );
+
     const budgetResponse: BudgetResponse = {
       id: budget.id,
       name: budget.name,
@@ -75,6 +84,7 @@ export class AppService {
       endDate: budget.endDate,
       userId: budget.userId,
       category: category,
+      expenses: expenses,
     };
     return budgetResponse;
   }
@@ -91,6 +101,12 @@ export class AppService {
         ),
       );
 
+      const expenses = await this.getAllExpensesByBudget(
+        budget.categoryId,
+        budget.startDate,
+        budget.endDate,
+      );
+
       const budgetResponse: BudgetResponse = {
         id: budget.id,
         name: budget.name,
@@ -98,7 +114,8 @@ export class AppService {
         startDate: budget.startDate,
         endDate: budget.endDate,
         userId: budget.userId,
-        category: category, // Assign the category object
+        category: category,
+        expenses: expenses,
       };
 
       budgetResponses.push(budgetResponse);
@@ -119,6 +136,12 @@ export class AppService {
         ),
       );
 
+      const expenses = await this.getAllExpensesByBudget(
+        budget.categoryId,
+        budget.startDate,
+        budget.endDate,
+      );
+
       const budgetResponse: BudgetResponse = {
         id: budget.id,
         name: budget.name,
@@ -126,7 +149,8 @@ export class AppService {
         startDate: budget.startDate,
         endDate: budget.endDate,
         userId: budget.userId,
-        category: category, // Assign the category object
+        category: category,
+        expenses: expenses,
       };
 
       budgetResponses.push(budgetResponse);
@@ -166,7 +190,6 @@ export class AppService {
         throw error; // Rethrow the error to be handled by the caller
       }
     }
-
     const updatedBudget = await this.budgetRepository.save({
       ...budget,
       ...updateBudgetDto,
@@ -185,6 +208,7 @@ export class AppService {
     const { customCategory, ...budgetDto } = createBudgetDto;
     return this.budgetRepository.save(budgetDto);
   }
+
   private async updateBudgetInDatabase(
     id: string,
     updateBudgetDto: UpdateBudgetDto,
@@ -219,5 +243,18 @@ export class AppService {
       // Handle the error or throw it to be handled by the caller
       throw error;
     }
+  }
+
+  async getAllExpensesByBudget(
+    budgetId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any[]> {
+    return await firstValueFrom(
+      this.expenseService.send(
+        { service: 'expense', action: 'getAllByBudget' },
+        { budgetId, startDate, endDate },
+      ),
+    );
   }
 }
