@@ -142,7 +142,7 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                             color: theme.palette.primary[200]
                           }}
                         >
-                          {timeValue === 'mois' ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}
+                          {timeValue ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}
                         </Typography>
                       </Grid>
                     </Grid>

@@ -44,8 +44,8 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
     { field: 'receiptImage', headerName: 'Image du reçu', headerAlign: 'center' },
     { field: 'createdAt', headerName: 'Créé le', headerAlign: 'center' },
     { field: 'updatedAt', headerName: 'Mis à jour le', headerAlign: 'center' },
-    { field: 'categoryId', headerName: 'Catégorie', headerAlign: 'center' },
-    { field: 'eventBudgetId', headerName: 'Budget', headerAlign: 'center' }
+    { field: 'category', headerName: 'Catégorie', headerAlign: 'center', valueGetter: (params) => params.row.category?.name },
+    { field: 'eventBudget', headerName: 'Budget', headerAlign: 'center', valueGetter: (params) => params.row.eventBudget?.name }
   ];
 
   const onEdit = (id) => {
