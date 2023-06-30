@@ -6,7 +6,6 @@ import { Grid, Button, Typography } from '@mui/material';
 
 // project imports
 import { gridSpacing } from 'store/constant';
-import chartData from './categorical-budget-chart';
 import CategoricalBudgetChart from './CategoricalBudgetChart';
 import MostExpenseCategoryBudget from './MostExpenseCategoryBudget';
 import CustomAlert from 'ui-component/alert/CustomAlert';
@@ -26,7 +25,7 @@ const CategoricalBudget = () => {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   const [mostSpentCategory, setMostSpentCategory] = useState('');
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
   const [nbCategoricalBudgetFinished, setNbCategoricalBudgetFinished] = React.useState(0);
   const [nbCategoricalBudgetActive, setNbCategoricalBudgetActive] = React.useState(0);
 
@@ -35,16 +34,9 @@ const CategoricalBudget = () => {
   };
 
   useEffect(() => {
-    const maxSpent = Math.max(...chartData.series);
-    const maxSpentIndex = chartData.series.findIndex((value) => value === maxSpent);
-    const mostSpentCategoryName = chartData.options.labels[maxSpentIndex];
-    setMostSpentCategory(mostSpentCategoryName);
-
-    setLoading(false);
-  }, []);
-  useEffect(() => {
     if (isBudgetChanged) {
       setIsBudgetChanged(false);
+      setLoading(false);
     }
   }, [isBudgetChanged]);
 
@@ -66,13 +58,7 @@ const CategoricalBudget = () => {
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CategoricalBudgetChart
-          isLoading={isLoading}
-          options={chartData.options}
-          series={chartData.series}
-          type={chartData.type}
-          height={chartData.height}
-        />
+        <CategoricalBudgetChart isBudgetChanged={isBudgetChanged} />
       </Grid>
       <Grid item xs={12} md={6}>
         <Grid container spacing={gridSpacing}>
@@ -95,10 +81,11 @@ const CategoricalBudget = () => {
         <ListCategoricalBudget
           setAlertMessage={setAlertMessage}
           setIsBudgetChanged={setIsBudgetChanged}
-          isAddFormOpen={isAddFormOpen}
-          setIsAddFormOpen={setIsAddFormOpen}
+          // isAddFormOpen={isAddFormOpen}
+          // setIsAddFormOpen={setIsAddFormOpen}
           setNbCategoricalBudgetFinished={setNbCategoricalBudgetFinished}
           setNbCategoricalBudgetActive={setNbCategoricalBudgetActive}
+          setMostSpentCategory={setMostSpentCategory}
           key={isBudgetChanged}
         />
       </Grid>

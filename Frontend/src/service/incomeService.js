@@ -31,7 +31,7 @@ const deleteIncome = async (id) => {
   return await axiosInstance.delete(`/incomes/${id}`);
 };
 
-const incomService = {
+const incomeService = {
   addIncome,
   updateIncome,
   getIncomes,
@@ -39,4 +39,4 @@ const incomService = {
   getIncomeByTypeForYear
 };
 
-export default incomService;
+export default incomeService;

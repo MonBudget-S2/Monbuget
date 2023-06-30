@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CardContent, Grid, Chip, IconButton } from '@mui/material';
+import { CardContent, Grid, Chip, IconButton, Typography, Slider } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
@@ -11,18 +11,19 @@ import { useState } from 'react';
 import categoricalBudgetService from 'service/categoricalBudgetService';
 import { format, parseISO } from 'date-fns';
 import AddCategoricalBudget from './AddCategoricalBudget';
+import { getDateStatus, getStatusColor } from 'utils/budget';
 
 const ListCategoricalBudget = ({
   setAlertMessage,
   setIsBudgetChanged,
-  isAddFormOpen,
-  setIsAddFormOpen,
   setNbCategoricalBudgetFinished,
-  setNbCategoricalBudgetActive
+  setNbCategoricalBudgetActive,
+  setMostSpentCategory
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [budgets, setBudgets] = useState({});
   const [editingBudget, setEditingBudget] = useState(true);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,36 +49,13 @@ const ListCategoricalBudget = ({
 
       const activeBudgets = budgets.filter((budget) => getDateStatus(budget.startDate, budget.endDate) === 'Actif');
       setNbCategoricalBudgetActive(activeBudgets.length);
+
+      const maxSpent = Math.max(budgets.map((budget) => budget.amount));
+      const maxSpentIndex = budgets.findIndex((value) => value.amount === maxSpent);
+      const mostSpentCategoryName = budgets[maxSpentIndex]?.category.name;
+      setMostSpentCategory(mostSpentCategoryName);
     }
   }, [budgets]);
-
-  const currentDate = new Date();
-
-  const getDateStatus = (startDate, endDate) => {
-    const parsedStartDate = new Date(startDate);
-    const parsedEndDate = new Date(endDate);
-
-    if (currentDate < parsedStartDate) {
-      return 'Inactif';
-    } else if (currentDate <= parsedEndDate) {
-      return 'Actif';
-    } else {
-      return 'Terminé';
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Inactif':
-        return 'error';
-      case 'Actif':
-        return 'warning';
-      case 'Terminé':
-        return 'success';
-      default:
-        return 'default';
-    }
-  };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -125,7 +103,36 @@ const ListCategoricalBudget = ({
       width: 200,
       renderCell: (params) => params.row.category?.name || 'N/A'
     },
-    { field: 'tracking', headerName: 'Suivi', width: 200 },
+    {
+      field: 'tracking',
+      headerName: 'Suivi',
+      width: 200,
+      renderCell: (params) => {
+        const budget = params.row;
+        const totalExpenseAmount = budget.expenses.length > 0 ? budget.expenses.reduce((total, expense) => total + expense.amount, 0) : 0;
+        const progress = totalExpenseAmount / budget.amount;
+        const formattedProgress = Math.round(progress * 100);
+
+        return (
+          <>
+            <Typography variant="body2" mr={2}>
+              {totalExpenseAmount}€
+            </Typography>
+            <Slider
+              value={formattedProgress}
+              valueLabelFormat={(value) => `${value}%`}
+              color={progress > 1 ? 'error' : 'primary'}
+              valueLabelDisplay="auto"
+              aria-labelledby="expense-tracking"
+              disabled={!budget.status === 'Actif'}
+            />
+            <Typography variant="body2" ml={2}>
+              {budget.amount}€
+            </Typography>
+          </>
+        );
+      }
+    },
     {
       field: 'status',
       headerName: 'Statut',

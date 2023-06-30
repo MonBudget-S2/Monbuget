@@ -14,7 +14,7 @@ import Chart from 'react-apexcharts';
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
-import incomService from 'service/incomeService';
+import incomeService from 'service/incomeService';
 import { ArrowBack, ArrowForward } from '@mui/icons-material';
 // import data from 'ui-component/table/data';
 
@@ -116,7 +116,7 @@ const IncomeChart = ({ isLoading }) => {
     const newYear = year + increment;
     setYear(newYear);
   };
-  const [periode, setPeriode] = useState(status[0].value);
+  const [period, setPeriod] = useState(status[0].value);
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
@@ -131,7 +131,7 @@ const IncomeChart = ({ isLoading }) => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await incomService.getIncomeByTypeForYear(year);
+      const res = await incomeService.getIncomeByTypeForYear(year);
 
       if (res.data) {
         const series = Object.entries(res.data.incomesByType).map(([name, data]) => ({
@@ -147,7 +147,7 @@ const IncomeChart = ({ isLoading }) => {
       }
     };
     getData();
-  }, [periode, year]);
+  }, [period, year]);
 
   useEffect(() => {
     chartData.options.colors = [primary200, primaryDark, secondaryMain, primary];
@@ -189,7 +189,7 @@ const IncomeChart = ({ isLoading }) => {
                   </div>
                 </Grid>
                 <Grid item>
-                  <TextField id="standard-select-currency" select periode={periode} onChange={(e) => setPeriode(e.target.value)}>
+                  <TextField id="standard-select-currency" select period={period} onChange={(e) => setPeriod(e.target.value)}>
                     {status.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
                         {option.label}

@@ -8,6 +8,7 @@ import { CategoryModule } from "./categories/category.module";
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { UserModule } from "./users/user.module";
 import { IncomeModule } from "./incomes/income.module";
+import { ExpenseModule } from "./expenses/expense.module";
 
 @Module({
   imports: [
@@ -21,14 +22,14 @@ import { IncomeModule } from "./incomes/income.module";
         },
       },
 
-      {
-        name: "EXPENSE_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-expenses-service",
-          port: 3004,
-        },
-      },
+      // {
+      //   name: "EXPENSE_SERVICE",
+      //   transport: Transport.TCP,
+      //   options: {
+      //     host: "challenge-expenses-service",
+      //     port: 3004,
+      //   },
+      // },
 
       {
         name: "DEBT_SERVICE",
@@ -53,6 +54,7 @@ import { IncomeModule } from "./incomes/income.module";
     AuthenticationModule,
     UserModule,
     IncomeModule,
+    ExpenseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -19,12 +19,17 @@ const deleteBudget = async (id) => {
   return await axiosInstance.delete(`/budgets/${id}`);
 };
 
+const addCategory = async (category) => {
+  return await axiosInstance.post('/categories', category);
+};
+
 const categoricalBudgetService = {
   addBudget,
   updateBudget,
   getBudgets,
   deleteBudget,
-  getCategories
+  getCategories,
+  addCategory
 };
 
 export default categoricalBudgetService;

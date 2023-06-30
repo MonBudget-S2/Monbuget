@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate, IsBoolean, IsUUID } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsBoolean, IsUUID } from "class-validator";
 
 export class CreateExpenseDto {
   @IsString()

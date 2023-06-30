@@ -1,7 +1,7 @@
 // ==============================|| INCOME TABLE ||============================== //
 
 import PropTypes from 'prop-types';
-import { CardContent, Grid, Box } from '@mui/material';
+import { CardContent, Grid, Box, IconButton } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
@@ -9,10 +9,9 @@ import { format, parseISO } from 'date-fns';
 import { useEffect, useState } from 'react';
 import incomeService from '../../../service/incomeService';
 import AddIncome from './AddIncome';
-import UpdateButton from 'ui-component/buttons/UpdateButton';
-import DeleteButton from 'ui-component/buttons/DeleteButton';
 import DataTable from 'ui-component/table/DataTable';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen }) => {
   const [incomes, setIncomes] = useState([{}]);
   const [editingIncome, setEditingIncome] = useState(null);
@@ -45,8 +44,12 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
       flex: 1,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-          <UpdateButton to="/listexpense" onClick={() => onEdit(params.row.id)} />
-          <DeleteButton to="listexpense" onClick={() => onDelete(params.row.id)} />
+          <IconButton color="info" aria-label="Modifier" onClick={() => onEdit(params.row.id)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton color="error" aria-label="Supprimer" onClick={() => onDelete(params.row.id)}>
+            <DeleteIcon />
+          </IconButton>
         </Box>
       )
     }
@@ -56,6 +59,8 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
     const income = incomes.find((income) => income.id === id);
     income.date = format(parseISO(income.date), 'yyyy-MM-dd');
     setEditingIncome(income); // Set the editing income data
+    setIsIncomeChanged(true);
+
     setIsAddFormOpen(true); // Open the form
   };
 

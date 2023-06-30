@@ -4,6 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
 
 @Entity()
@@ -11,7 +13,8 @@ export class Expense {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  // Make column optional
+  @Column({ nullable: true })
   description: string;
 
   @Column()
@@ -20,17 +23,11 @@ export class Expense {
   @Column()
   date: Date;
 
-  @Column({ name: 'payment_method' })
-  paymentMethod: string;
-
   @Column()
   location: string;
 
-  @Column({ name: 'receiptImage' })
+  @Column({ name: 'receiptImage', nullable: true })
   receiptImage: string;
-
-  @Column({ default: false })
-  isPersonal: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -42,8 +39,18 @@ export class Expense {
   userId: string;
 
   @Column({ name: 'category_id', nullable: true })
-  categoryId: number;
+  categoryId: string;
 
   @Column({ name: 'event_budget_id', nullable: true })
-  eventBudgetId: number;
+  eventBudgetId: string;
+
+  @BeforeInsert()
+  private setCreatedAt() {
+    this.createdAt = new Date();
+  }
+
+  @BeforeUpdate()
+  private setUpdatedAt() {
+    this.updatedAt = new Date();
+  }
 }

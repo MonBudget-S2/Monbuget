@@ -18,7 +18,7 @@ export class AppService {
     const newIncome = this.incomeRepository.create(createIncomeDto);
     console.log('newIncome', newIncome);
     await this.incomeRepository.save(newIncome);
-    return { message: 'Budget created successfully' };
+    return { message: 'Budget created successfully', newIncome };
   }
 
   async getById(id: string): Promise<Income | null> {

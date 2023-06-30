@@ -1,19 +1,22 @@
-import {Entity,Column, PrimaryGeneratedColumn} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class EventBudget {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    amount: number;
+  @Column()
+  name: string;
 
-    @Column()
-    startDate: Date;
+  @Column()
+  amount: number;
 
-    @Column()
-    endDate: Date
+  @Column()
+  startDate: Date;
 
-    @Column()
-    userId: string;
+  @Column()
+  endDate: Date;
+
+  @Column()
+  userId: string;
 }

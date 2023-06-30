@@ -20,6 +20,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'EXPENSE_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-expenses-service',
+          port: 3004,
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
