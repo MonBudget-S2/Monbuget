@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
@@ -6,13 +6,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
-//data 
-import data from './debt-table-data';
 
-// ==============================|| DEBT TOTAL CARD ||============================== //
+// ==============================|| TOTAL FINISHED DEBT CARD ||============================== //
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    background: 'linear-gradient(45deg, #0C0C52, #6464A2)',
+    background: 'linear-gradient(45deg, #1D976C, #93F9B9)', 
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -48,14 +46,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-const TotalDebt = ({ isLoading }) => {
+const NbFinishedDebt = ({ isLoading }) => {
     const theme = useTheme();
-    const [totalDebt, setTotalDebt] = useState(0);
-
-    useEffect(() => {
-        const updatedTotalDebt = data.reduce((sum, item) => sum + item.remainingAmount, 0);
-        setTotalDebt(updatedTotalDebt);
-    }, [data]);
 
     return (
         <>
@@ -69,7 +61,7 @@ const TotalDebt = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography variant="subtitle2" sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75, color: '#fff' }}>
-                                            {totalDebt} €
+                                            5
                                         </Typography>
                                     </Grid>
                                     <Grid item>
@@ -88,7 +80,7 @@ const TotalDebt = ({ isLoading }) => {
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
                                 <Typography variant="h4" sx={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>
-                                    Total des dettes
+                                    Dettes remboursées
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -99,8 +91,8 @@ const TotalDebt = ({ isLoading }) => {
     );
 };
 
-TotalDebt.propTypes = {
+NbFinishedDebt.propTypes = {
     isLoading: PropTypes.bool.isRequired
 };
 
-export default TotalDebt;
+export default NbFinishedDebt;

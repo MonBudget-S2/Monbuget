@@ -8,6 +8,8 @@ import AddDebt from './SelectedDebt';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import TotalDebt from './TotalDebt';
 import ListDebt from './ListDebt';
+import NbUnifinishedDebt from './NbUnifinishedDebt';
+import NbFinishedDebt from './NbFinishedDebt';
 
 
 // ==============================|| DEBT PAGE ||============================== //
@@ -38,12 +40,12 @@ const Debt = () => {
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalDebt isLoading={isLoading} />
                     </Grid>
-                    {/* <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <DebtCard isLoading={isLoading} title="Dettes en cours" total={524} />
+                    <Grid item lg={4} md={6} sm={6} xs={12}>
+                        <NbUnifinishedDebt isLoading={isLoading} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <DebtCard isLoading={isLoading} title="Montant remboursé" total={524} />
-                    </Grid> */}
+                        <NbFinishedDebt isLoading={isLoading} />
+                    </Grid> 
                 </Grid>
             </Grid>
             <Grid item xs={12}>

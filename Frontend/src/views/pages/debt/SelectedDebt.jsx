@@ -2,30 +2,42 @@ import { Box, FormControl, InputLabel, OutlinedInput, FormHelperText } from '@mu
 import { Formik } from 'formik';
 import DialogForm from 'ui-component/modal/DialogForm';
 
-const SelectedDebtModal = ({ selectedDebt, setSelectedDebt, isOpen, setIsOpen }) => {
-    const handleSubmit = (values, { setSubmitting }) => {
-        const { amountReceived } = values;
+const SelectedDebtModal = ({ selectedDebt, isOpen, setIsOpen, updateDebtInTable }) => {
 
-        // Vérifier que le montant reçu est valide
+    const handleSubmit = (values) => {
+        const { amountReceived } = values;
+            
         if (!amountReceived || isNaN(amountReceived) || amountReceived <= 0) {
             return;
         }
+    
         const receivedAmount = parseFloat(amountReceived);
         const updatedRemainingAmount = selectedDebt.remainingAmount - receivedAmount;
+    
+        if (updatedRemainingAmount < 0) {
+            alert("Le montant reçu ne peut pas dépasser le montant restant à rembourser.");
+            return;
+        }
 
+        const updatedAmount = selectedDebt.amount + receivedAmount;  // Updated amount after repayment
+    
         const updatedDebt = {
             ...selectedDebt,
+            amount: updatedAmount,
             remainingAmount: updatedRemainingAmount,
         };
-
-        setSelectedDebt(updatedDebt);
-
+    
+        updateDebtInTable(updatedDebt);
+    
         console.log("Montant restant :", updatedRemainingAmount);
-
-        setIsOpen(false);
-        setSubmitting(false);
+    
     };
+    
 
+    const handleCancel = () => {
+        setIsOpen(false);
+
+    };
 
     return (
         <Formik
@@ -38,9 +50,10 @@ const SelectedDebtModal = ({ selectedDebt, setSelectedDebt, isOpen, setIsOpen })
             {({ errors, handleBlur, handleChange, handleSubmit, touched, values, isSubmitting }) => (
                 <DialogForm
                     title="Rembourser la dette"
-                    isOpen={isOpen}
+                    isOpen={isOpen || false}
                     setIsOpen={setIsOpen}
                     onSubmit={handleSubmit}
+                    handleClose={handleCancel}
                     isSubmitting={isSubmitting}
                 >
                     <FormControl fullWidth error={Boolean(touched.amountReceived && errors.amountReceived)}>
