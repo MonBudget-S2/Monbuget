@@ -114,7 +114,7 @@ const HomeNavBar = () => {
             ))}
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
-            {user ? (
+            {user?.id ? (
               <Link href="/dashboard">
                 <BackgroundLetterAvatars fullname={`${user.userInfo?.firstName} ${user.userInfo?.lastName}`} />
               </Link>

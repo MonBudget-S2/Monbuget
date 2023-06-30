@@ -10,8 +10,6 @@ import MostExpensive from './MostExpensive';
 import NbExpenseByMonth from './NbExpenseByMonth';
 // import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 
-import expenseByCategoryData from './expense-by-category';
-import chartData from './expense-chart-data';
 import ListExpense from './ListExpense';
 import AddExpense from './AddExpense';
 import CustomAlert from 'ui-component/alert/CustomAlert';
@@ -88,7 +86,7 @@ const Expense = () => {
         <MostExpensive />
       </Grid>
       <Grid item xs={12} md={6}>
-        <ExpenseByCategory key={isExpenseChanged}/>
+        <ExpenseByCategory key={isExpenseChanged} />
       </Grid>
       {/* <Grid item xs={12} md={6}>
         <ExpenseChart series={chartData.series} isLoading={isLoading} />
