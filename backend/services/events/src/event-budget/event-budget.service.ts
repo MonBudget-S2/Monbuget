@@ -6,50 +6,95 @@ import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from './event-budget.request';
+import { EventParticipate } from 'src/event-participate/event-participate.entity';
+import { EventParticipateService } from 'src/event-participate/event-participate.service';
 
+interface EventBudgetResponse extends EventBudget {
+  eventParticipants: EventParticipate[];
+}
 @Injectable()
 export class AppService {
   constructor(
     @InjectRepository(EventBudget)
     private eventBudgetRepository: Repository<EventBudget>,
+    @InjectRepository(EventParticipate)
+    private eventParticipateService: EventParticipateService,
   ) {}
 
   async create(createEventBudgetDto: CreateEventBudgetDto): Promise<any> {
     const newEventBudget =
       this.eventBudgetRepository.create(createEventBudgetDto);
     await this.eventBudgetRepository.save(newEventBudget);
+
+    // Create EventParticipate entity and associate it with the user
+    const eventParticipate = new EventParticipate();
+    eventParticipate.userId = createEventBudgetDto.userId;
+    eventParticipate.eventBudgetId = newEventBudget.id;
+    await this.eventParticipateService.create(eventParticipate);
+
     return { message: 'Event budget created successfully', newEventBudget };
   }
+  async getById(id: string): Promise<EventBudgetResponse | null> {
+    const eventBudget = await this.eventBudgetRepository.findOneBy({ id });
+    if (!eventBudget) {
+      return null;
+    }
+    const eventParticipants =
+      await this.eventParticipateService.getByEventBudgetId(id);
+    // const eventParticipantsCount = eventParticipants.length;
 
-  async getById(id: string): Promise<EventBudget | null> {
-    return this.eventBudgetRepository.findOneByOrFail({ id });
+    const eventBudgetResponse = {
+      ...eventBudget,
+      eventParticipants,
+    };
+
+    return eventBudgetResponse;
   }
 
-  async getAll(): Promise<EventBudget[]> {
-    return this.eventBudgetRepository.find();
+  async getAll(): Promise<EventBudgetResponse[]> {
+    const eventBudgets = await this.eventBudgetRepository.find();
+    const eventBudgetsResponse: EventBudgetResponse[] = [];
+    for (const eventBudget of eventBudgets) {
+      const eventParticipants =
+        await this.eventParticipateService.getByEventBudgetId(eventBudget.id);
+
+      eventBudgetsResponse.push({
+        ...eventBudget,
+        eventParticipants,
+      });
+    }
+    return eventBudgetsResponse;
   }
 
-  async getAllByUser(userId: string): Promise<EventBudget[]> {
-    return this.eventBudgetRepository.find({ where: { userId } });
+  async getAllByUser(userId: string): Promise<EventBudgetResponse[]> {
+    const eventBudgets = await this.eventBudgetRepository.find({
+      where: { userId },
+    });
+    const eventBudgetsResponse: EventBudgetResponse[] = [];
+
+    for (const eventBudget of eventBudgets) {
+      const eventParticipants =
+        await this.eventParticipateService.getByEventBudgetId(eventBudget.id);
+      eventBudgetsResponse.push({
+        ...eventBudget,
+        eventParticipants,
+      });
+    }
+    return eventBudgetsResponse;
   }
 
   async update(
     id: string,
     updateEventBudgetDto: UpdateEventBudgetDto,
   ): Promise<EventBudget | null> {
-    const eventBudget = await this.eventBudgetRepository.findOneByOrFail({
-      id,
-    });
-
+    const eventBudget = await this.eventBudgetRepository.findOneBy({ id });
     if (!eventBudget) {
       return null; // Event budget with the given ID not found
     }
-
     const updatedEventBudget = await this.eventBudgetRepository.save({
       ...eventBudget,
       ...updateEventBudgetDto,
     });
-
     return updatedEventBudget;
   }
 
