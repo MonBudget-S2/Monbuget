@@ -75,13 +75,12 @@ jobs:
     needs: [create-image]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: kubectl - get credentials
-        uses: ameydev/gke-kubectl-action@master
-        env:
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-          CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
-          ZONE_NAME: ${{ secrets.ZONE_NAME }}
+      - uses: actions/checkout@v3
+        name: Checkout repository
+      - name: Connect to GKE
+        uses: Swibi/connect-to-gke@v2.1
         with:
-          args: apply -f backend/
+          GCP_SA_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          GCP_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          GKE_CLUSTER: ${{ secrets.CLUSTER_NAME }}
+          GKE_ZONE: ${{ secrets.ZONE_NAME }}
