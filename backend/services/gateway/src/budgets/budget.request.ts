@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsDate } from 'class-validator';
+import { IsString, IsNumber, IsDate } from "class-validator";
 
 export class CreateBudgetDto {
   @IsString()
@@ -17,7 +17,10 @@ export class CreateBudgetDto {
   userId: string;
 
   @IsString()
-  categoryId: string;
+  categoryId?: string;
+
+  @IsString()
+  customCategory?: string;
 }
 
 export class UpdateBudgetDto {
@@ -38,4 +41,7 @@ export class UpdateBudgetDto {
 
   @IsString()
   categoryId?: string;
+
+  @IsString()
+  customCategory?: string;
 }

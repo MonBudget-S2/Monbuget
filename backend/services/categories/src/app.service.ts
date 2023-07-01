@@ -14,7 +14,7 @@ export class AppService {
   async create(createCategoryDto: CreateCategoryDto): Promise<any> {
     const newCategory = this.categoryRepository.create(createCategoryDto);
     await this.categoryRepository.save(newCategory);
-    return { message: 'Category created successfully' };
+    return { message: 'Category created successfully', newCategory };
   }
 
   async getById(id: string): Promise<Category | null> {
@@ -25,17 +25,21 @@ export class AppService {
     return this.categoryRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<Category[]> {
+    return this.categoryRepository.findBy({ userId });
+  }
+
   async update(
     id: string,
     updateCategoryDto: UpdateCategoryDto,
   ): Promise<Category | null> {
-    const result = await this.categoryRepository.update(id, updateCategoryDto);
+    const category = await this.categoryRepository.findOneByOrFail({ id });
+    const updatedCategory = await this.categoryRepository.save({
+      ...category,
+      ...updateCategoryDto,
+    });
 
-    if (result.affected === 0) {
-      return null; // Category with the given ID not found
-    }
-
-    return this.categoryRepository.findOneBy({ id });
+    return updatedCategory;
   }
 
   async delete(id: string): Promise<boolean> {

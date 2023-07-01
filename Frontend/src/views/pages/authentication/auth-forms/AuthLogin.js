@@ -14,7 +14,7 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography,
+  Typography
 } from '@mui/material';
 
 // third party
@@ -28,12 +28,13 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useDispatch } from 'react-redux';
-import { login } from 'service/authService';
+import { useDispatch, useSelector } from 'react-redux';
+import authService from 'service/authService';
 // import { authenticateUser } from 'store/authSlice';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-
+import { getToken } from 'store/authSlice';
+import { useEffect } from 'react';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -42,7 +43,7 @@ const AuthLogin = ({ ...others }) => {
   const theme = useTheme();
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
-
+  const token = useSelector(getToken);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -57,23 +58,18 @@ const AuthLogin = ({ ...others }) => {
     try {
       // Destructure the values from the Formik arguments
       const { email, password } = values;
-  
 
-      const credentials = { username:email, password };
+      const credentials = { username: email, password };
       // const response= await login(credentials);
       // dispatch(authenticateUser(response));
       const res = await axios.post('http://127.0.0.1:3000/users/login', credentials);
-      login(res, dispatch);
+      authService.login(res, dispatch);
 
-  
       // Set the Formik status and submitting state
       setStatus({ success: true });
       setSubmitting(false);
 
       navigate('/dashboard', { replace: true });
-
-
-      
     } catch (err) {
       console.error(err);
       // Set the Formik status, errors, and submitting state
@@ -82,6 +78,12 @@ const AuthLogin = ({ ...others }) => {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [token]);
 
   return (
     <>
@@ -169,7 +171,7 @@ const AuthLogin = ({ ...others }) => {
 
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
-                <Button  disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
+                <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
                   Sign in
                 </Button>
               </AnimateButton>

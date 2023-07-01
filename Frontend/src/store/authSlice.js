@@ -3,11 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
+    isCheckingForToken: true,
     isConnected: false,
     token: null,
     id: null,
     role: null,
-    userInfo: null,
+    userInfo: null
   },
   reducers: {
     authenticateUser: (state, action) => {
@@ -25,20 +26,22 @@ const authSlice = createSlice({
       //   role,
       //   userInfo
       // };
-      
+
       // localStorage.setItem('user', JSON.stringify(user));
     },
-  },
+    setIsCheckingForToken: (state, action) => {
+      state.isCheckingForToken = action.payload;
+    }
+  }
 });
 
-export const { authenticateUser } = authSlice.actions;
+export const { authenticateUser, setIsCheckingForToken } = authSlice.actions;
 
 export const isAdmin = (state) => state.auth.role === 'ADMIN';
 export const isLogged = (state) => state.auth.isConnected;
-export const getToken = (state) => state.auth.token;
-export const getUserId = (state) => state.auth.id;
+export const getToken = (state) => state.auth.token || (localStorage.getItem('token') && JSON.parse(localStorage.getItem('token'))) || null;
+export const getUserId = (state) => state.auth.id || (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).id) || null;
 export const getUserInfo = (state) => state.auth.userInfo;
 export const getUser = (state) => state.auth;
+export const selectIsCheckingForToken = (state) => state.auth.isCheckingForToken;
 export default authSlice.reducer;
-
-

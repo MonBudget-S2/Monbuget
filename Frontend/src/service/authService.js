@@ -8,11 +8,10 @@ import { initialState } from 'store/customizationReducer';
 //     ? process.env.REACT_APP_URL_PROD
 //     : process.env.REACT_APP_URL_DEV;
 
-const url = "http://127.0.0.1:3000";
-    
-const api = axios.create({
-  baseURL: url, // Set the base URL of your API
+const url = 'http://127.0.0.1:3000';
 
+const api = axios.create({
+  baseURL: url // Set the base URL of your API
 });
 
 // export const login = async (credentials) => {
@@ -25,7 +24,12 @@ const api = axios.create({
 //   }
 // };
 
-export const login = (res,dispatch) => {
+const register = async (credentials) => {
+  console.log('register', credentials);
+  return await api.post('/users/register', credentials);
+};
+
+const login = (res, dispatch) => {
   const { token, id, role, userInfo } = res.data;
 
   localStorage.setItem('token', token); // Adjust the key according to your project
@@ -38,15 +42,12 @@ export const login = (res,dispatch) => {
       token,
       id,
       role,
-      userInfo,
+      userInfo
     })
   );
 };
 
-
-
-
-export const validate = () => {
+const validate = () => {
   const token = localStorage.getItem('token'); // Adjust the key according to your project
 
   return new Promise((resolve, reject) => {
@@ -66,3 +67,11 @@ export const validate = () => {
     }
   });
 };
+
+const authService = {
+  register,
+  login,
+  validate
+};
+
+export default authService;

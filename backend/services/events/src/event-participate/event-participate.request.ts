@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreateEventParticipateDto {
@@ -12,9 +11,7 @@ export class CreateEventParticipateDto {
   eventBudgetId: string;
 }
 
-export class UpdateEventParticipateDto extends PartialType(
-  CreateEventParticipateDto,
-) {
+export class UpdateEventParticipateDto {
   @IsNumber()
   amountPaid: number;
 

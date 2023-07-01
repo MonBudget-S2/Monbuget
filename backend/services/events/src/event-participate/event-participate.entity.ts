@@ -1,17 +1,16 @@
-import {Entity,Column, PrimaryGeneratedColumn} from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class EventParticipate {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    amountPaid: number;
+  @Column({ default: 0 })
+  amountPaid: number;
 
-    @Column()
-    userId: string;
+  @Column()
+  userId: string;
 
-    @Column()
-    eventBudgetId: string;
-
+  @Column()
+  eventBudgetId: string;
 }

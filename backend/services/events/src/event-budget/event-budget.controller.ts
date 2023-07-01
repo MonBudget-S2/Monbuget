@@ -1,33 +1,52 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { EventBudgetService } from './event-budget.service';
-import { CreateEventBudgetDto, UpdateEventBudgetDto } from './event-budget.request';
+import { Controller } from '@nestjs/common';
+import {
+  CreateEventBudgetDto,
+  UpdateEventBudgetDto,
+} from './event-budget.request';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  EventBudgetResponse,
+  EventBudgetService,
+} from './event-budget.service';
 
-@Controller('event-budget')
+@Controller()
 export class EventBudgetController {
-  constructor(private readonly eventBudgetService: EventBudgetService) {}
+  constructor(private readonly appService: EventBudgetService) {}
 
-  @Post()
-  create(@Body() createEventBudgetDto: CreateEventBudgetDto) {
-    return this.eventBudgetService.create(createEventBudgetDto);
+  @MessagePattern({ service: 'eventBudget', action: 'create' })
+  createEventBudget(createEventBudgetDto: CreateEventBudgetDto) {
+    return this.appService.create(createEventBudgetDto);
   }
 
-  @Get()
-  findAll() {
-    return this.eventBudgetService.findAll();
+  @MessagePattern({ service: 'eventBudget', action: 'getAll' })
+  getAllEventBudgets(): Promise<EventBudgetResponse[]> {
+    return this.appService.getAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventBudgetService.findOne(+id);
+  @MessagePattern({ service: 'eventBudget', action: 'getAllByUser' })
+  getAllEventBudgetsByUser(userId: string): Promise<EventBudgetResponse[]> {
+    return this.appService.getAllByUser(userId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventBudgetDto: UpdateEventBudgetDto) {
-    return this.eventBudgetService.update(+id, updateEventBudgetDto);
+  @MessagePattern({ service: 'eventBudget', action: 'getById' })
+  getEventBudgetById(id: string) {
+    return this.appService.getById(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventBudgetService.remove(+id);
+  @MessagePattern({ service: 'eventBudget', action: 'update' })
+  updateEventBudget(
+    @Payload()
+    payload: {
+      id: string;
+      updateEventBudgetDto: UpdateEventBudgetDto;
+    },
+  ) {
+    const { id, updateEventBudgetDto } = payload;
+    return this.appService.update(id, updateEventBudgetDto);
+  }
+
+  @MessagePattern({ service: 'eventBudget', action: 'delete' })
+  deleteEventBudget(id: string) {
+    return this.appService.delete(id);
   }
 }

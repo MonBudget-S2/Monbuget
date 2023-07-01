@@ -12,67 +12,63 @@ import themes from 'themes';
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
 import { useEffect } from 'react';
-import { validate } from 'service/authService';
+// import { setIsCheckingForToken } from 'store/authSlice';
+import authService from 'service/authService';
+import Loader from 'ui-component/Loader';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import axios from 'axios';
+import { authenticateUser } from 'store/authSlice';
 
 // ==============================|| APP ||============================== //
 
 const App = () => {
   const customization = useSelector((state) => state.customization);
-  // const [checkingToken, setCheckingToken] = useState<boolean>(true);
+  const [isCheckingToken, setIsCheckingToken] = useState(true);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // const userConnected = useSelector(fetchUser);
 
   useEffect(() => {
-    validate()
+    authService
+      .validate()
       .then((data) => {
-        axios.defaults.headers.post["Authorization"] = `Bearer ${
-          localStorage.getItem("token") || ""
-        }`;
-        axios.defaults.headers.put["Authorization"] = `Bearer ${
-          localStorage.getItem("token") || ""
-        }`;
-        axios.defaults.headers.delete["Authorization"] = `Bearer ${
-          localStorage.getItem("token") || ""
-        }`;
+        axios.defaults.headers.get['Authorization'] = `Bearer ${localStorage.getItem('token') || ''}`;
+        axios.defaults.headers.post['Authorization'] = `Bearer ${localStorage.getItem('token') || ''}`;
+        axios.defaults.headers.put['Authorization'] = `Bearer ${localStorage.getItem('token') || ''}`;
+        axios.defaults.headers.delete['Authorization'] = `Bearer ${localStorage.getItem('token') || ''}`;
 
         dispatch(
-          setState({
+          authenticateUser({
             isConnected: data.isConnected,
             id: data.id,
-            token: localStorage.getItem("token") || "",
+            token: localStorage.getItem('token') || '',
             role: data.role,
             isAdmin: data.isAdmin,
-            userInfo: data.userInfo,
+            userInfo: data.userInfo
           })
         );
+        // setIsCheckingForToken(false);
 
-        // setCheckingToken(false);
+        setIsCheckingToken(false);
       })
       .catch((data) => {
-        console.log(data);
-        // dispatch(
-        //   setState({
-        //     isConnected: data.isConnected,
-        //     id: data.id,
-        //     accessToken: localStorage.getItem("TOKEN") || "",
-        //     role: data.role,
-        //     isAdmin: data.isAdmin,
-        //     userInfo: data.userInfo,
-        //   })
-        // );
+        setIsCheckingToken(false);
+        if (window.location.pathname.startsWith('/dashboard')) {
+          localStorage.removeItem('token');
+          console.log('error', data);
 
-        // setCheckingToken(false);
+          navigate('/login');
+        }
       });
   }, [dispatch]);
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
         <CssBaseline />
-        <NavigationScroll>
-          <Routes />
-        </NavigationScroll>
+        <NavigationScroll>{isCheckingToken ? <Loader /> : <Routes />}</NavigationScroll>
       </ThemeProvider>
     </StyledEngineProvider>
   );

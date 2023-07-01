@@ -5,6 +5,11 @@ import { AppService } from "./app.service";
 import { BudgetModule } from "./budgets/budget.module";
 import { AlertModule } from "./alerts/alert.module";
 import { CategoryModule } from "./categories/category.module";
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { UserModule } from "./users/user.module";
+import { IncomeModule } from "./incomes/income.module";
+import { ExpenseModule } from "./expenses/expense.module";
+import { EventModule } from "./events/event.module";
 
 @Module({
   imports: [
@@ -17,46 +22,6 @@ import { CategoryModule } from "./categories/category.module";
           port: 3002,
         },
       },
-      {
-        name: "INCOME_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-incomes-service",
-          port: 3003,
-        },
-      },
-      {
-        name: "EXPENSE_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-expenses-service",
-          port: 3004,
-        },
-      },
-      // {
-      //   name: "BUDGET_SERVICE",
-      //   transport: Transport.TCP,
-      //   options: {
-      //     host: "challenge-budgets-service",
-      //     port: 3005,
-      //   },
-      // },
-      // {
-      //   name: "CATEGORY_SERVICE",
-      //   transport: Transport.TCP,
-      //   options: {
-      //     host: "challenge-categories-service",
-      //     port: 3007,
-      //   },
-      // },
-      // {
-      //   name: "ALERT_SERVICE",
-      //   transport: Transport.TCP,
-      //   options: {
-      //     host: "challenge-alerts-service",
-      //     port: 3006,
-      //   },
-      // },
       {
         name: "DEBT_SERVICE",
         transport: Transport.TCP,
@@ -73,19 +38,15 @@ import { CategoryModule } from "./categories/category.module";
           port: 3009,
         },
       },
-      {
-        name: "INCOME_SERVICE",
-        transport: Transport.TCP,
-        options: {
-           host : "challenge-incomes-service",
-           port:3010,
-        }
-      }
     ]),
     BudgetModule,
     AlertModule,
     CategoryModule,
-
+    AuthenticationModule,
+    UserModule,
+    IncomeModule,
+    ExpenseModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,41 +1,154 @@
 // assets
-import { IconKey } from '@tabler/icons';
+import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney } from '@tabler/icons';
 
 // constant
 const icons = {
-  IconKey
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
+  IconBrightness,
+  IconSettings,
+  IconOlympics,
+  IconReportMoney
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const pages = {
   id: 'pages',
-  title: 'Pages',
-  caption: 'Pages Caption',
+  title: 'Gestion financière',
   type: 'group',
   children: [
     {
-      id: 'authentication',
-      title: 'Authentication',
+      id: 'ManageIncome',
+      title: 'Gestion des revenus',
       type: 'collapse',
-      icon: icons.IconKey,
+      icon: icons.IconMoneybag,
 
       children: [
         {
-          id: 'login3',
-          title: 'Login',
+          id: 'expense',
+          title: "Vue d'ensemble",
           type: 'item',
-          url: '/login',
-          target: true
+          url: 'income'
         },
         {
-          id: 'register3',
-          title: 'Register',
+          id: 'listincomehistory',
+          title: 'Historique des revenus',
           type: 'item',
-          url: '/register',
-          target: true
+          url: 'listincomehistory'
         }
       ]
+    },
+    {
+      id: 'ManageExpense',
+      title: 'Gestion des Dépenses',
+      type: 'collapse',
+      icon: icons.IconBusinessplan,
+
+      children: [
+        {
+          id: 'expense',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: 'expense'
+          // target: false -> ouvre nouvel onglet
+        },
+        {
+          id: 'addExpense',
+          title: 'Ajouter une dépense',
+          type: 'item',
+          url: 'addexpense'
+        },
+        {
+          id: 'listExpense',
+          title: 'Liste des dépenses',
+          type: 'item',
+          url: 'listexpense'
+        }
+      ]
+    },
+    {
+      id: 'ManageCategoricalBudget',
+      title: 'Gestion des Budgets catégoriels',
+      type: 'collapse',
+      icon: icons.IconBrightness,
+
+      children: [
+        {
+          id: 'categoricalBudget',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: 'categoricalbudget'
+          // target: false -> ouvre nouvel onglet
+        },
+        {
+          id: 'budgetAllocation',
+          title: 'Créer un budget catégoriel',
+          type: 'item',
+          url: 'budgetallocation'
+        },
+        {
+          id: 'detailCategoricalBudgetModal',
+          title: 'Budget catégoriel détaillé',
+          type: 'item',
+          url: 'detailcategoricalbudget'
+        }
+      ]
+    },
+    {
+      id: 'ManageEvenementielBudget',
+      title: 'Gestion des Budgets Event',
+      type: 'collapse',
+      icon: icons.IconOlympics,
+      children: [
+        {
+          id: 'EvenementielBudget',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: 'budgetEvenementiel'
+        },
+        {
+          id: 'AddEvenementielBudget',
+          title: 'Ajouter une EventBudget',
+          type: 'item',
+          url: 'AddBudgetEvenementiel'
+        },
+        {
+          id: 'AllEvenementielBudget',
+          title: 'Liste des EventBudgets',
+          type: 'item',
+          url: 'budgetEvenementielAll'
+        },
+        {
+          id: 'AllEvenementielBudgetExpense',
+          title: 'Liste des EventBudgets Dépenses',
+          type: 'item',
+          url: 'BudgetEventExpense'
+        }
+      ]
+    },
+    {
+      id: 'ManageDebt',
+      title: 'Gestion des Dettes',
+      type: 'collapse',
+      icon: icons.IconReportMoney,
+      children: [
+        {
+          id: 'Debt',
+          title: "Vue d'ensemble",
+          type: 'item',
+          url: 'debt'
+        }
+      ]
+    },
+    {
+      id: 'settings',
+      title: 'Paramètres',
+      type: 'item',
+      url: 'settings',
+      icon: icons.IconSettings,
+      breadcrumbs: false
     }
   ]
 };

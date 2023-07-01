@@ -17,7 +17,10 @@ export class CreateBudgetDto {
   userId: string;
 
   @IsString()
-  categoryId: string;
+  categoryId?: string;
+
+  @IsString()
+  customCategory?: string;
 }
 
 export class UpdateBudgetDto {
@@ -38,4 +41,7 @@ export class UpdateBudgetDto {
 
   @IsString()
   categoryId?: string;
+
+  @IsString()
+  customCategory?: string;
 }

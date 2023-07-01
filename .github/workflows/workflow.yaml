@@ -1,0 +1,87 @@
+name: Docker Build Deploy
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+env:
+  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  PRODUCT_REPO_ALERTS: ${{secrets.PRODUCT_REPO_ALERTS}}
+  PRODUCT_REPO_GATEWAY: ${{secrets.PRODUCT_REPO_GATEWAY}}
+  PRODUCT_REPO_USERS: ${{secrets.PRODUCT_REPO_USERS}}
+  PRODUCT_REPO_CATEGORIES: ${{secrets.PRODUCT_REPO_CATEGORIES}}
+  PRODUCT_REPO_BUDGETS: ${{secrets.PRODUCT_REPO_BUDGETS}}
+  PRODUCT_REPO_DEBTS: ${{secrets.PRODUCT_REPO_DEBTS}}
+  PRODUCT_REPO_EVENTS: ${{secrets.PRODUCT_REPO_EVENTS}}
+  PRODUCT_REPO_EXPENSES: ${{secrets.PRODUCT_REPO_EXPENSES}}
+  PRODUCT_REPO_INCOMES: ${{secrets.PRODUCT_REPO_INCOMES}}
+jobs:
+  create-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: touch env.ts
+        run: |
+          rm -rf backend/services/gateway/src/env.ts
+          touch backend/services/users/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/users/src/env.ts
+          rm -rf backend/services/alerts/src/env.ts
+          touch backend/services/alerts/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/alerts/src/env.ts
+          rm -rf backend/services/categories/src/env.ts
+          touch backend/services/categories/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/categories/src/env.ts
+          rm -rf backend/services/budgets/src/env.ts
+          touch backend/services/budgets/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/budgets/src/env.ts
+          touch backend/services/debts/src/env.ts
+          touch backend/services/debts/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/debts/src/env.ts
+          touch backend/services/events/src/env.ts
+          touch backend/services/events/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/events/src/env.ts
+          rm -rf backend/services/expenses/src/env.ts
+          touch backend/services/expenses/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/expenses/src/env.ts
+          rm -rf backend/services/incomes/src/env.ts
+          touch backend/services/incomes/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/incomes/src/env.ts
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Build user service docker image
+        run: |
+          docker build . --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+          docker build . --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+          docker build . --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+          docker build . --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+          docker build . --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+          docker build . --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+          docker build . --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+          docker build . --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+          docker build . --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+      - name: Push user service docker image
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+  deployment:
+    needs: [create-image]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: kubectl - get credentials
+        uses: ameydev/gke-kubectl-action@master
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+          ZONE_NAME: west-europe9
+          with:
+            args: apply -f backend/

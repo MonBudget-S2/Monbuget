@@ -1,5 +1,4 @@
-import { IsString, IsNumber, IsDate, IsBoolean } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsString, IsNumber, IsDate, IsBoolean, IsUUID } from 'class-validator';
 
 export class CreateExpenseDto {
   @IsString()
@@ -12,28 +11,22 @@ export class CreateExpenseDto {
   date: Date;
 
   @IsString()
-  paymentMethod: string;
+  location?: string;
 
   @IsString()
-  location: string;
+  receiptImage?: string;
 
-  @IsString()
-  receiptImage: string;
+  @IsUUID()
+  userId?: string;
 
-  @IsBoolean()
-  isPersonal: boolean;
+  @IsUUID()
+  categoryId: string;
 
-  @IsString()
-  userId: string;
-
-  @IsNumber()
-  categoryId: number;
-
-  @IsNumber()
-  eventBudgetId: number;
+  @IsUUID()
+  eventBudgetId?: string;
 }
 
-export class UpdateExpenseDto extends PartialType(CreateExpenseDto) {
+export class UpdateExpenseDto {
   @IsString()
   description?: string;
 
@@ -44,23 +37,17 @@ export class UpdateExpenseDto extends PartialType(CreateExpenseDto) {
   date?: Date;
 
   @IsString()
-  paymentMethod?: string;
-
-  @IsString()
   location?: string;
 
   @IsString()
   receiptImage?: string;
 
-  @IsBoolean()
-  isPersonal?: boolean;
-
-  @IsString()
+  @IsUUID()
   userId?: string;
 
-  @IsNumber()
-  categoryId?: number;
+  @IsUUID()
+  categoryId?: string;
 
-  @IsNumber()
-  eventBudgetId?: number;
+  @IsUUID()
+  eventBudgetId?: string;
 }
