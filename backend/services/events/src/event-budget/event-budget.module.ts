@@ -5,9 +5,14 @@ import { EventParticipateModule } from '../event-participate/event-participate.m
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventBudget } from './event-budget.entity';
 import { EventParticipateService } from 'src/event-participate/event-participate.service';
+import { EventInvitationModule } from 'src/event-invitation/event-invitation.module';
 
 @Module({
-  imports: [EventParticipateModule, TypeOrmModule.forFeature([EventBudget])],
+  imports: [
+    EventInvitationModule,
+    EventParticipateModule,
+    TypeOrmModule.forFeature([EventBudget]),
+  ],
   controllers: [EventBudgetController],
   providers: [EventBudgetService],
 })

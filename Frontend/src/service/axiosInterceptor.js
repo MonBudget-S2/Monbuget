@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const baseURL = 'http://127.0.0.1:3000'; // Set your API base URL here
+const url = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL_PROD : process.env.REACT_APP_URL_DEV;
+
+const baseURL = url;
 
 const axiosInstance = axios.create({
   baseURL: baseURL

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 
 // project imports
-import PopularCard from './PopularCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
 import { gridSpacing } from 'store/constant';
@@ -65,9 +64,7 @@ const Dashboard = () => {
           <Grid item xs={12} md={8}>
             <IncomeExpenseChart isLoading={isLoading} />
           </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularCard isLoading={isLoading} />
-          </Grid>
+          
         </Grid>
       </Grid>
     </Grid>

@@ -44,6 +44,9 @@ export class EventService {
     const event = await firstValueFrom(
       this.eventService.send({ service: "eventBudget", action: "getById" }, id)
     );
+    if (!event) {
+      throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
+    }
     if (!isAdmin && event.userId !== user.id) {
       throw new HttpException(
         "You are not authorized to access this resource",
@@ -73,6 +76,18 @@ export class EventService {
     const event = await this.getEventById(id, user);
     return await firstValueFrom(
       this.eventService.send({ service: "eventBudget", action: "delete" }, id)
+    );
+  }
+
+  async inviteUserToEvent(id: string, inviteeId: string, user) {
+    const event = await this.getEventById(id, user);
+    console.log("inviteUserToEvent", id, inviteeId, user);
+
+    return await firstValueFrom(
+      this.eventService.send(
+        { service: "eventBudget", action: "createInvitation" },
+        { eventId: id, userId: inviteeId }
+      )
     );
   }
 }

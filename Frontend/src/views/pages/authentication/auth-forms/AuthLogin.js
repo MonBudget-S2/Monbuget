@@ -62,7 +62,9 @@ const AuthLogin = ({ ...others }) => {
       const credentials = { username: email, password };
       // const response= await login(credentials);
       // dispatch(authenticateUser(response));
-      const res = await axios.post('http://127.0.0.1:3000/users/login', credentials);
+      const url = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL_PROD : process.env.REACT_APP_URL_DEV;
+
+      const res = await axios.post(url + '/users/login', credentials);
       authService.login(res, dispatch);
 
       // Set the Formik status and submitting state
@@ -103,7 +105,7 @@ const AuthLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">Nom d&apos;utilisateur</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 // type="email"
@@ -122,7 +124,7 @@ const AuthLogin = ({ ...others }) => {
             </FormControl>
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password-login">Mot de passe</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-login"
                 type={showPassword ? 'text' : 'password'}
@@ -157,10 +159,10 @@ const AuthLogin = ({ ...others }) => {
                 control={
                   <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
                 }
-                label="Remember me"
+                label="Se souvenir de moi"
               />
               <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
-                Forgot Password?
+                Mot de passe oublié ?
               </Typography>
             </Stack>
             {errors.submit && (
@@ -172,7 +174,7 @@ const AuthLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign in
+                  Se connecter
                 </Button>
               </AnimateButton>
             </Box>

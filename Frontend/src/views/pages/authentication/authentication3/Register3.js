@@ -28,19 +28,17 @@ const Register = () => {
               <AuthCardWrapper>
                 <Grid container spacing={2} alignItems="center" justifyContent="center">
                   <Grid item sx={{ mb: 3 }}>
-                    <Link to="#">
                       <Logo />
-                    </Link>
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Sign up
+                            Welcome to the family ! 🚀
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
+                            Entrez vos informations pour créer votre compte
                           </Typography>
                         </Stack>
                       </Grid>
@@ -55,7 +53,7 @@ const Register = () => {
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
                       <Typography component={Link} to="/login" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Already have an account?
+                        Vous avez déjà un compte ? Connectez-vous
                       </Typography>
                     </Grid>
                   </Grid>
