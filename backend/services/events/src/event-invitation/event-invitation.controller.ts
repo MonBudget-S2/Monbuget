@@ -38,4 +38,9 @@ export class EventInvitationController {
   deleteEventInvitation(id: string) {
     return this.eventInvitationService.delete(id);
   }
+
+  @MessagePattern({ service: 'eventInvitation', action: 'getByEventId' })
+  getByEventId(eventId: string) {
+    return this.eventInvitationService.getByEventId(eventId);
+  }
 }

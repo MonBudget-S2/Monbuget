@@ -8,6 +8,7 @@ import {
   EventBudgetResponse,
   EventBudgetService,
 } from './event-budget.service';
+import { InvitationStatus } from 'src/event-invitation/event-invitation.enum';
 
 @Controller()
 export class EventBudgetController {
@@ -48,5 +49,40 @@ export class EventBudgetController {
   @MessagePattern({ service: 'eventBudget', action: 'delete' })
   deleteEventBudget(id: string) {
     return this.appService.delete(id);
+  }
+
+  @MessagePattern({ service: 'eventBudget', action: 'updateInvitationStatus' })
+  updateInvitationStatus(
+    @Payload()
+    payload: {
+      invitationId: string;
+      status: InvitationStatus;
+    },
+  ) {
+    const { invitationId, status } = payload;
+    return this.appService.updateInvitationStatus(invitationId, status);
+  }
+
+  @MessagePattern({ service: 'eventBudget', action: 'deleteInvitation' })
+  deleteInvitation(
+    @Payload()
+    payload: {
+      invitationId: string;
+    },
+  ) {
+    const { invitationId } = payload;
+    return this.appService.deleteInvitation(invitationId);
+  }
+
+  @MessagePattern({ service: 'eventBudget', action: 'createInvitation' })
+  createInvitation(
+    @Payload()
+    payload: {
+      eventId: string;
+      userId: string;
+    },
+  ) {
+    const { eventId, userId } = payload;
+    return this.appService.createInvitation(eventId, userId);
   }
 }

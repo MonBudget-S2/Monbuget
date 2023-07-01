@@ -15,7 +15,10 @@ import {
   HasRole,
 } from "src/authentication/authentication.decorator";
 import { Role } from "src/authentication/authentication.enum";
-import { CreateEventBudgetDto, UpdateEventBudgetDto } from "./event-budget.request";
+import {
+  CreateEventBudgetDto,
+  UpdateEventBudgetDto,
+} from "./event-budget.request";
 
 @AuthenticationRequired()
 @Controller("events")
@@ -57,5 +60,16 @@ export class EventController {
   deleteEvent(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.deleteEvent(id, user);
+  }
+
+  @Post(":id/invite")
+  inviteUserToEvent(
+    @Param("id") id: string,
+    @Body("userId") userId: string,
+    @Req() request: CustomRequest
+  ) {
+    const inviteeId = userId;
+    const user = request.user;
+    return this.eventService.inviteUserToEvent(id, inviteeId, user);
   }
 }

@@ -59,4 +59,8 @@ export class EventInvitationService {
     const result = await this.eventInvitationRepository.delete(id);
     return result.affected > 0;
   }
+
+  async getByEventId(eventId: string): Promise<EventInvitation[]> {
+    return this.eventInvitationRepository.findBy({ eventId });
+  }
 }
