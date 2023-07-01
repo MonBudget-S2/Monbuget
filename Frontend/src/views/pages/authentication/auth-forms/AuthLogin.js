@@ -62,7 +62,9 @@ const AuthLogin = ({ ...others }) => {
       const credentials = { username: email, password };
       // const response= await login(credentials);
       // dispatch(authenticateUser(response));
-      const res = await axios.post('http://127.0.0.1:3000/users/login', credentials);
+      const url = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_URL_PROD : process.env.REACT_APP_URL_DEV;
+
+      const res = await axios.post(url + '/users/login', credentials);
       authService.login(res, dispatch);
 
       // Set the Formik status and submitting state
