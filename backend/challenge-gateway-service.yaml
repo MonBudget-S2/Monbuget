@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: challenge-gateway-service
-        image: ronantr/challenge-gateway-service:0.2.0
+        image: ronantr/challenge-gateway-service:latest
 
         env:
         - name: NODE_ENV
@@ -95,7 +95,7 @@ spec:
     spec:
       containers:
       - name: challenge-alerts-service
-        image: ronantr/challenge-alerts-service:0.2.0
+        image: ronantr/challenge-alerts-service:latest
 
         env:
         - name: NODE_ENV
@@ -154,7 +154,7 @@ spec:
     spec:
       containers:
       - name: challenge-budgets-service
-        image: ronantr/challenge-budgets-service:0.2.0
+        image: ronantr/challenge-budgets-service:latest
 
         env:
         - name: NODE_ENV
@@ -213,7 +213,7 @@ spec:
     spec:
       containers:
       - name: challenge-debts-service
-        image: ronantr/challenge-debts-service:0.2.0
+        image: ronantr/challenge-debts-service:latest
 
         env:
         - name: NODE_ENV
@@ -272,7 +272,7 @@ spec:
     spec:
       containers:
       - name: challenge-events-service
-        image: ronantr/challenge-events-service:0.2.0
+        image: ronantr/challenge-events-service:latest
 
         env:
         - name: NODE_ENV
@@ -331,7 +331,7 @@ spec:
     spec:
       containers:
       - name: challenge-expenses-service
-        image: ronantr/challenge-expenses-service:0.2.0
+        image: ronantr/challenge-expenses-service:latest
 
         env:
         - name: NODE_ENV
@@ -390,7 +390,7 @@ spec:
     spec:
       containers:
       - name: challenge-incomes-service
-        image: ronantr/challenge-incomes-service:0.2.0
+        image: ronantr/challenge-incomes-service:latest
 
         env:
         - name: NODE_ENV
@@ -447,7 +447,7 @@ spec:
     spec:
       containers:
       - name: challenge-users-service
-        image: ronantr/challenge-users-service:0.2.0
+        image: ronantr/challenge-users-service:latest
 
         env:
         - name: NODE_ENV
@@ -504,7 +504,7 @@ spec:
     spec:
       containers:
       - name: challenge-categories-service
-        image: ronantr/challenge-categories-service:0.2.0
+        image: ronantr/challenge-categories-service:latest
 
         env:
         - name: NODE_ENV
