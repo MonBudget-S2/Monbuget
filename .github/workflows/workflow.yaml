@@ -20,9 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: touch env.ts
+      - name: Docker login
         run: |
-          rm -rf backend/services/gateway/src/env.ts
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
+          rm -rf backend/services/users/src/env.ts
           touch backend/services/users/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/users/src/env.ts
           rm -rf backend/services/alerts/src/env.ts
@@ -34,10 +37,10 @@ jobs:
           rm -rf backend/services/budgets/src/env.ts
           touch backend/services/budgets/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/budgets/src/env.ts
-          touch backend/services/debts/src/env.ts
+          rm -rf backend/services/debts/src/env.ts
           touch backend/services/debts/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/debts/src/env.ts
-          touch backend/services/events/src/env.ts
+          rm -rf backend/services/events/src/env.ts
           touch backend/services/events/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/events/src/env.ts
           rm -rf backend/services/expenses/src/env.ts
@@ -46,21 +49,18 @@ jobs:
           rm -rf backend/services/incomes/src/env.ts
           touch backend/services/incomes/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/incomes/src/env.ts
-      - name: Docker login
-        run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - name: Build user service docker image
-        run: |
-          docker build . --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
-          docker build . --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
-          docker build . --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
-          docker build . --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
-          docker build . --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
-          docker build . --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
-          docker build . --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
-          docker build . --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
-          docker build . --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
-      - name: Push user service docker image
+      - name: Build services docker image
+        run: | 
+          docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+          docker build backend/services/alerts/ --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+          docker build backend/services/gateway/ --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+          docker build backend/services/categories/ --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+          docker build backend/services/budgets/ --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+          docker build backend/services/debts/ --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+          docker build backend/services/events/ --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+          docker build backend/services/expenses/ --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+          docker build backend/services/incomes/ --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+      - name: Push services docker image
         run: |
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
@@ -82,6 +82,6 @@ jobs:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
-          ZONE_NAME: west-europe9
-          with:
-            args: apply -f backend/
+          ZONE_NAME: ${{ secrets.ZONE_NAME }}
+        with:
+          args: apply -f backend/
