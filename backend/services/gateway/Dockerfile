@@ -11,7 +11,7 @@ USER node
 
 WORKDIR /home/node
 
-COPY --chown=node:node ./package.json .
+COPY --chown=node:node . .
 
 RUN npm install
 

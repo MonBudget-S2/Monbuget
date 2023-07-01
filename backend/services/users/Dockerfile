@@ -12,7 +12,7 @@ RUN mkdir -p /home/node/.npm && chown -R 1000:1000 /home/node/.npm
 
 WORKDIR /home/node
 
-COPY --chown=node:node ./package.json .
+COPY --chown=node:node . .
 
 RUN npm install
 
