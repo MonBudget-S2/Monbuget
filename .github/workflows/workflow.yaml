@@ -83,5 +83,5 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
           ZONE_NAME: west-europe9
-          with:
-            args: apply -f backend/
+        with:
+          args: apply -f backend/
