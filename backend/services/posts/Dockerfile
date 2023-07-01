@@ -1,10 +1,10 @@
-FROM node:19.0.0-alpine as development
+FROM node:18.0.0-alpine as development
 
 USER node
 
 WORKDIR /home/node
 
-FROM node:19.0.0-alpine as build
+FROM node:18.0.0-alpine as build
 
 USER node
 
@@ -18,7 +18,7 @@ COPY  --chown=node:node . .
 
 RUN npm run build
 
-FROM node:19.0.0-alpine as production
+FROM node:18.0.0-alpine as production
 
 USER node
 
