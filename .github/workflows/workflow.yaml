@@ -25,7 +25,7 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: Build user service docker image
         run: |          
-          rm -rf backend/services/gateway/src/env.ts
+          rm -rf backend/services/users/src/env.ts
           touch backend/services/users/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/users/src/env.ts
           rm -rf backend/services/alerts/src/env.ts
