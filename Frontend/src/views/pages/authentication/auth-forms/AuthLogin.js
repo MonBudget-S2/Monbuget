@@ -14,7 +14,8 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography
+  Typography,
+  useMediaQuery
 } from '@mui/material';
 
 // third party
@@ -44,6 +45,8 @@ const AuthLogin = ({ ...others }) => {
   const [checked, setChecked] = useState(true);
   const dispatch = useDispatch();
   const token = useSelector(getToken);
+  const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -97,8 +100,8 @@ const AuthLogin = ({ ...others }) => {
         }}
         validationSchema={Yup.object().shape({
           // email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          email: Yup.string().max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          email: Yup.string().max(255).required('Email est requis'),
+          password: Yup.string().max(255).required('Mot de passe est requis')
         })}
         onSubmit={handleLogin}
       >
@@ -161,7 +164,7 @@ const AuthLogin = ({ ...others }) => {
                 }
                 label="Se souvenir de moi"
               />
-              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
+              <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }} textAlign={matchDownSM ? 'center' : 'inherit'}>
                 Mot de passe oublié ?
               </Typography>
             </Stack>

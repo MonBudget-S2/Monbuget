@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTheme, styled } from '@mui/material/styles';
-import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useEffect } from 'react';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -122,18 +121,7 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                           {timeValue ? `${averageExpenseByMonth} €` : `${totalExpenseByYear} €`}
                         </Typography>
                       </Grid>
-                      <Grid item>
-                        <Avatar
-                          sx={{
-                            ...theme.typography.smallAvatar,
-                            cursor: 'pointer',
-                            backgroundColor: theme.palette.primary[200],
-                            color: theme.palette.primary.dark
-                          }}
-                        >
-                          <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-                        </Avatar>
-                      </Grid>
+                      
                       <Grid item xs={12}>
                         <Typography
                           sx={{
