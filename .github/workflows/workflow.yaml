@@ -50,16 +50,16 @@ jobs:
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: Build user service docker image
-        run: |
-          docker build . --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
-          docker build . --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
-          docker build . --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
-          docker build . --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
-          docker build . --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
-          docker build . --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
-          docker build . --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
-          docker build . --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
-          docker build . --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+        run: |          
+          docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+          docker build backend/services/alerts/ --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+          docker build backend/services/gateway/ --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+          docker build backend/services/categories/ --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+          docker build backend/services/budgets/ --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+          docker build backend/services/debts/ --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+          docker build backend/services/events/ --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+          docker build backend/services/expenses/ --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+          docker build backend/services/incomes/ --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
       - name: Push user service docker image
         run: |
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
