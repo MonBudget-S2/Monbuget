@@ -107,9 +107,6 @@ const AuthRegister = ({ ...others }) => {
 
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign up with Email address</Typography>
-          </Box>
         </Grid>
       </Grid>
 
@@ -123,11 +120,11 @@ const AuthRegister = ({ ...others }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          fname: Yup.string().max(255).required('First name is required'),
-          lname: Yup.string().max(255).required('Last name is required'),
-          username: Yup.string().max(255).required('Username is required'),
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          fname: Yup.string().max(255).required('Prénom est requis'),
+          lname: Yup.string().max(255).required('Nom est requis'),
+          username: Yup.string().max(255).required('Nom d\'utilisateur est requis'),
+          email: Yup.string().email('Mettez un email valide').max(255).required('Email est requis'),
+          password: Yup.string().max(255).required('Mot de passe est requis')
         })}
         onSubmit={handleRegister}
       >
@@ -136,7 +133,7 @@ const AuthRegister = ({ ...others }) => {
             <Grid container spacing={matchDownSM ? 0 : 2}>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={Boolean(touched.fname && errors.fname)} sx={{ ...theme.typography.customInput }}>
-                  <InputLabel htmlFor="outlined-adornment-fname-register">First Name</InputLabel>
+                  <InputLabel htmlFor="outlined-adornment-fname-register">Prénom</InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-fname-register"
                     type="text"
@@ -155,7 +152,7 @@ const AuthRegister = ({ ...others }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth error={Boolean(touched.lname && errors.lname)} sx={{ ...theme.typography.customInput }}>
-                  <InputLabel htmlFor="outlined-adornment-lname-register">Last Name</InputLabel>
+                  <InputLabel htmlFor="outlined-adornment-lname-register">Nom</InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-lname-register"
                     type="text"
@@ -174,7 +171,7 @@ const AuthRegister = ({ ...others }) => {
               </Grid>
             </Grid>
             <FormControl fullWidth error={Boolean(touched.username && errors.username)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-username-register">Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-username-register">Nom d&apos;utilisateur</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-username-register"
                 type="text"
@@ -191,7 +188,7 @@ const AuthRegister = ({ ...others }) => {
               )}
             </FormControl>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-register">Email Address</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-register">Email</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-register"
                 type="email"
@@ -209,7 +206,7 @@ const AuthRegister = ({ ...others }) => {
             </FormControl>
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password-register">Mot de passe</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-register"
                 type={showPassword ? 'text' : 'password'}
@@ -268,9 +265,9 @@ const AuthRegister = ({ ...others }) => {
                   }
                   label={
                     <Typography variant="subtitle1">
-                      Agree with &nbsp;
+                      J&apos;accepte &nbsp;
                       <Typography variant="subtitle1" component={Link} to="#">
-                        Terms & Condition.
+                        les conditions d&apos;utilisation
                       </Typography>
                     </Typography>
                   }
@@ -286,7 +283,7 @@ const AuthRegister = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign up
+                  S&apos;inscrire
                 </Button>
               </AnimateButton>
             </Box>
