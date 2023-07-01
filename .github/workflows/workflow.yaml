@@ -23,7 +23,7 @@ jobs:
       - name: Docker login
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      - name: Build user service docker image
+      - name: rm and touch prod env
         run: |          
           rm -rf backend/services/users/src/env.ts
           touch backend/services/users/src/env.ts
@@ -37,10 +37,10 @@ jobs:
           rm -rf backend/services/budgets/src/env.ts
           touch backend/services/budgets/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/budgets/src/env.ts
-          touch backend/services/debts/src/env.ts
+          rm -rf backend/services/debts/src/env.ts
           touch backend/services/debts/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/debts/src/env.ts
-          touch backend/services/events/src/env.ts
+          rm -rf backend/services/events/src/env.ts
           touch backend/services/events/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/events/src/env.ts
           rm -rf backend/services/expenses/src/env.ts
@@ -49,6 +49,7 @@ jobs:
           rm -rf backend/services/incomes/src/env.ts
           touch backend/services/incomes/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/incomes/src/env.ts
+      - name: Build user service docker image
           docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
           docker build backend/services/alerts/ --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
           docker build backend/services/gateway/ --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
