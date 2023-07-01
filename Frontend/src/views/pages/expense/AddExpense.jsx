@@ -36,15 +36,15 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
     const errors = {};
 
     if (!expenseCategory) {
-      errors.expenseCategory = 'Please select a category';
+      errors.expenseCategory = 'Veuillez sélectionner une catégorie';
     }
 
     if (!amountSpent) {
-      errors.amountSpent = 'Please enter the amount spent';
+      errors.amountSpent = 'Veuillez entrer un montant';
     }
 
     if (expenseEventBudget && !isWithinEventRange(dateSpent)) {
-      errors.dateSpent = `Date should be within the selected event range: ${getMinDate()} and ${getMaxDate()}`;
+      errors.dateSpent = `Date devrait être dans la plage d'événements sélectionnée: ${getMinDate()} et ${getMaxDate()}`;
     }
 
     if (Object.keys(errors).length > 0) {
@@ -73,7 +73,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
         setAlertMessage({
           open: true,
           type: 'success',
-          message: 'Expense added successfully'
+          message: 'La dépense a été ajoutée avec succès !'
         });
         setIsExpenseChanged(true);
       } else {
@@ -95,7 +95,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
         setAlertMessage({
           open: true,
           type: 'success',
-          message: 'Expense updated successfully'
+          message: 'La dépense a été mise à jour avec succès !'
         });
         setIsExpenseChanged(true);
       } else {
@@ -233,14 +233,14 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
                 error={Boolean(touched.expenseEventBudget && errors.expenseEventBudget)}
                 sx={{ ...theme.typography.customInput }}
               >
-                <InputLabel htmlFor="outlined-adornment-expenseEventBudget">Budget Event</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-expenseEventBudget">Budget Evenementiel</InputLabel>
                 <Select
                   id="outlined-adornment-expenseEventBudget"
                   value={values.expenseEventBudget}
                   name="expenseEventBudget"
                   onBlur={handleBlur}
                   onChange={handleCustomChange}
-                  label="Budget Event"
+                  label="Budget Evenementiel"
                 >
                   {budgetEvents.map((event) => (
                     <MenuItem key={event.id} value={event.id}>
@@ -341,7 +341,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
                 )}
               </FormControl>
               <FormControl fullWidth sx={{ ...theme.typography.customInput }}>
-                <InputLabel htmlFor="outlined-adornment-receiptImage">Receipt Image</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-receiptImage">Image de la facture</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-receiptImage"
                   type="file"

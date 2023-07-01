@@ -21,93 +21,97 @@ const pages = {
   children: [
     {
       id: 'ManageIncome',
-      title: 'Gestion des revenus',
-      type: 'collapse',
+      title: 'Gestion des Revenus',
+      type: 'item',
+      url: 'income',
       icon: icons.IconMoneybag,
 
-      children: [
-        {
-          id: 'expense',
-          title: "Vue d'ensemble",
-          type: 'item',
-          url: 'income'
-        },
-        {
-          id: 'listincomehistory',
-          title: 'Historique des revenus',
-          type: 'item',
-          url: 'listincomehistory'
-        }
-      ]
+      // children: [
+      //   {
+      //     id: 'expense',
+      //     title: "Vue d'ensemble",
+      //     type: 'item',
+      //     url: 'income'
+      //   },
+      //   // {
+      //   //   id: 'listincomehistory',
+      //   //   title: 'Historique des revenus',
+      //   //   type: 'item',
+      //   //   url: 'listincomehistory'
+      //   // }
+      // ]
     },
     {
       id: 'ManageExpense',
       title: 'Gestion des Dépenses',
-      type: 'collapse',
+      type: 'item',
+      url: 'expense',
       icon: icons.IconBusinessplan,
 
-      children: [
-        {
-          id: 'expense',
-          title: "Vue d'ensemble",
-          type: 'item',
-          url: 'expense'
-          // target: false -> ouvre nouvel onglet
-        },
-        {
-          id: 'addExpense',
-          title: 'Ajouter une dépense',
-          type: 'item',
-          url: 'addexpense'
-        },
-        {
-          id: 'listExpense',
-          title: 'Liste des dépenses',
-          type: 'item',
-          url: 'listexpense'
-        }
-      ]
+      // children: [
+      //   {
+      //     id: 'expense',
+      //     title: "Vue d'ensemble",
+      //     type: 'item',
+      //     url: 'expense'
+      //     // target: false -> ouvre nouvel onglet
+      //   },
+      //   {
+      //     id: 'addExpense',
+      //     title: 'Ajouter une dépense',
+      //     type: 'item',
+      //     url: 'addexpense'
+      //   },
+      //   {
+      //     id: 'listExpense',
+      //     title: 'Liste des dépenses',
+      //     type: 'item',
+      //     url: 'listexpense'
+      //   }
+      // ]
     },
     {
       id: 'ManageCategoricalBudget',
       title: 'Gestion des Budgets catégoriels',
-      type: 'collapse',
+      type: 'item',
+      url: 'categoricalbudget',
       icon: icons.IconBrightness,
 
-      children: [
-        {
-          id: 'categoricalBudget',
-          title: "Vue d'ensemble",
-          type: 'item',
-          url: 'categoricalbudget'
-          // target: false -> ouvre nouvel onglet
-        },
-        {
-          id: 'budgetAllocation',
-          title: 'Créer un budget catégoriel',
-          type: 'item',
-          url: 'budgetallocation'
-        },
-        {
-          id: 'detailCategoricalBudgetModal',
-          title: 'Budget catégoriel détaillé',
-          type: 'item',
-          url: 'detailcategoricalbudget'
-        }
-      ]
+      // children: [
+      //   {
+      //     id: 'categoricalBudget',
+      //     title: "Vue d'ensemble",
+      //     type: 'item',
+      //     url: 'categoricalbudget'
+      //     // target: false -> ouvre nouvel onglet
+      //   },
+      //   {
+      //     id: 'budgetAllocation',
+      //     title: 'Créer un budget catégoriel',
+      //     type: 'item',
+      //     url: 'budgetallocation'
+      //   },
+      //   {
+      //     id: 'detailCategoricalBudgetModal',
+      //     title: 'Budget catégoriel détaillé',
+      //     type: 'item',
+      //     url: 'detailcategoricalbudget'
+      //   }
+      // ]
     },
     {
       id: 'ManageEvenementielBudget',
-      title: 'Gestion des Budgets Event',
-      type: 'collapse',
+      title: 'Gestion des Budgets Événementiels',
+      type: 'item',
+      url: 'budgetEvenementiel',
       icon: icons.IconOlympics,
       children: [
-        {
-          id: 'EvenementielBudget',
-          title: "Vue d'ensemble",
-          type: 'item',
-          url: 'budgetEvenementiel'
-        },
+        // {
+        //   id: 'EvenementielBudget',
+        //   title: "Vue d'ensemble",
+        //   type: 'item',
+        //   url: 'budgetEvenementiel'
+        // },
         {
           id: 'AddEvenementielBudget',
           title: 'Ajouter une EventBudget',
@@ -131,16 +135,17 @@ const pages = {
     {
       id: 'ManageDebt',
       title: 'Gestion des Dettes',
-      type: 'collapse',
+      type: 'item',
+      url: 'debt',
       icon: icons.IconReportMoney,
-      children: [
-        {
-          id: 'Debt',
-          title: "Vue d'ensemble",
-          type: 'item',
-          url: 'debt'
-        }
-      ]
+      // children: [
+      //   {
+      //     id: 'Debt',
+      //     title: "Vue d'ensemble",
+      //     type: 'item',
+      //     url: 'debt'
+      //   }
+      // ]
     },
     {
       id: 'settings',

@@ -7,19 +7,19 @@ import PrivateRoutes from './PrivateRoutes';
 import Income from 'views/pages/income/Income';
 // import AddIncome from 'views/pages/income/AddIncome';
 import Expense from 'views/pages/expense/Expense';
-import AddExpense from 'views/pages/expense/AddExpense';
+// import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/AddCategoricalBudget';
 import Settings from 'views/pages/notifications_settings/Settings';
 import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
-import ListExpense from 'views/pages/expense/ListExpense';
-import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
-import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
+// import ListExpense from 'views/pages/expense/ListExpense';
+// import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
+// import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex';
 import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpense';
 import Debt from 'views/pages/debt/Debt';
-import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
+// import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
@@ -57,10 +57,10 @@ const MainRoutes = {
       path: 'income',
       element: <Income />
     },
-    {
-      path: 'listincomehistory',
-      element: <ListIncomeHistory />
-    },
+    // {
+    //   path: 'listincomehistory',
+    //   element: <ListIncomeHistory />
+    // },
     // {
     //   path: 'addincome',
     //   element: <AddIncome />
@@ -69,14 +69,14 @@ const MainRoutes = {
       path: 'expense',
       element: <Expense />
     },
-    {
-      path: 'addexpense',
-      element: <AddExpense />
-    },
-    {
-      path: 'listexpense',
-      element: <ListExpense />
-    },
+    // {
+    //   path: 'addexpense',
+    //   element: <AddExpense />
+    // },
+    // {
+    //   path: 'listexpense',
+    //   element: <ListExpense />
+    // },
     {
       path: 'categoricalbudget',
       element: <CategoricalBudget />
@@ -105,14 +105,14 @@ const MainRoutes = {
       path: 'budgetEvenementielAll',
       element: <BudgetEventIndex />
     },
-    {
-      path: 'listcategoricalbudget',
-      element: <ListCategoricalBudget />
-    },
-    {
-      path: 'detailcategoricalbudget',
-      element: <DetailCategoricalBudget />
-    },
+    // {
+    //   path: 'listcategoricalbudget',
+    //   element: <ListCategoricalBudget />
+    // },
+    // {
+    //   path: 'detailcategoricalbudget',
+    //   element: <DetailCategoricalBudget />
+    // },
     {
       path: 'debt',
       element: <Debt />
