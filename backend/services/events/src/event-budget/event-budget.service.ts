@@ -8,6 +8,7 @@ import {
 } from './event-budget.request';
 import { EventParticipate } from 'src/event-participate/event-participate.entity';
 import { EventParticipateService } from 'src/event-participate/event-participate.service';
+import { EventInvitationService } from 'src/event-invitation/event-invitation.service';
 
 export interface EventBudgetResponse extends EventBudget {
   eventParticipants: EventParticipate[];
@@ -18,6 +19,7 @@ export class EventBudgetService {
     @InjectRepository(EventBudget)
     private eventBudgetRepository: Repository<EventBudget>,
     private readonly eventParticipateService: EventParticipateService,
+    private readonly eventInvitationService: EventInvitationService,
   ) {}
 
   async create(createEventBudgetDto: CreateEventBudgetDto): Promise<any> {
