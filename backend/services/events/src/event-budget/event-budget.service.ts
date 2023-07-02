@@ -113,6 +113,17 @@ export class EventBudgetService {
     return result.affected > 0;
   }
 
+  async createInvitation(
+    eventId: string,
+    userId: string,
+  ): Promise<EventInvitation | null> {
+    const createdInvitation = await this.eventInvitationService.create(
+      eventId,
+      userId,
+    );
+    return createdInvitation;
+  }
+
   async updateInvitationStatus(
     invitationId: string,
     status: InvitationStatus,
@@ -127,23 +138,14 @@ export class EventBudgetService {
       status,
     );
 
+    if (status === InvitationStatus.ACCEPTED) {
+      const eventParticipate = new EventParticipate();
+      eventParticipate.userId = invitation.userId;
+      eventParticipate.eventBudgetId = invitation.eventId;
+      await this.eventParticipateService.create(eventParticipate);
+    }
+
     return updatedInvitation;
-  }
-
-  async deleteInvitation(invitationId: string): Promise<boolean> {
-    const result = await this.eventInvitationService.delete(invitationId);
-    return result;
-  }
-
-  async createInvitation(
-    eventId: string,
-    userId: string,
-  ): Promise<EventInvitation | null> {
-    const createdInvitation = await this.eventInvitationService.create(
-      eventId,
-      userId,
-    );
-    return createdInvitation;
   }
 
   async getInvitationsByEventId(

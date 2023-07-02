@@ -72,4 +72,13 @@ export class EventController {
     const user = request.user;
     return this.eventService.inviteUserToEvent(id, inviteeId, user);
   }
+
+  @Post("/acceptInvitation/:invitationId")
+  acceptInvitation(
+    @Param("invitationId") invitationId: string,
+    @Req() request: CustomRequest
+  ) {
+    const user = request.user;
+    return this.eventService.acceptInvitation(invitationId, user);
+  }
 }

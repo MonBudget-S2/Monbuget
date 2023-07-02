@@ -25,7 +25,10 @@ export class EventInvitationController {
     return this.eventInvitationService.getById(id);
   }
 
-  @MessagePattern({ service: 'eventInvitation', action: 'update' })
+  @MessagePattern({
+    service: 'eventInvitation',
+    action: 'update',
+  })
   updateEventInvitation(
     @Payload() payload: { id: string; status: InvitationStatus },
   ) {
