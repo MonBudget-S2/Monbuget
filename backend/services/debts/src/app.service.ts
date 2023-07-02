@@ -16,6 +16,15 @@ export class AppService {
 
   async createDebt(createDebtDto: CreateDebtDto): Promise<Debt> {
     const debt = this.debtRepository.create(createDebtDto);
+    const currentDate = new Date(); // Get the current date
+    const oneMonthLater = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate(),
+    );
+
+    debt.dueDate = oneMonthLater;
+
     return this.debtRepository.save(debt);
   }
 

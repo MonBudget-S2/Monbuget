@@ -231,7 +231,8 @@ export class EventBudgetService {
       const createDebtDto = {
         userId: transaction.to,
         amount: transaction.amount,
-        eventId: eventBudgetId,
+        remainingAmount: transaction.amount,
+        eventBudgetId: updatedEventBudget.id,
       };
       return firstValueFrom(
         this.debtService.send(
