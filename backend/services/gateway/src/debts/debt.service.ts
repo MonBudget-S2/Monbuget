@@ -19,7 +19,7 @@ export class DebtService {
     } else {
       return await firstValueFrom(
         this.debtService.send(
-          { service: "debt", action: "getAllByUser" },
+          { service: "debt", action: "getAllByDebtor" },
           user.id
         )
       );

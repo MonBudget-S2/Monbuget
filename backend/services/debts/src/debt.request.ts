@@ -15,6 +15,12 @@ export class CreateDebtDto {
 
   @IsString()
   debtType: string;
+
+  @IsString()
+  debtorId: string;
+
+  @IsString()
+  creditorId: string;
 }
 
 export class UpdateDebtDto {
@@ -32,6 +38,12 @@ export class UpdateDebtDto {
 
   @IsString()
   debtType: string;
+
+  @IsString()
+  debtorId?: string;
+
+  @IsString()
+  creditorId?: string;
 }
 
 export class CreateDebtPaymentDto {

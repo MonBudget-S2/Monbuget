@@ -236,6 +236,8 @@ export class EventBudgetService {
         amount: transaction.amount,
         remainingAmount: transaction.amount,
         eventBudgetId: updatedEventBudget.id,
+        debtorId: transaction.from,
+        creditorId: transaction.to,
       };
       return firstValueFrom(
         this.debtService.send(

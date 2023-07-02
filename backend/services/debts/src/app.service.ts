@@ -32,11 +32,17 @@ export class AppService {
     return this.debtRepository.find();
   }
 
-  async findAllDebtsByUser(userId: string): Promise<Debt[]> {
-    const debts = await this.debtRepository.find({ where: { userId } });
+  async findByDebtorId(userId: string): Promise<Debt[]> {
+    const debts = await this.debtRepository.find({
+      where: { debtorId: userId },
+    });
     console.log('debts', debts);
     // return this.debtRepository.find({ where: { userId } });
     return debts;
+  }
+
+  async findByCreditorId(userId: string): Promise<Debt[]> {
+    return this.debtRepository.find({ where: { creditorId: userId } });
   }
 
   async findDebtById(id: string): Promise<Debt> {
@@ -65,7 +71,7 @@ export class AppService {
     const debtPayment = new DebtPayment();
     debtPayment.amount = amount;
     debtPayment.debt = debt;
-    
+
     const savedDebtPayment = await this.debtPaymentRepository.save(debtPayment);
 
     if (debt.remainingAmount - amount < 0) return null;

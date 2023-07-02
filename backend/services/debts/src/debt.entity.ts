@@ -22,7 +22,10 @@ export class Debt {
   debtType: string;
 
   @Column()
-  userId: string;
+  debtorId: string;
+
+  @Column()
+  creditorId: string;
 
   @Column()
   eventBudgetId: string;

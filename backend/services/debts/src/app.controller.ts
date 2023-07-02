@@ -17,8 +17,8 @@ export class AppController {
     return this.appService.findAllDebts();
   }
 
-  @MessagePattern({ service: 'debt', action: 'getAllByDebitor' })
-  findAllDebtsByDebitor(@Payload() userId: string) {
+  @MessagePattern({ service: 'debt', action: 'getAllByDebtor' })
+  findAllDebtsBydebtor(@Payload() userId: string) {
     return this.appService.findByDebtorId(userId);
   }
 
