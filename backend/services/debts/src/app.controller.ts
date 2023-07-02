@@ -12,12 +12,17 @@ export class AppController {
     return this.appService.createDebt(createDebtDto);
   }
 
-  @MessagePattern({ service: 'debt', action: 'findAll' })
+  @MessagePattern({ service: 'debt', action: 'getAll' })
   findAllDebts() {
     return this.appService.findAllDebts();
   }
 
-  @MessagePattern({ service: 'debt', action: 'findById' })
+  @MessagePattern({ service: 'debt', action: 'getAllByUser' })
+  findAllDebtsByUser(@Payload() userId: string) {
+    return this.appService.findAllDebtsByUser(userId);
+  }
+
+  @MessagePattern({ service: 'debt', action: 'getById' })
   findDebtById(@Payload() id: string) {
     return this.appService.findDebtById(id);
   }
@@ -33,7 +38,7 @@ export class AppController {
     return this.appService.deleteDebt(id);
   }
 
-  @MessagePattern({ service: 'debt', action: 'addPayment' })
+  @MessagePattern({ service: 'debt', action: 'pay' })
   addPayment(@Payload() payload: { debtId: string; amount: number }) {
     const { debtId, amount } = payload;
     return this.appService.addPayment(debtId, amount);
