@@ -170,6 +170,9 @@ export class EventBudgetService {
         invitation.userId,
       );
 
+    console.log('eventParticipate', eventParticipate);
+    console.log('invitation', invitation);
+
     if (eventParticipate) {
       throw new NotFoundException(
         'You are already participating in this event',

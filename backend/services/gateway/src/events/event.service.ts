@@ -113,7 +113,7 @@ export class EventService {
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventBudget", action: "updateInvitationStatus" },
-        { id: invitationId, status: status }
+        { invitationId, status }
       )
     );
   }

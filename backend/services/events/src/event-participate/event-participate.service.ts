@@ -73,9 +73,9 @@ export class EventParticipateService {
     eventBudgetId: string,
     userId: string,
   ): Promise<EventParticipate | null> {
-    return this.eventParticipateRepository.findOneBy({
-      eventBudgetId,
-      userId,
+    console.log('eventBudgetId', eventBudgetId, 'userId', userId);
+    return this.eventParticipateRepository.findOne({
+      where: { eventBudgetId, userId },
     });
   }
 }
