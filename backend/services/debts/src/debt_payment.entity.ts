@@ -1,5 +1,5 @@
-import { Debt } from 'src/debt/debt.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Debt } from './debt.entity';
 @Entity()
 export class DebtPayment {
   @PrimaryGeneratedColumn('uuid')

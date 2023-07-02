@@ -1,5 +1,5 @@
-import { DebtPayment } from 'src/debt_payment/debt_payment.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { DebtPayment } from './debt_payment.entity';
 
 @Entity()
 export class Debt {

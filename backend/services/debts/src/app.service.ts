@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Debt } from './debt.entity';
-import { DebtPayment } from 'src/debt_payment/debt_payment.entity';
 import { CreateDebtDto, UpdateDebtDto } from './debt.request';
+import { DebtPayment } from './debt_payment.entity';
 
 @Injectable()
-export class DebtService {
+export class AppService {
   constructor(
     @InjectRepository(Debt)
     private readonly debtRepository: Repository<Debt>,
@@ -24,7 +24,7 @@ export class DebtService {
   }
 
   async findDebtById(id: string): Promise<Debt> {
-    return this.debtRepository.findOne(id, { relations: ['payments'] });
+    return this.debtRepository.findOneBy({ id });
   }
 
   async updateDebt(id: string, updateDebtDto: UpdateDebtDto): Promise<Debt> {
