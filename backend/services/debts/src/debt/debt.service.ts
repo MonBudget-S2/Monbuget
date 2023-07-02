@@ -2,39 +2,114 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Debt } from './debt.entity';
+import { DebtPayment } from 'src/debt_payment/debt_payment.entity';
 import { CreateDebtDto, UpdateDebtDto } from './debt.request';
 
 @Injectable()
 export class DebtService {
   constructor(
     @InjectRepository(Debt)
-    private debtRepository: Repository<Debt>,
+    private readonly debtRepository: Repository<Debt>,
+    @InjectRepository(DebtPayment)
+    private readonly debtPaymentRepository: Repository<DebtPayment>,
   ) {}
 
-  async create(createDebtDto: CreateDebtDto): Promise<Debt> {
-    const newDebt = this.debtRepository.create(createDebtDto);
-    return this.debtRepository.save(newDebt);
+  async createDebt(createDebtDto: CreateDebtDto): Promise<Debt> {
+    const debt = this.debtRepository.create(createDebtDto);
+    return this.debtRepository.save(debt);
   }
 
-  async findAll(): Promise<Debt[]> {
+  async findAllDebts(): Promise<Debt[]> {
     return this.debtRepository.find();
   }
 
-  async findById(id: string): Promise<Debt | null> {
-    return this.debtRepository.findOneBy({ id });
+  async findDebtById(id: string): Promise<Debt> {
+    return this.debtRepository.findOne(id, { relations: ['payments'] });
   }
 
-  async update(id: string, updateDebtDto: UpdateDebtDto): Promise<Debt | null> {
-    const debt = await this.debtRepository.findOneBy({ id });
+  async updateDebt(id: string, updateDebtDto: UpdateDebtDto): Promise<Debt> {
+    const debt = await this.findDebtById(id);
     if (!debt) {
-      return null; // Debt with the given ID not found
+      // Handle not found case, throw exception or return null/error
     }
-    const updatedDebt = { ...debt, ...updateDebtDto };
-    return this.debtRepository.save(updatedDebt);
+    Object.assign(debt, updateDebtDto);
+    return this.debtRepository.save(debt);
   }
 
-  async delete(id: string): Promise<boolean> {
-    const result = await this.debtRepository.delete(id);
-    return result.affected > 0;
+  async deleteDebt(id: string): Promise<void> {
+    await this.debtRepository.delete(id);
+  }
+
+  async addPayment(debtId: string, amount: number): Promise<DebtPayment> {
+    const debt = await this.findDebtById(debtId);
+    if (!debt) {
+      return null;
+    }
+
+    const debtPayment = new DebtPayment();
+    debtPayment.amount = amount;
+    debt.payments.push(debtPayment);
+
+    return this.debtRepository.save(debt).then(() => debtPayment);
+  }
+
+  async getDebtPayments(debtId: string): Promise<DebtPayment[]> {
+    const debt = await this.findDebtById(debtId);
+    if (!debt) {
+      return null;
+    }
+
+    return debt.payments;
+  }
+
+  async getDebtPayment(
+    debtId: string,
+    paymentId: string,
+  ): Promise<DebtPayment> {
+    const debt = await this.findDebtById(debtId);
+    if (!debt) {
+      return null;
+    }
+
+    const payment = debt.payments.find((p) => p.id === paymentId);
+    if (!payment) {
+      return null;
+    }
+
+    return payment;
+  }
+
+  async updateDebtPayment(
+    debtId: string,
+    paymentId: string,
+    amount: number,
+  ): Promise<DebtPayment> {
+    const debt = await this.findDebtById(debtId);
+    if (!debt) {
+      return null;
+    }
+
+    const payment = debt.payments.find((p) => p.id === paymentId);
+    if (!payment) {
+      return null;
+    }
+
+    payment.amount = amount;
+    return this.debtPaymentRepository.save(payment);
+  }
+
+  async deleteDebtPayment(debtId: string, paymentId: string): Promise<void> {
+    const debt = await this.findDebtById(debtId);
+    if (!debt) {
+      return null;
+    }
+
+    const paymentIndex = debt.payments.findIndex((p) => p.id === paymentId);
+    if (paymentIndex === -1) {
+      return null;
+    }
+
+    debt.payments.splice(paymentIndex, 1);
+    await this.debtRepository.save(debt);
   }
 }
