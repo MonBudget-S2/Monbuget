@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EventBudget } from './event-budget.entity';
 import { Repository } from 'typeorm';
@@ -11,6 +11,7 @@ import { EventParticipateService } from 'src/event-participate/event-participate
 import { EventInvitationService } from 'src/event-invitation/event-invitation.service';
 import { EventInvitation } from 'src/event-invitation/event-invitation.entity';
 import { InvitationStatus } from 'src/event-invitation/event-invitation.enum';
+import { ClientProxy } from '@nestjs/microservices';
 
 export interface EventBudgetResponse extends EventBudget {
   eventParticipants: EventParticipate[];
@@ -19,6 +20,8 @@ export interface EventBudgetResponse extends EventBudget {
 @Injectable()
 export class EventBudgetService {
   constructor(
+    @Inject('EXPENSE_SERVICE') private readonly expenseService: ClientProxy,
+
     @InjectRepository(EventBudget)
     private eventBudgetRepository: Repository<EventBudget>,
     private readonly eventParticipateService: EventParticipateService,
