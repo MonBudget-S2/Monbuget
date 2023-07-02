@@ -74,4 +74,10 @@ export class EventBudgetController {
     const { invitationId, status } = payload;
     return this.appService.updateInvitationStatus(invitationId, status);
   }
+
+  @MessagePattern({ service: 'eventBudget', action: 'endEvent' })
+  endEvent(@Payload() payload: { eventId: string }) {
+    const { eventId } = payload;
+    return this.appService.setEndofEvent(eventId);
+  }
 }

@@ -12,6 +12,7 @@ import { EventInvitationService } from 'src/event-invitation/event-invitation.se
 import { EventInvitation } from 'src/event-invitation/event-invitation.entity';
 import { InvitationStatus } from 'src/event-invitation/event-invitation.enum';
 import { ClientProxy } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 
 export interface EventBudgetResponse extends EventBudget {
   eventParticipants: EventParticipate[];
@@ -207,5 +208,75 @@ export class EventBudgetService {
     }
 
     return this.eventInvitationService.getByEventId(eventId);
+  }
+
+  async setEndofEvent(eventBudgetId: string) {
+    const eventBudget = await this.eventBudgetRepository.findOneByOrFail({
+      id: eventBudgetId,
+    });
+
+    eventBudget.endDate = new Date();
+    const updatedEventBudget = await this.eventBudgetRepository.save(
+      eventBudget,
+    );
+
+    return this.resolveExpenseSharing(eventBudgetId);
+  }
+
+  /*
+   * Resolve expense sharing
+   * 1. Get all expenses of the event and Calculate the total expense
+   * 2. Calculate the expense per person and Calculate the amount to be paid by each participant
+   * 3. Create a transaction for each participant
+   * */
+  private async resolveExpenseSharing(eventBudgetId: string) {
+    const eventBudget = await this.eventBudgetRepository.findOneBy({
+      id: eventBudgetId,
+    });
+    if (!eventBudget) {
+      throw new NotFoundException('Event budget not found');
+    }
+
+    const eventParticipants =
+      await this.eventParticipateService.getByEventBudgetId(eventBudgetId);
+
+    const listExpenses = await firstValueFrom(
+      this.expenseService.send('getAllByBudget', { eventBudgetId }),
+    );
+
+    const totalExpense = listExpenses.reduce(
+      (total, expense) => total + expense.amount,
+      0,
+    );
+
+    const expensePerPerson = totalExpense / eventParticipants.length;
+    const transactions = [];
+
+    for (const participant of eventParticipants) {
+      const participantExpense = listExpenses.reduce((total, expense) => {
+        if (expense.userId === participant.userId) {
+          return total + expense.amount;
+        }
+        return total;
+      }, 0);
+
+      const difference = participantExpense - expensePerPerson;
+
+      if (difference > 0) {
+        transactions.push({
+          from: participant.userId,
+          to: eventBudget.userId,
+          amount: difference,
+        });
+      } else if (difference < 0) {
+        transactions.push({
+          from: eventBudget.userId,
+          to: participant.userId,
+          amount: -difference,
+        });
+      }
+    }
+
+    return { totalExpense, expensePerPerson, transactions };
   }
 }

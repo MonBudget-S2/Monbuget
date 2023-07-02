@@ -117,4 +117,11 @@ export class EventService {
       )
     );
   }
+
+  async markEventAsFinished(id: string, user) {
+    const event = await this.getEventById(id, user);
+    return await firstValueFrom(
+      this.eventService.send({ service: "eventBudget", action: "endEvent" }, id)
+    );
+  }
 }
