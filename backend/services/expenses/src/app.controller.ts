@@ -47,13 +47,9 @@ export class AppController {
   }
 
   @MessagePattern({ service: 'expense', action: 'getAllByEvent' })
-  getAllExpensesByEvent(
-    @Payload()
-    payload: {
-      eventId: string;
-    },
-  ) {
-    const { eventId } = payload;
+  getAllExpensesByEvent(eventId: string) {
+    // console.log('payload', payload);
+    // const { eventId } = payload;
     return this.appService.getAllByEvent(eventId);
   }
 

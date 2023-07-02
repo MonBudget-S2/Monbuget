@@ -191,12 +191,14 @@ export class AppService {
     return updatedExpense;
   }
 
-  async getAllByEvent(eventBudgetId: string): Promise<Expense[]> {
+  async getAllByEvent(eventId: string): Promise<Expense[]> {
     const expenses = await this.expenseRepository.find({
       where: {
-        eventBudgetId,
+        eventBudgetId: eventId,
       },
     });
+
+    console.log(expenses, eventId);
     return expenses;
   }
 

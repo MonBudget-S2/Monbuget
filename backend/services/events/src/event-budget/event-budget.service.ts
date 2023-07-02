@@ -220,18 +220,25 @@ export class EventBudgetService {
     const updatedEventBudget = await this.eventBudgetRepository.save(
       eventBudget,
     );
-
+    console.log('updatedEventBudget', updatedEventBudget);
+    console.log('eventBudgetId', eventBudgetId);
     const resultExpenseSharing = await this.resolveExpenseSharing(
-      eventBudgetId,
+      updatedEventBudget.id,
     );
-
+    console.log('resultExpenseSharing', resultExpenseSharing);
     const transactions = resultExpenseSharing.transactions;
     const debtPromises = transactions.map(async (transaction) => {
       const createDebtDto = {
         userId: transaction.to,
         amount: transaction.amount,
+        eventId: eventBudgetId,
       };
-      return firstValueFrom(this.debtService.send('createDebt', createDebtDto));
+      return firstValueFrom(
+        this.debtService.send(
+          { service: 'debt', action: 'create' },
+          createDebtDto,
+        ),
+      );
     });
 
     const debts = await Promise.all(debtPromises);
@@ -257,39 +264,70 @@ export class EventBudgetService {
       await this.eventParticipateService.getByEventBudgetId(eventBudgetId);
 
     const listExpenses = await firstValueFrom(
-      this.expenseService.send('getAllByBudget', { eventBudgetId }),
+      this.expenseService.send(
+        { service: 'expense', action: 'getAllByEvent' },
+        eventBudgetId,
+      ),
     );
 
     const totalExpense = listExpenses.reduce(
       (total, expense) => total + expense.amount,
       0,
     );
-
     const expensePerPerson = totalExpense / eventParticipants.length;
     const transactions = [];
 
     for (const participant of eventParticipants) {
-      const participantExpense = listExpenses.reduce((total, expense) => {
-        if (expense.userId === participant.userId) {
-          return total + expense.amount;
-        }
-        return total;
-      }, 0);
+      const participantExpense = listExpenses
+        .filter((expense) => expense.userId === participant.userId)
+        .reduce((total, expense) => total + expense.amount, 0);
 
-      const difference = participantExpense - expensePerPerson;
+      let difference = participantExpense - expensePerPerson;
 
       if (difference > 0) {
-        transactions.push({
-          from: eventBudget.userId,
-          to: participant.userId,
-          amount: difference,
-        });
+        for (const otherParticipant of eventParticipants) {
+          if (otherParticipant !== participant) {
+            const otherExpense = listExpenses
+              .filter((expense) => expense.userId === otherParticipant.userId)
+              .reduce((total, expense) => total + expense.amount, 0);
+
+            const amount = Math.min(
+              difference,
+              expensePerPerson - otherExpense,
+            );
+
+            if (amount > 0 && eventBudget.userId !== participant.userId) {
+              transactions.push({
+                payer: eventBudget.userId,
+                receiver: participant.userId,
+                amount,
+              });
+              difference -= amount;
+            }
+          }
+        }
       } else if (difference < 0) {
-        transactions.push({
-          from: participant.userId,
-          to: eventBudget.userId,
-          amount: -difference,
-        });
+        for (const otherParticipant of eventParticipants) {
+          if (otherParticipant !== participant) {
+            const otherExpense = listExpenses
+              .filter((expense) => expense.userId === otherParticipant.userId)
+              .reduce((total, expense) => total + expense.amount, 0);
+
+            const amount = Math.min(
+              -difference,
+              otherExpense - expensePerPerson,
+            );
+
+            if (amount > 0 && eventBudget.userId !== participant.userId) {
+              transactions.push({
+                payer: participant.userId,
+                receiver: eventBudget.userId,
+                amount,
+              });
+              difference += amount;
+            }
+          }
+        }
       }
     }
 

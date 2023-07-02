@@ -6,19 +6,19 @@ export class Debt {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   motif: string;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   amount: number;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 2 })
   remainingAmount: number;
 
-  @Column()
+  @Column({ nullable: true })
   dueDate: Date;
 
-  @Column()
+  @Column({ nullable: true })
   debtType: string;
 
   @Column()
