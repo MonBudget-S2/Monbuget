@@ -22,6 +22,7 @@ export interface EventBudgetResponse extends EventBudget {
 export class EventBudgetService {
   constructor(
     @Inject('EXPENSE_SERVICE') private readonly expenseService: ClientProxy,
+    @Inject('DEBT_SERVICE') private readonly debtService: ClientProxy,
 
     @InjectRepository(EventBudget)
     private eventBudgetRepository: Repository<EventBudget>,
@@ -220,7 +221,22 @@ export class EventBudgetService {
       eventBudget,
     );
 
-    return this.resolveExpenseSharing(eventBudgetId);
+    const resultExpenseSharing = await this.resolveExpenseSharing(
+      eventBudgetId,
+    );
+
+    const transactions = resultExpenseSharing.transactions;
+    const debtPromises = transactions.map(async (transaction) => {
+      const createDebtDto = {
+        userId: transaction.to,
+        amount: transaction.amount,
+      };
+      return firstValueFrom(this.debtService.send('createDebt', createDebtDto));
+    });
+
+    const debts = await Promise.all(debtPromises);
+
+    return { ...resultExpenseSharing, debts };
   }
 
   /*
@@ -264,14 +280,14 @@ export class EventBudgetService {
 
       if (difference > 0) {
         transactions.push({
-          from: participant.userId,
-          to: eventBudget.userId,
+          from: eventBudget.userId,
+          to: participant.userId,
           amount: difference,
         });
       } else if (difference < 0) {
         transactions.push({
-          from: eventBudget.userId,
-          to: participant.userId,
+          from: participant.userId,
+          to: eventBudget.userId,
           amount: -difference,
         });
       }
