@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DebtService } from './debt.service';
+import { Controller } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateDebtDto, UpdateDebtDto } from './debt.request';
+import { DebtService } from './debt.service';
 
-
-@Controller('debt')
+@Controller()
 export class DebtController {
   constructor(private readonly debtService: DebtService) {}
 
-  @Post()
-  create(@Body() createDebtDto: CreateDebtDto) {
+  @MessagePattern({ service: 'debt', action: 'create' })
+  createDebt(@Payload() createDebtDto: CreateDebtDto) {
     return this.debtService.create(createDebtDto);
   }
 
-  @Get()
-  findAll() {
+  @MessagePattern({ service: 'debt', action: 'getAll' })
+  getAllDebts() {
     return this.debtService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.debtService.findOne(+id);
+  @MessagePattern({ service: 'debt', action: 'getById' })
+  getDebtById(@Payload() id: string) {
+    return this.debtService.findById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto) {
-    return this.debtService.update(+id, updateDebtDto);
+  @MessagePattern({ service: 'debt', action: 'update' })
+  updateDebt(@Payload() payload: { id: string; updateDebtDto: UpdateDebtDto }) {
+    const { id, updateDebtDto } = payload;
+    return this.debtService.update(id, updateDebtDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.debtService.remove(+id);
+  @MessagePattern({ service: 'debt', action: 'delete' })
+  deleteDebt(@Payload() id: string) {
+    return this.debtService.delete(id);
   }
 }
