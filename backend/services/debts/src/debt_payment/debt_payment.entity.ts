@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Debt } from 'src/debt/debt.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 @Entity()
 export class DebtPayment {
   @PrimaryGeneratedColumn('uuid')
@@ -11,5 +12,8 @@ export class DebtPayment {
   date: Date;
 
   @Column()
-  debtId: string;
+  isReceived: boolean;
+
+  @ManyToOne(() => Debt, (debt) => debt.payments)
+  debt: Debt;
 }
