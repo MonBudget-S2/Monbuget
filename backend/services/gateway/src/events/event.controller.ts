@@ -19,6 +19,7 @@ import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from "./event-budget.request";
+import { InvitationStatus } from "./event-invitation.enum";
 
 @AuthenticationRequired()
 @Controller("events")
@@ -79,6 +80,23 @@ export class EventController {
     @Req() request: CustomRequest
   ) {
     const user = request.user;
-    return this.eventService.acceptInvitation(invitationId, user);
+    return this.eventService.updateInvitation(
+      invitationId,
+      InvitationStatus.ACCEPTED,
+      user
+    );
+  }
+
+  @Post("/rejectInvitation/:invitationId")
+  rejectInvitation(
+    @Param("invitationId") invitationId: string,
+    @Req() request: CustomRequest
+  ) {
+    const user = request.user;
+    return this.eventService.updateInvitation(
+      invitationId,
+      InvitationStatus.REJECTED,
+      user
+    );
   }
 }

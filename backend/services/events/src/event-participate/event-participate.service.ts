@@ -68,4 +68,14 @@ export class EventParticipateService {
   async getByEventBudgetId(eventBudgetId: string): Promise<EventParticipate[]> {
     return this.eventParticipateRepository.find({ where: { eventBudgetId } });
   }
+
+  async getByEventBudgetIdAndUserId(
+    eventBudgetId: string,
+    userId: string,
+  ): Promise<EventParticipate | null> {
+    return this.eventParticipateRepository.findOneBy({
+      eventBudgetId,
+      userId,
+    });
+  }
 }

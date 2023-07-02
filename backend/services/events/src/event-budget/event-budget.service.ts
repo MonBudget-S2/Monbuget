@@ -117,6 +117,24 @@ export class EventBudgetService {
     eventId: string,
     userId: string,
   ): Promise<EventInvitation | null> {
+    const eventBudget = await this.eventBudgetRepository.findOneBy({
+      id: eventId,
+    });
+    if (!eventBudget) {
+      throw new NotFoundException('Event budget not found');
+    }
+
+    const eventParticipate =
+      await this.eventParticipateService.getByEventBudgetIdAndUserId(
+        eventId,
+        userId,
+      );
+    if (eventParticipate) {
+      throw new NotFoundException(
+        'You are already participating in this event',
+      );
+    }
+
     const createdInvitation = await this.eventInvitationService.create(
       eventId,
       userId,
@@ -132,6 +150,27 @@ export class EventBudgetService {
     if (!invitation) {
       return null; // Invitation with the given ID not found
     }
+
+    const eventBudget = await this.eventBudgetRepository.findOneBy({
+      id: invitation.eventId,
+    });
+
+    if (!eventBudget) {
+      throw new NotFoundException('Event budget not found');
+    }
+
+    const eventParticipate =
+      await this.eventParticipateService.getByEventBudgetIdAndUserId(
+        invitation.eventId,
+        invitation.userId,
+      );
+
+    if (eventParticipate) {
+      throw new NotFoundException(
+        'You are already participating in this event',
+      );
+    }
+
     invitation.status = status;
     const updatedInvitation = await this.eventInvitationService.update(
       invitationId,

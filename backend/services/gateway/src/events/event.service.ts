@@ -86,13 +86,13 @@ export class EventService {
 
     return await firstValueFrom(
       this.eventService.send(
-        { service: "eventInvitation", action: "create" },
+        { service: "eventBudget", action: "createInvitation" },
         { userId: inviteeId, eventId: id }
       )
     );
   }
 
-  async acceptInvitation(invitationId: string, user) {
+  async updateInvitation(invitationId: string, status: InvitationStatus, user) {
     const invitation = await firstValueFrom(
       this.eventService.send(
         { service: "eventInvitation", action: "getById" },
@@ -109,10 +109,11 @@ export class EventService {
         HttpStatus.FORBIDDEN
       );
     }
+
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventBudget", action: "updateInvitationStatus" },
-        { id: invitationId, status: InvitationStatus.ACCEPTED }
+        { id: invitationId, status: status }
       )
     );
   }
