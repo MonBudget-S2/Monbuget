@@ -307,8 +307,8 @@ export class EventBudgetService {
       );
 
       transactions.push({
-        from: owingParticipant.userId,
-        to: owedParticipant.userId,
+        from: owedParticipant.userId,
+        to: owingParticipant.userId,
         amount: amountToTransfer,
       });
 
