@@ -246,12 +246,6 @@ export class EventBudgetService {
     return { ...resultExpenseSharing, debts };
   }
 
-  /*
-   * Resolve expense sharing
-   * 1. Get all expenses of the event and Calculate the total expense
-   * 2. Calculate the expense per person and Calculate the amount to be paid by each participant
-   * 3. Create a transaction for each participant
-   * */
   private async resolveExpenseSharing(eventBudgetId: string) {
     const eventBudget = await this.eventBudgetRepository.findOneBy({
       id: eventBudgetId,
@@ -259,78 +253,110 @@ export class EventBudgetService {
     if (!eventBudget) {
       throw new NotFoundException('Event budget not found');
     }
-
     const eventParticipants =
       await this.eventParticipateService.getByEventBudgetId(eventBudgetId);
-
-    const listExpenses = await firstValueFrom(
-      this.expenseService.send(
-        { service: 'expense', action: 'getAllByEvent' },
-        eventBudgetId,
-      ),
-    );
-
-    const totalExpense = listExpenses.reduce(
-      (total, expense) => total + expense.amount,
+    const totalParticipants = eventParticipants.length;
+    const totalAmountPaid = eventParticipants.reduce(
+      (total, participant) => total + participant.amountPaid,
       0,
     );
-    const expensePerPerson = totalExpense / eventParticipants.length;
+    const expensePerPerson = totalAmountPaid / totalParticipants;
+
     const transactions = [];
 
-    for (const participant of eventParticipants) {
-      const participantExpense = listExpenses
-        .filter((expense) => expense.userId === participant.userId)
-        .reduce((total, expense) => total + expense.amount, 0);
+    // Calculate the amount each participant owes or is owed
+    const participantsOwed = [];
+    const participantsOwing = [];
+    eventParticipants.forEach((participant) => {
+      const amountToSettle = participant.amountPaid - expensePerPerson;
+      if (amountToSettle < 0) {
+        participantsOwed.push({
+          userId: participant.userId,
+          amountToSettle: Math.abs(amountToSettle),
+        });
+      } else if (amountToSettle > 0) {
+        participantsOwing.push({
+          userId: participant.userId,
+          amountToSettle,
+        });
+      }
+    });
 
-      let difference = participantExpense - expensePerPerson;
+    console.log('Participants Owed:', participantsOwed);
+    console.log('Participants Owing:', participantsOwing);
 
-      if (difference > 0) {
-        for (const otherParticipant of eventParticipants) {
-          if (otherParticipant !== participant) {
-            const otherExpense = listExpenses
-              .filter((expense) => expense.userId === otherParticipant.userId)
-              .reduce((total, expense) => total + expense.amount, 0);
+    // Sort participants owed in descending order
+    participantsOwed.sort((a, b) => b.amountToSettle - a.amountToSettle);
 
-            const amount = Math.min(
-              difference,
-              expensePerPerson - otherExpense,
-            );
+    // Sort participants owing in ascending order
+    participantsOwing.sort((a, b) => a.amountToSettle - b.amountToSettle);
 
-            if (amount > 0 && eventBudget.userId !== participant.userId) {
-              transactions.push({
-                payer: eventBudget.userId,
-                receiver: participant.userId,
-                amount,
-              });
-              difference -= amount;
-            }
-          }
-        }
-      } else if (difference < 0) {
-        for (const otherParticipant of eventParticipants) {
-          if (otherParticipant !== participant) {
-            const otherExpense = listExpenses
-              .filter((expense) => expense.userId === otherParticipant.userId)
-              .reduce((total, expense) => total + expense.amount, 0);
+    // Distribute the amounts owed and owing
+    while (participantsOwing.length > 0 && participantsOwed.length > 0) {
+      const owedParticipant = participantsOwed[0];
+      const owingParticipant = participantsOwing[0];
 
-            const amount = Math.min(
-              -difference,
-              otherExpense - expensePerPerson,
-            );
+      console.log('test', owedParticipant, owingParticipant);
+      const amountToTransfer = Math.min(
+        owedParticipant.amountToSettle,
+        owingParticipant.amountToSettle,
+      );
 
-            if (amount > 0 && eventBudget.userId !== participant.userId) {
-              transactions.push({
-                payer: participant.userId,
-                receiver: eventBudget.userId,
-                amount,
-              });
-              difference += amount;
-            }
-          }
-        }
+      transactions.push({
+        from: owingParticipant.userId,
+        to: owedParticipant.userId,
+        amount: amountToTransfer,
+      });
+
+      owedParticipant.amountToSettle -= amountToTransfer;
+      owingParticipant.amountToSettle -= amountToTransfer;
+
+      if (owedParticipant.amountToSettle === 0) {
+        participantsOwed.shift();
+      }
+
+      if (owingParticipant.amountToSettle === 0) {
+        participantsOwing.shift();
       }
     }
 
-    return { totalExpense, expensePerPerson, transactions };
+    console.log('Transactions:', transactions);
+
+    const afterTransactions = eventParticipants.map((participant) => {
+      const transactionsInvolved = transactions.filter(
+        (transaction) =>
+          transaction.from === participant.userId ||
+          transaction.to === participant.userId,
+      );
+      const amountPaidAfterCalcul =
+        participant.amountPaid +
+        transactionsInvolved.reduce(
+          (total, transaction) =>
+            transaction.from === participant.userId
+              ? total - transaction.amount
+              : total + transaction.amount,
+          0,
+        );
+      return {
+        userId: participant.userId,
+        amountPaidAfterCalcul,
+      };
+    });
+
+    console.log('After Transactions:', afterTransactions);
+
+    // For example, you can update the amountPaid for each participant in the database
+    // await Promise.all(
+    //   eventParticipants.map(async (participant) => {
+    //     await this.eventParticipateService.update(participant.id, participant);
+    //   }),
+    // );
+
+    // You can also perform other actions like sending notifications, generating reports, etc.
+    return {
+      totalAmountPaid,
+      expensePerPerson,
+      transactions,
+    };
   }
 }
