@@ -40,6 +40,7 @@ export class AppController {
 
   @MessagePattern({ service: 'debt', action: 'pay' })
   addPayment(@Payload() payload: { debtId: string; amount: number }) {
+    console.log('payload', payload);
     const { debtId, amount } = payload;
     return this.appService.addPayment(debtId, amount);
   }

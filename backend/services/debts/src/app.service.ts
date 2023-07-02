@@ -56,7 +56,7 @@ export class AppService {
     await this.debtRepository.delete(id);
   }
 
-  async addPayment(debtId: string, amount: number): Promise<DebtPayment> {
+  async addPayment(debtId: string, amount: number): Promise<Debt> {
     const debt = await this.findDebtById(debtId);
     if (!debt) {
       return null;
@@ -64,9 +64,15 @@ export class AppService {
 
     const debtPayment = new DebtPayment();
     debtPayment.amount = amount;
-    debt.payments.push(debtPayment);
+    debtPayment.debt = debt;
+    
+    const savedDebtPayment = await this.debtPaymentRepository.save(debtPayment);
 
-    return this.debtRepository.save(debt).then(() => debtPayment);
+    if (debt.remainingAmount - amount < 0) return null;
+    debt.remainingAmount -= amount;
+
+    const savedDebt = await this.debtRepository.save(debt);
+    return savedDebt;
   }
 
   async getDebtPayments(debtId: string): Promise<DebtPayment[]> {

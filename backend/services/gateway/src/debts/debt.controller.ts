@@ -35,7 +35,7 @@ export class DebtController {
   @Post(":id/pay")
   async payDebt(
     @Param("id") id: string,
-    @Body() amount: number,
+    @Body("amount") amount: number,
     @Req() request: CustomRequest
   ) {
     const user = request.user;

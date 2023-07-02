@@ -27,6 +27,6 @@ export class Debt {
   @Column()
   eventBudgetId: string;
 
-  @OneToMany(() => DebtPayment, (payment) => payment.debt)
+  @OneToMany(() => DebtPayment, (payment) => payment.debt, { eager: true })
   payments: DebtPayment[];
 }
