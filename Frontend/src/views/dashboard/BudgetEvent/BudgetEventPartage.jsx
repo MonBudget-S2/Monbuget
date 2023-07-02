@@ -16,9 +16,6 @@ import Data from "views/dashboard/BudgetEvent/BudgetEventData";
 import { Link } from 'react-router-dom';
 
 const BugetEventPartage = () =>{
-    const redirecter = (id)=>{
-        console.log(id)
-    }
 
     return (
         <MainCard content={false}>
@@ -46,12 +43,6 @@ const BugetEventPartage = () =>{
                                             <TableCell align="center">
                                                 <Button component={Link} variant="outlined" color="primary" to={'/budgetEvent/'+row.id} sx={{ marginRight: '8px' }}>
                                                     Voir
-                                                </Button>
-                                                <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
-                                                    Edit
-                                                </Button>
-                                                <Button variant="outlined" color="secondary" >
-                                                    Supprimer
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
