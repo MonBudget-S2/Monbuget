@@ -191,6 +191,15 @@ export class AppService {
     return updatedExpense;
   }
 
+  async getAllByEvent(eventBudgetId: string): Promise<Expense[]> {
+    const expenses = await this.expenseRepository.find({
+      where: {
+        eventBudgetId,
+      },
+    });
+    return expenses;
+  }
+
   async delete(id: string): Promise<boolean> {
     const result = await this.expenseRepository.delete(id);
     return result.affected > 0;
