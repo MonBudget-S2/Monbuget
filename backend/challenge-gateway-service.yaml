@@ -22,7 +22,7 @@ metadata:
   labels:
     gateway: challenge-gateway-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -79,7 +79,7 @@ metadata:
   labels:
     alerts: challenge-alerts-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -138,7 +138,7 @@ metadata:
   labels:
     budgets: challenge-budgets-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -197,7 +197,7 @@ metadata:
   labels:
     debts: challenge-debts-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -256,7 +256,7 @@ metadata:
   labels:
     events: challenge-events-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -315,7 +315,7 @@ metadata:
   labels:
     expenses: challenge-expenses-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -374,7 +374,7 @@ metadata:
   labels:
     incomes: challenge-incomes-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -431,7 +431,7 @@ metadata:
   labels:
     users: challenge-users-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -488,7 +488,7 @@ metadata:
   labels:
     categories: challenge-categories-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
