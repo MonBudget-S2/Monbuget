@@ -21,12 +21,17 @@ const getAllExpenses = async () => {
   return await axiosInstance.get(`/events/participant/expenses`);
 };
 
+const getAllInvitations = async () => {
+  return await axiosInstance.get(`/events/participant/invitations`);
+};
+
 const eventService = {
   addEvent,
   updateEvent,
   getEvents,
   deleteEvent,
-  getAllExpenses
+  getAllExpenses,
+  getAllInvitations
 };
 
 export default eventService;

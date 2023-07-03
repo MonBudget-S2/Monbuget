@@ -112,6 +112,11 @@ export class EventController {
     );
   }
 
+  @Get("/invitations")
+  getInvitations(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getInvitations(user);
+  }
   @Post(":id/finished")
   markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;

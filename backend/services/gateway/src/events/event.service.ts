@@ -161,6 +161,15 @@ export class EventService {
     );
   }
 
+  async getInvitations(user) {
+    return await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getAllByUser" },
+        user.id
+      )
+    );
+  }
+
   async markEventAsFinished(id: string, user) {
     const event = await this.getEventById(id, user);
     return await firstValueFrom(
