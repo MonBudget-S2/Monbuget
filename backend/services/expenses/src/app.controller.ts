@@ -46,6 +46,13 @@ export class AppController {
     );
   }
 
+  @MessagePattern({ service: 'expense', action: 'getAllByEvent' })
+  getAllExpensesByEvent(eventId: string) {
+    // console.log('payload', payload);
+    // const { eventId } = payload;
+    return this.appService.getAllByEvent(eventId);
+  }
+
   @MessagePattern({ service: 'expense', action: 'update' })
   updateExpense(
     @Payload() payload: { id: string; updateExpenseDto: UpdateExpenseDto },

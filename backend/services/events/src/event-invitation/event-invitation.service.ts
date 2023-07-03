@@ -11,10 +11,10 @@ export class EventInvitationService {
     private eventInvitationRepository: Repository<EventInvitation>,
   ) {}
 
-  async create(userId: string, eventId: string): Promise<any> {
+  async create(eventId: string, userId: string): Promise<any> {
     const newEventInvitation = this.eventInvitationRepository.create({
-      userId,
       eventId,
+      userId,
       status: InvitationStatus.PENDING,
     });
 

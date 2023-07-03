@@ -43,4 +43,13 @@ export class UsersController {
   deleteUser(@Payload() id: string) {
     return this.usersService.deleteUser(id);
   }
+
+  @MessagePattern({ service: 'user', cmd: 'updatePassword' })
+  updatePassword(
+    @Param('id') id: string,
+    @Body() body: { oldPassword: string; newPassword: string },
+  ) {
+    const { oldPassword, newPassword } = body;
+    return this.usersService.updatePassword(id, oldPassword, newPassword);
+  }
 }

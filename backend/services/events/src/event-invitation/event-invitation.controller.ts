@@ -10,7 +10,7 @@ export class EventInvitationController {
   ) {}
 
   @MessagePattern({ service: 'eventInvitation', action: 'create' })
-  createEventInvitation(payload: { userId: string; eventId: string }) {
+  createEventInvitation(payload: { eventId: string; userId: string }) {
     const { userId, eventId } = payload;
     return this.eventInvitationService.create(userId, eventId);
   }
@@ -25,7 +25,10 @@ export class EventInvitationController {
     return this.eventInvitationService.getById(id);
   }
 
-  @MessagePattern({ service: 'eventInvitation', action: 'update' })
+  @MessagePattern({
+    service: 'eventInvitation',
+    action: 'update',
+  })
   updateEventInvitation(
     @Payload() payload: { id: string; status: InvitationStatus },
   ) {
