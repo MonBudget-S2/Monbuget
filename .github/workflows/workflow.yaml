@@ -83,4 +83,4 @@ jobs:
           GCP_SA_KEY: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           GCP_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GKE_CLUSTER: ${{ secrets.CLUSTER_NAME }}
-          GKE_ZONE: ${{ secrets.ZONE_NAME }}
+          GKE_LOCATION: ${{ secrets.ZONE_NAME }}
