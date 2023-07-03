@@ -80,19 +80,4 @@ export class EventBudgetController {
     const { eventId } = payload;
     return this.appService.setEndofEvent(eventId);
   }
-
-  @MessagePattern({
-    service: 'eventBudget',
-    action: 'getParticipantByEventAndUser',
-  })
-  getParticipantByEventAndUser(
-    @Payload()
-    payload: {
-      eventId: string;
-      userId: string;
-    },
-  ) {
-    const { eventId, userId } = payload;
-    return this.appService.getParticipantByEventAndUser(eventId, userId);
-  }
 }

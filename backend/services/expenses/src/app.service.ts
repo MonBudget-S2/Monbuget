@@ -35,13 +35,34 @@ export class AppService {
     if (createExpenseDto.eventBudgetId) {
       const eventParticipant = await firstValueFrom(
         this.eventBudgetService.send(
-          { service: 'eventBudget', action: 'getParticipantByEventAndUser' },
+          { service: 'eventParticipate', action: 'getByEventAndUser' },
           {
             eventId: createExpenseDto.eventBudgetId,
             userId: createExpenseDto.userId,
           },
         ),
       );
+
+      console.log(eventParticipant);
+      if (!eventParticipant) {
+        return {
+          message: 'You are not a participant of this event',
+          newExpense,
+        };
+      }
+
+      eventParticipant.amountPaid += createExpenseDto.amount;
+
+      const updatedEventParticipate = await firstValueFrom(
+        this.eventBudgetService.send(
+          { service: 'eventParticipate', action: 'update' },
+          {
+            id: eventParticipant.id,
+            updateEventParticipateDto: eventParticipant,
+          },
+        ),
+      );
+      console.log(updatedEventParticipate);
     }
 
     return { message: 'Expense created successfully', newExpense };

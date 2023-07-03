@@ -31,6 +31,17 @@ export class EventParticipateService {
     return this.eventParticipateRepository.findOneBy({ id });
   }
 
+  async getByEventAndUser(
+    eventId: string,
+    userId: string,
+  ): Promise<EventParticipate | null> {
+    return this.eventParticipateRepository.findOneBy({
+      eventBudgetId: eventId,
+      userId,
+    });
+    
+  }
+
   async getAll(): Promise<EventParticipate[]> {
     return this.eventParticipateRepository.find();
   }
