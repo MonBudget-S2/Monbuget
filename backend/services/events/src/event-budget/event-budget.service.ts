@@ -214,6 +214,16 @@ export class EventBudgetService {
     return this.eventInvitationService.getByEventId(eventId);
   }
 
+  async getParticipantByEventAndUser(eventId: string, userId: string) {
+    const eventParticipant = await this.eventBudgetRepository.findOne({
+      where: { id: eventId, userId },
+    });
+    if (!eventParticipant) {
+      return null;
+    }
+    return eventParticipant;
+  }
+
   async setEndofEvent(eventBudgetId: string) {
     const eventBudget = await this.eventBudgetRepository.findOneByOrFail({
       id: eventBudgetId,

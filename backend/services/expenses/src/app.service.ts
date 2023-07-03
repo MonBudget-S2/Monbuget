@@ -30,7 +30,20 @@ export class AppService {
 
   async create(createExpenseDto: CreateExpenseDto): Promise<any> {
     const newExpense = this.expenseRepository.create(createExpenseDto);
+
     await this.expenseRepository.save(newExpense);
+    if (createExpenseDto.eventBudgetId) {
+      const eventParticipant = await firstValueFrom(
+        this.eventBudgetService.send(
+          { service: 'eventBudget', action: 'getParticipantByEventAndUser' },
+          {
+            eventId: createExpenseDto.eventBudgetId,
+            userId: createExpenseDto.userId,
+          },
+        ),
+      );
+    }
+
     return { message: 'Expense created successfully', newExpense };
   }
 
