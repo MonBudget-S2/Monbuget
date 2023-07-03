@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   Param,
+  Patch,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
@@ -51,5 +52,19 @@ export class UserController {
   @Delete(":id")
   deleteUser(@Param("id") id: string, @CurrentUser() user: any) {
     return this.userService.deleteUser(id, user);
+  }
+
+  @Patch(":id/update-password")
+  updatePassword(
+    @Param("id") id: string,
+    @Body() body: { oldPassword: string; newPassword: string },
+    @CurrentUser() user: any
+  ) {
+    return this.userService.updatePassword(
+      id,
+      body.oldPassword,
+      body.newPassword,
+      user
+    );
   }
 }

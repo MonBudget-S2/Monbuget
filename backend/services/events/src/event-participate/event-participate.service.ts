@@ -31,6 +31,17 @@ export class EventParticipateService {
     return this.eventParticipateRepository.findOneBy({ id });
   }
 
+  async getByEventAndUser(
+    eventId: string,
+    userId: string,
+  ): Promise<EventParticipate | null> {
+    return this.eventParticipateRepository.findOneBy({
+      eventBudgetId: eventId,
+      userId,
+    });
+    
+  }
+
   async getAll(): Promise<EventParticipate[]> {
     return this.eventParticipateRepository.find();
   }
@@ -67,5 +78,15 @@ export class EventParticipateService {
 
   async getByEventBudgetId(eventBudgetId: string): Promise<EventParticipate[]> {
     return this.eventParticipateRepository.find({ where: { eventBudgetId } });
+  }
+
+  async getByEventBudgetIdAndUserId(
+    eventBudgetId: string,
+    userId: string,
+  ): Promise<EventParticipate | null> {
+    console.log('eventBudgetId', eventBudgetId, 'userId', userId);
+    return this.eventParticipateRepository.findOne({
+      where: { eventBudgetId, userId },
+    });
   }
 }
