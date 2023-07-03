@@ -64,4 +64,12 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async uploadUserAvatar(id:string,avatarUrl:string)
+  {
+    const user = await this.userRepository.findOneByOrFail({ id });
+    user.avatarUrl= avatarUrl;
+    return await this.userRepository.save(user);
+
+  }
 }

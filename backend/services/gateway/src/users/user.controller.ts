@@ -49,8 +49,8 @@ export class UserController {
         callback(null, `${uniqueSuffix}${extension}`);
       },
     })}))
-  uploadUserAvatar(@Param("id") id: string, @UploadedFile() file : Express.Multer.File){
-    return "aze";
+  uploadUserAvatar(@Param("id") id: string, @UploadedFile() file : Express.Multer.File,@CurrentUser() user: any){
+    return this.userService.uploadUserAvatar(id, file.filename, user);
   }
 
   @Get(":id")
