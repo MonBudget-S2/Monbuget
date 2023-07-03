@@ -119,14 +119,14 @@ const BugetEvent = () => {
       <Grid item xs={6} md={12} container alignItems="center" justifyContent="flex-start">
         <MainCard>
           <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-            <h1>My Expense</h1>
+            <h3>Mes dépenses dans l'événements </h3>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Nom du budget</TableCell>
 
                   <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                    Amount
+                    Montant
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -135,7 +135,7 @@ const BugetEvent = () => {
                   expenses.slice(-5).map((row) => (
                     <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
                       <TableCell>{row.eventBudget?.name}</TableCell>
-                      <TableCell align="center">{row.amountPaid}</TableCell>
+                      <TableCell align="center">{row.amountPaid}€</TableCell>
                       <TableCell align="center">
                         <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
                           Voir

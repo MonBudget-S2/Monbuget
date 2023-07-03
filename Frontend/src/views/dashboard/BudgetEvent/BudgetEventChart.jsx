@@ -51,7 +51,7 @@ const BudgetEventChart = ({ isLoading, events }) => {
   const [chartData, setChartData] = useState(chartConfig);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && events?.length > 0) {
       let filteredEvents = [];
       if (value === 'month') {
         // Filter events by month
