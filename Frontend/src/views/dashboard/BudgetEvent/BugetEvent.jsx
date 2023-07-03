@@ -8,6 +8,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import eventService from 'service/eventService';
 import { format } from 'date-fns';
+import BudgetEventInvitationData from './BudgetEventInvitationData';
+
 const BugetEvent = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isBudgetEventChanged, setIsBudgetEventChanged] = useState(false);
@@ -15,12 +17,22 @@ const BugetEvent = () => {
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [expenses, setExpenses] = useState([]);
+
+  console.log(isBudgetEventChanged);
   const redirecter = (id) => {
     console.log(id);
   };
 
   const handleClickOpen = () => {
     setIsAddFormOpen(true);
+  };
+
+  const acceptInvitation = (id) => {
+    console.log(id);
+  };
+
+  const refuserInvitation = (id) => {
+    console.log(id);
   };
 
   useEffect(() => {
@@ -62,6 +74,42 @@ const BugetEvent = () => {
           isAddFormOpen={isAddFormOpen}
           setIsAddFormOpen={setIsAddFormOpen}
         />
+      </Grid>
+      <Grid item xs={12} md={5}>
+        <MainCard>
+          <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+            <h1>Mes Invitations Budgets</h1>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Organisateur</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
+                    Nom du Buget
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
+                    Action
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {BudgetEventInvitationData.slice(-3).map((row) => (
+                  <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
+                    <TableCell>{row.userId}</TableCell>
+                    <TableCell align="center">{row.eventId}</TableCell>
+                    <TableCell align="center">
+                      <Button variant="outlined" color="primary" onClick={() => acceptInvitation(row.id)} sx={{ marginRight: '8px' }}>
+                        Accepter
+                      </Button>
+                      <Button variant="outlined" color="primary" onClick={() => refuserInvitation(row.id)} sx={{ marginRight: '8px' }}>
+                        Refuser
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </MainCard>
       </Grid>
       <Grid item xs={12} md={12}>
         <BudgetEventChart isLoading={isLoading} events={events} />
