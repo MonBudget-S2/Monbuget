@@ -49,6 +49,7 @@ export class UsersController {
     @Param('id') id: string,
     @Body() body: { oldPassword: string; newPassword: string },
   ) {
+    console.log('updatePassword', body);
     const { oldPassword, newPassword } = body;
     return this.usersService.updatePassword(id, oldPassword, newPassword);
   }

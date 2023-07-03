@@ -33,6 +33,7 @@ const login = (res, dispatch) => {
   const { token, id, role, userInfo } = res.data;
 
   localStorage.setItem('token', token); // Adjust the key according to your project
+  localStorage.setItem("user", JSON.stringify(res.data));
   axios.defaults.headers.post['Authorization'] = `Bearer ${token}`;
   axios.defaults.headers.delete['Authorization'] = `Bearer ${token}`;
 
@@ -67,6 +68,7 @@ const validate = () => {
     }
   });
 };
+
 
 const authService = {
   register,

@@ -4,10 +4,10 @@ import userImage from '../../../assets/images/users/user-round.svg';
 import { getUser } from 'store/authSlice';
 import { useSelector } from 'react-redux';
 import UpdatePassword from './UpdatePassword';
+import userService from 'service/userService';
 
 const UpdateInformation = () => {
-    const user = useSelector(getUser);
-    console.log(user);
+    const user= useSelector(getUser);
 
     const [alertMessage, setAlertMessage] = useState({ open: false, type: 'info', message: '' });
     const [isCardOpen, setCardOpen] = useState(false);
@@ -15,6 +15,13 @@ const UpdateInformation = () => {
     const [isPasswordCollapseOpen, setPasswordCollapseOpen] = useState(false);
     const [setImageFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+
+    const [editedUser, setEditedUser] = useState({
+        firstname: user?.userInfo?.firstname,
+        lastName: user?.userInfo?.lastname,
+        username: user?.userInfo?.username,
+        email: user?.userInfo?.email,
+    });
 
     useEffect(() => {
         setCardOpen(true); // Ouvrir la carte une fois le composant monté
@@ -24,13 +31,24 @@ const UpdateInformation = () => {
         const { name, value } = event.target;
         setEditedUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
+    const handleSaveClick = async () => {
+        try {
+            const response = await userService.update(user?.id, {
+                firstname: editedUser.firstname,
+                lastName: editedUser.lastName,
+                username: editedUser.username,
+                email: editedUser.email,
+            });
 
-    const handleSaveClick = () => {
-        // Logique pour enregistrer les modifications
+           // Ignorer la réponse en utilisant une variable `_`
+            _= response;
 
-        // Afficher la notification de succès
-        setAlertMessage({ open: true, type: 'success', message: 'Modification prise en compte !' });
+        setAlertMessage({ open: true, type: 'success', message: 'Modification prise en compte' });
+        } catch (error) {
+            setAlertMessage({ open: true, type: 'error', message: error.response.data.message });
+        }
     };
+
 
     const handleUpdatePasswordClick = () => {
         setPasswordCollapseOpen(true);
@@ -55,6 +73,7 @@ const UpdateInformation = () => {
     };
 
     return (
+        
         <Box
             display="flex"
             flexDirection="column"
@@ -93,40 +112,40 @@ const UpdateInformation = () => {
                             <TextField
                                 name="firstname"
                                 label="Prénom"
-                                value={user?.userInfo?.firstname}
+                                value={editedUser.firstname}
                                 onChange={handleFieldChange}
                                 margin="normal"
                                 fullWidth
                                 disabled={showUpdatePassword}
-                            />
-                            <TextField
+                                />
+                                <TextField
                                 name="lastName"
                                 label="Nom"
-                                value={user?.userInfo?.lastname}
+                                value={editedUser.lastName}
                                 onChange={handleFieldChange}
                                 margin="normal"
                                 fullWidth
                                 disabled={showUpdatePassword}
-                            />
-                            <TextField
+                                />
+                                <TextField
                                 name="username"
                                 label="Nom d'utilisateur"
-                                value={user?.userInfo?.username}
+                                value={editedUser.username}
                                 onChange={handleFieldChange}
                                 margin="normal"
                                 fullWidth
                                 disabled={showUpdatePassword}
-                            />
+                                />
                         </Box>
                         <TextField
                             name="email"
                             label="Email"
-                            value={user?.userInfo?.email}
+                            value={editedUser.email}
                             onChange={handleFieldChange}
                             margin="normal"
                             fullWidth
                             disabled={showUpdatePassword}
-                        />
+                            />
                             {!showUpdatePassword && (
                             <Box marginTop={3} textAlign="center">
                                 <Button variant="contained" color="primary" onClick={handleSaveClick}>
@@ -144,7 +163,7 @@ const UpdateInformation = () => {
                             {!showUpdatePassword && (
                             <Box marginTop={3} textAlign="center">
                                 <Button variant="contained" color="secondary" onClick={handleUpdatePasswordClick}>
-                                    Modifier le mot de passe
+                                    Changer mot de passe
                                 </Button>
                             </Box>
                             )}
@@ -154,7 +173,7 @@ const UpdateInformation = () => {
                                     <br />
                                 </>
                             )}
-                             <Collapse in={isPasswordCollapseOpen} timeout={500}>
+                            <Collapse in={isPasswordCollapseOpen} timeout={500}>
                                 <Box className={showUpdatePassword ? 'animate-open' : 'animate-close'}>
                                 <UpdatePassword />
                                 </Box>

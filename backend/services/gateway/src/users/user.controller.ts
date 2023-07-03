@@ -54,14 +54,13 @@ export class UserController {
     return this.userService.deleteUser(id, user);
   }
 
-  @Patch(":id/update-password")
+  @Patch("change-password")
   updatePassword(
-    @Param("id") id: string,
     @Body() body: { oldPassword: string; newPassword: string },
     @CurrentUser() user: any
   ) {
+    console.log("user test", user);
     return this.userService.updatePassword(
-      id,
       body.oldPassword,
       body.newPassword,
       user
