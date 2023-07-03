@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Menu, MenuItem, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
@@ -66,93 +66,95 @@ const MostExpensiveCategoryBudget = ({ isLoading, title, total }) => {
             ) : (
                 <CardWrapper border={false} content={false}>
                     <Box sx={{ p: 2.25 }}>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid container justifyContent="space-between">
-                                    <Grid item>
-                                        
-                                    </Grid>
-                                    <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.commonAvatar,
-                                                ...theme.typography.mediumAvatar,
-                                                backgroundColor: theme.palette.primary.dark,
-                                                color: theme.palette.primary[200],
-                                                zIndex: 1
-                                            }}
-                                            aria-controls="menu-expense-card"
-                                            aria-haspopup="true"
-                                            onClick={handleClick}
-                                        >
-                                            <MoreHorizIcon fontSize="inherit" />
-                                        </Avatar>
-                                        <Menu
-                                            id="menu-expense-card"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={Boolean(anchorEl)}
-                                            onClose={handleClose}
-                                            variant="selectedMenu"
-                                            anchorOrigin={{
-                                                vertical: 'bottom',
-                                                horizontal: 'right'
-                                            }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'right'
-                                            }}
-                                        >
-                                            <MenuItem onClick={handleClose}>
-                                                <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Importer
-                                            </MenuItem>
-                                            <MenuItem onClick={handleClose}>
-                                                <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copier les données
-                                            </MenuItem>
-                                            <MenuItem onClick={handleClose}>
-                                                <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Exporter
-                                            </MenuItem>
-                                            <MenuItem onClick={handleClose}>
-                                                <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archiver
-                                            </MenuItem>
-                                        </Menu>
+                        <Fade in={true} timeout={600}>
+                            <Grid container direction="column">
+                                <Grid item>
+                                    <Grid container justifyContent="space-between">
+                                        <Grid item>
+
+                                        </Grid>
+                                        <Grid item>
+                                            <Avatar
+                                                variant="rounded"
+                                                sx={{
+                                                    ...theme.typography.commonAvatar,
+                                                    ...theme.typography.mediumAvatar,
+                                                    backgroundColor: theme.palette.primary.dark,
+                                                    color: theme.palette.primary[200],
+                                                    zIndex: 1
+                                                }}
+                                                aria-controls="menu-expense-card"
+                                                aria-haspopup="true"
+                                                onClick={handleClick}
+                                            >
+                                                <MoreHorizIcon fontSize="inherit" />
+                                            </Avatar>
+                                            <Menu
+                                                id="menu-expense-card"
+                                                anchorEl={anchorEl}
+                                                keepMounted
+                                                open={Boolean(anchorEl)}
+                                                onClose={handleClose}
+                                                variant="selectedMenu"
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'right'
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right'
+                                                }}
+                                            >
+                                                <MenuItem onClick={handleClose}>
+                                                    <GetAppTwoToneIcon sx={{ mr: 1.75 }} /> Importer
+                                                </MenuItem>
+                                                <MenuItem onClick={handleClose}>
+                                                    <FileCopyTwoToneIcon sx={{ mr: 1.75 }} /> Copier les données
+                                                </MenuItem>
+                                                <MenuItem onClick={handleClose}>
+                                                    <PictureAsPdfTwoToneIcon sx={{ mr: 1.75 }} /> Exporter
+                                                </MenuItem>
+                                                <MenuItem onClick={handleClose}>
+                                                    <ArchiveTwoToneIcon sx={{ mr: 1.75 }} /> Archiver
+                                                </MenuItem>
+                                            </Menu>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Grid container alignItems="center">
-                                    <Grid item>
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{
-                                                fontSize: '2.125rem',
-                                                fontWeight: 500,
-                                                mr: 1,
-                                                mt: 1.75,
-                                                mb: 0.75,
-                                                color: '#fff'
-                                            }}
-                                        >
-                                            {total}
-                                        </Typography>
+                                <Grid item>
+                                    <Grid container alignItems="center">
+                                        <Grid item>
+                                            <Typography
+                                                variant="subtitle2"
+                                                sx={{
+                                                    fontSize: '2.125rem',
+                                                    fontWeight: 500,
+                                                    mr: 1,
+                                                    mt: 1.75,
+                                                    mb: 0.75,
+                                                    color: '#fff'
+                                                }}
+                                            >
+                                                {total}
+                                            </Typography>
+                                        </Grid>
+
                                     </Grid>
-                                    
+                                </Grid>
+                                <Grid item sx={{ mb: 1.25 }}>
+                                    <Typography
+                                        variant="h4"
+                                        sx={{
+                                            fontSize: '1rem',
+                                            fontWeight: 500,
+                                            color: '#fff'
+                                        }}
+                                    >
+                                        {title}
+                                    </Typography>
                                 </Grid>
                             </Grid>
-                            <Grid item sx={{ mb: 1.25 }}>
-                                <Typography
-                                    variant="h4"
-                                    sx={{
-                                        fontSize: '1rem',
-                                        fontWeight: 500,
-                                        color: '#fff'
-                                    }}
-                                >
-                                    {title}
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}

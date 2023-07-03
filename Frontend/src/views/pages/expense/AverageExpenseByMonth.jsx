@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTheme, styled } from '@mui/material/styles';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
 import { useEffect } from 'react';
@@ -87,6 +87,7 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
       ) : (
         <CardWrapper border={false} content={false}>
           <Box sx={{ p: 2.25 }}>
+          <Fade in={true} timeout={600}>
             <Grid container direction="column">
               <Grid item>
                 <Grid container justifyContent="space-between">
@@ -138,6 +139,7 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                 </Grid>
               </Grid>
             </Grid>
+            </Fade>
           </Box>
         </CardWrapper>
       )}

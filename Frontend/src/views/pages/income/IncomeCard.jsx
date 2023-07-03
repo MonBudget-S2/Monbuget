@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    background: `linear-gradient(45deg, #FF00AA, #00AAFF)`, //linear-gradient(45deg, #FF00AA, #00AAFF)
+    background: `linear-gradient(45deg, #FF00AA, #00AAFF)`,
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
@@ -54,55 +54,56 @@ const IncomeCard = ({ isLoading, title, total }) => {
             ) : (
                 <CardWrapper border={false} content={false}>
                     <Box sx={{ p: 2.25 }}>
-                        <Grid container direction="column">
-                            
-                            <Grid item>
-                                <Grid container alignItems="center">
-                                    <Grid item>
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{
-                                                fontSize: '2.125rem',
-                                                fontWeight: 500,
-                                                mr: 1,
-                                                mt: 1.75,
-                                                mb: 0.75,
-                                                color: '#fff'
-                                            }}
-                                        >
-                                            {total}€
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        <Avatar
-                                            sx={{
-                                                cursor: 'pointer',
-                                                ...theme.typography.smallAvatar,
-                                                backgroundColor: theme.palette.secondary[200],
-                                                color: theme.palette.secondary.dark
-                                            }}
-                                        >
-                                            <ArrowUpwardIcon
-                                                fontSize="inherit"
-                                                sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }}
-                                            />
-                                        </Avatar>
+                        <Fade in={true} timeout={600}>
+                            <Grid container direction="column">
+                                <Grid item>
+                                    <Grid container alignItems="center">
+                                        <Grid item>
+                                            <Typography
+                                                variant="subtitle2"
+                                                sx={{
+                                                    fontSize: '2.125rem',
+                                                    fontWeight: 500,
+                                                    mr: 1,
+                                                    mt: 1.75,
+                                                    mb: 0.75,
+                                                    color: '#fff'
+                                                }}
+                                            >
+                                                {total}€
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Avatar
+                                                sx={{
+                                                    cursor: 'pointer',
+                                                    ...theme.typography.smallAvatar,
+                                                    backgroundColor: theme.palette.secondary[200],
+                                                    color: theme.palette.secondary.dark
+                                                }}
+                                            >
+                                                <ArrowUpwardIcon
+                                                    fontSize="inherit"
+                                                    sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }}
+                                                />
+                                            </Avatar>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
+                                <Grid item sx={{ mb: 1.25 }}>
+                                    <Typography
+                                        variant="h4"
+                                        sx={{
+                                            fontSize: '1rem',
+                                            fontWeight: 500,
+                                            color: '#fff'
+                                        }}
+                                    >
+                                        {title}
+                                    </Typography>
+                                </Grid>
                             </Grid>
-                            <Grid item sx={{ mb: 1.25 }}>
-                                <Typography
-                                    variant="h4"
-                                    sx={{
-                                        fontSize: '1rem',
-                                        fontWeight: 500,
-                                        color: '#fff'
-                                    }}
-                                >
-                                    {title}
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}
