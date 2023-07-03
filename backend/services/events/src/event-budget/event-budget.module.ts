@@ -33,6 +33,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'EVENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-events-service',
+          port: 3009,
+        },
+      },
+    ]),
   ],
   controllers: [EventBudgetController],
   providers: [EventBudgetService],

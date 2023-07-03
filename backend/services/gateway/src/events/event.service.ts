@@ -12,7 +12,7 @@ import { InvitationStatus } from "./event-invitation.enum";
 @Injectable()
 export class EventService {
   constructor(
-    @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy
+    @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy,
     @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy
   ) {}
 
@@ -59,6 +59,7 @@ export class EventService {
   }
 
   async getEventExpenses(id: string, user) {
+    console.log("getEventExpenses", id, user);
     const eventParticipants = await firstValueFrom(
       this.eventService.send(
         { service: "eventParticipate", action: "getByEventAndUser" },
@@ -66,7 +67,10 @@ export class EventService {
       )
     );
     if (!eventParticipants) {
-      throw new HttpException("You are not part of this event", HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        "You are not part of this event",
+        HttpStatus.FORBIDDEN
+      );
     }
     return await firstValueFrom(
       this.expenseService.send(
@@ -76,7 +80,25 @@ export class EventService {
     );
   }
 
+  async getParticipantExpenses(user) {
+    console.log("test", user);
+    const eventParticipants = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventParticipate", action: "getAllByUser" },
+        user.id
+      )
+    );
 
+    console.log("eventParticipants", eventParticipants);
+
+    if (!eventParticipants) {
+      throw new HttpException(
+        "You are not part of this event",
+        HttpStatus.FORBIDDEN
+      );
+    }
+    return eventParticipants;
+  }
 
   async updateEvent(
     id: string,

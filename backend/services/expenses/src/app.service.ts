@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Expense } from './expense.entity';
-import { Between, IsNull, Repository } from 'typeorm';
+import { Between, IsNull, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto, UpdateExpenseDto } from './expense.request';
 import { firstValueFrom } from 'rxjs';
@@ -240,6 +240,17 @@ export class AppService {
     const result = await this.expenseRepository.delete(id);
     return result.affected > 0;
   }
+
+  // async getTotalAmountByUserForEvents(userId: string) {
+  //   const expenses = await this.expenseRepository.find({
+  //     where: { userId, eventBudgetId: Not(IsNull()) },
+  //   });
+  //   let totalAmount = 0;
+  //   expenses.forEach((expense) => {
+  //     totalAmount += expense.amount;
+  //   });
+  //   return totalAmount;
+  // }
 
   async getTotalAmountByCategoryAndPeriod(
     userId?: string,

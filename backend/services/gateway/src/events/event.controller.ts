@@ -46,9 +46,15 @@ export class EventController {
     const user = request.user;
     return this.eventService.getEventById(id, user);
   }
-
+  @Get("participant/expenses")
+  getParticipantExpenses(@Req() request: CustomRequest) {
+    console.log("getParticipantExpenses");
+    const user = request.user;
+    return this.eventService.getParticipantExpenses(user);
+  }
   @Get(":id/expenses")
   getEventExpenses(@Param("id") id: string, @Req() request: CustomRequest) {
+    console.log("getEventExpenses");
     const user = request.user;
     return this.eventService.getEventExpenses(id, user);
   }

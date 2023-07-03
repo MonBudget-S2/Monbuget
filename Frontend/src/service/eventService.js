@@ -17,8 +17,8 @@ const deleteEvent = async (id) => {
   return await axiosInstance.delete(`/events/${id}`);
 };
 
-const getExpenses = async (id) => {
-  return await axiosInstance.get(`/events/${id}/expenses`);
+const getAllExpenses = async () => {
+  return await axiosInstance.get(`/events/participant/expenses`);
 };
 
 const eventService = {
@@ -26,7 +26,7 @@ const eventService = {
   updateEvent,
   getEvents,
   deleteEvent,
-  getExpenses
+  getAllExpenses
 };
 
 export default eventService;

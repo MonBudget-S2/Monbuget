@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Grid';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import datas from './BudgetEventData';
 import SeeAllButton from '../../../ui-component/buttons/SeeAllButton';
 import chartData from 'views/dashboard/BudgetEvent/BudgetEventChartDate';
 import React, { useEffect, useState } from 'react';
@@ -14,9 +13,8 @@ const BugetEvent = () => {
   const [isBudgetEventChanged, setIsBudgetEventChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isLoading, setLoading] = useState(true);
-  const [events, setEvents] = useState([{}]);
-  const [expenses, setExpenses] = useState([{}]);
-  console.log(expenses);
+  const [events, setEvents] = useState([]);
+  const [expenses, setExpenses] = useState([]);
   const redirecter = (id) => {
     console.log(id);
   };
@@ -36,7 +34,7 @@ const BugetEvent = () => {
     };
 
     const getExpenses = async () => {
-      const res = await eventService.getExpenses();
+      const res = await eventService.getAllExpenses();
       if (res.status === 200) {
         setExpenses(res.data);
       } else {
@@ -98,19 +96,20 @@ const BugetEvent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {events.slice(-5).map((row) => (
-                  <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
-                    <TableCell align="center">{row.startDate}</TableCell>
-                    <TableCell align="center">{row.endDate}</TableCell>
-                    <TableCell align="center">
-                      <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
-                        Voir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {events.length > 0 &&
+                  events.slice(-5).map((row) => (
+                    <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell align="center">{row.amount}</TableCell>
+                      <TableCell align="center">{row.startDate}</TableCell>
+                      <TableCell align="center">{row.endDate}</TableCell>
+                      <TableCell align="center">
+                        <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
+                          Voir
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
             {events.length > 5 && <SeeAllButton to="dashboard/budgetEvenementielAll/" title="Tout afficher" sx={{ marginTop: '16px' }} />}
@@ -137,22 +136,23 @@ const BugetEvent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.slice(-3).map((row) => (
-                  <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell align="center">{row.amount}</TableCell>
-                    <TableCell align="center">{row.startDate}</TableCell>
-                    <TableCell align="center">{row.endDate}</TableCell>
-                    <TableCell align="center">
-                      <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
-                        Voir
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {expenses.length > 0 &&
+                  expenses.slice(-5).map((row) => (
+                    <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
+                      <TableCell>{row.eventBudget?.name}</TableCell>
+                      <TableCell align="center">{row.amount}</TableCell>
+                      <TableCell align="center">{row.startDate}</TableCell>
+                      <TableCell align="center">{row.endDate}</TableCell>
+                      <TableCell align="center">
+                        <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
+                          Voir
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
-            {datas.length > 5 && <SeeAllButton to="dashboard/BudgetEventExpense" title="Tout afficher" sx={{ marginTop: '16px' }} />}
+            {expenses.length > 5 && <SeeAllButton to="dashboard/BudgetEventExpense" title="Tout afficher" sx={{ marginTop: '16px' }} />}
           </TableContainer>
         </MainCard>
       </Grid>
