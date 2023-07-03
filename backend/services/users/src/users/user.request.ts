@@ -1,5 +1,12 @@
-import { IsString, IsEmail, IsBoolean, IsNumber, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
-
+import {
+  IsString,
+  IsEmail,
+  IsBoolean,
+  IsNumber,
+  IsEnum,
+  IsNotEmpty,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -19,8 +26,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(3)
   username: string;
-
-
 }
 
 export class UpdateUserDto {
@@ -35,14 +40,4 @@ export class UpdateUserDto {
 
   @IsEmail()
   email?: string;
-
-  @IsString()
-  password?: string;
-
-  @IsBoolean()
-  isVerified?: boolean;
-
-  @IsNumber()
-  balance?: number;
-
 }

@@ -1,5 +1,10 @@
-import { IsString, IsEmail, IsBoolean, IsNumber, IsEnum } from 'class-validator';
-
+import {
+  IsString,
+  IsEmail,
+  IsBoolean,
+  IsNumber,
+  IsEnum,
+} from "class-validator";
 
 export class CreateUserDto {
   @IsString()
@@ -16,8 +21,6 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
-
-
 }
 
 export class UpdateUserDto {
@@ -32,14 +35,4 @@ export class UpdateUserDto {
 
   @IsEmail()
   email?: string;
-
-  @IsString()
-  password?: string;
-
-  @IsBoolean()
-  isVerified?: boolean;
-
-  @IsNumber()
-  balance?: number;
-
 }
