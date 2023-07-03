@@ -17,11 +17,16 @@ const deleteEvent = async (id) => {
   return await axiosInstance.delete(`/events/${id}`);
 };
 
+const getExpenses = async (id) => {
+  return await axiosInstance.get(`/events/${id}/expenses`);
+};
+
 const eventService = {
   addEvent,
   updateEvent,
   getEvents,
-  deleteEvent
+  deleteEvent,
+  getExpenses
 };
 
 export default eventService;

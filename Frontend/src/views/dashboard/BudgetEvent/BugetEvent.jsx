@@ -8,12 +8,15 @@ import BudgetEventChart from 'views/dashboard/BudgetEvent/BudgetEventChart';
 import AddBudgetEvent from './AddBudgetEvent';
 import MainCard from 'ui-component/cards/MainCard';
 import CustomAlert from 'ui-component/alert/CustomAlert';
+import eventService from 'service/eventService';
 const BugetEvent = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isBudgetEventChanged, setIsBudgetEventChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isLoading, setLoading] = useState(true);
-
+  const [events, setEvents] = useState([{}]);
+  const [expenses, setExpenses] = useState([{}]);
+  console.log(expenses);
   const redirecter = (id) => {
     console.log(id);
   };
@@ -23,6 +26,25 @@ const BugetEvent = () => {
   };
 
   useEffect(() => {
+    const getEvents = async () => {
+      const res = await eventService.getEvents();
+      if (res.status === 200) {
+        setEvents(res.data);
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la récupération des événements' });
+      }
+    };
+
+    const getExpenses = async () => {
+      const res = await eventService.getExpenses();
+      if (res.status === 200) {
+        setExpenses(res.data);
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la récupération des dépenses' });
+      }
+    };
+    getEvents();
+    getExpenses();
     setLoading(false);
   }, []);
 
@@ -76,7 +98,7 @@ const BugetEvent = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas.slice(-3).map((row) => (
+                {events.slice(-5).map((row) => (
                   <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
                     <TableCell>{row.name}</TableCell>
                     <TableCell align="center">{row.amount}</TableCell>
@@ -91,7 +113,7 @@ const BugetEvent = () => {
                 ))}
               </TableBody>
             </Table>
-            {datas.length > 5 && <SeeAllButton to="/budgetEvenementielAll/" title="Tout afficher" sx={{ marginTop: '16px' }} />}
+            {events.length > 5 && <SeeAllButton to="dashboard/budgetEvenementielAll/" title="Tout afficher" sx={{ marginTop: '16px' }} />}
           </TableContainer>
         </MainCard>
       </Grid>
@@ -130,7 +152,7 @@ const BugetEvent = () => {
                 ))}
               </TableBody>
             </Table>
-            {datas.length > 5 && <SeeAllButton to="/BudgetEventExpense" title="Tout afficher" sx={{ marginTop: '16px' }} />}
+            {datas.length > 5 && <SeeAllButton to="dashboard/BudgetEventExpense" title="Tout afficher" sx={{ marginTop: '16px' }} />}
           </TableContainer>
         </MainCard>
       </Grid>

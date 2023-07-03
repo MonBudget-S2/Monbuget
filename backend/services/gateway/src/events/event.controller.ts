@@ -47,6 +47,12 @@ export class EventController {
     return this.eventService.getEventById(id, user);
   }
 
+  @Get(":id/expenses")
+  getEventExpenses(@Param("id") id: string, @Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getEventExpenses(id, user);
+  }
+
   @Put(":id")
   updateEvent(
     @Param("id") id: string,
@@ -105,5 +111,4 @@ export class EventController {
     const user = request.user;
     return this.eventService.markEventAsFinished(id, user);
   }
-
 }
