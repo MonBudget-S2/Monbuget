@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
   Patch,
-  Param, UseInterceptors, UploadedFile,
+  Param, UseInterceptors, UploadedFile, Res,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
@@ -21,6 +21,12 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import { Express } from 'express';
 import { extname } from 'path';
 import {diskStorage} from "multer";
+import {of} from "rxjs";
+import { join } from 'path';
+import * as process from "process";
+import { Response } from 'express';
+
+
 
 
 @AuthenticationRequired()
@@ -51,6 +57,11 @@ export class UserController {
     })}))
   uploadUserAvatar(@Param("id") id: string, @UploadedFile() file : Express.Multer.File,@CurrentUser() user: any){
     return this.userService.uploadUserAvatar(id, file.filename, user);
+  }
+
+  @Get("profile-image/:avatarUrl")
+  getFile(@Param("avatarUrl") avatarUrl: string, @Res() res: Response){
+      return of(res.sendFile(join(process.cwd(),'uploads/'+ avatarUrl)));
   }
 
   @Get(":id")
