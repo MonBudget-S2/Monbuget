@@ -6,8 +6,13 @@ import {
   Get,
   Put,
   Delete,
+<<<<<<< HEAD
   Patch,
   Param, UseInterceptors, UploadedFile, Res,
+=======
+  Param,
+  Patch,
+>>>>>>> feature/login
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
@@ -82,5 +87,18 @@ export class UserController {
   @Delete(":id")
   deleteUser(@Param("id") id: string, @CurrentUser() user: any) {
     return this.userService.deleteUser(id, user);
+  }
+
+  @Patch("change-password")
+  updatePassword(
+    @Body() body: { oldPassword: string; newPassword: string },
+    @CurrentUser() user: any
+  ) {
+    console.log("user test", user);
+    return this.userService.updatePassword(
+      body.oldPassword,
+      body.newPassword,
+      user
+    );
   }
 }

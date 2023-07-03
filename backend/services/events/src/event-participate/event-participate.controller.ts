@@ -30,6 +30,18 @@ export class EventParticipateController {
     return this.eventParticipateService.getById(id);
   }
 
+  @MessagePattern({ service: 'eventParticipate', action: 'getByEventAndUser' })
+  getEventParticipateByEventAndUser(
+    @Payload()
+    payload: {
+      eventId: string;
+      userId: string;
+    },
+  ) {
+    const { eventId, userId } = payload;
+    return this.eventParticipateService.getByEventAndUser(eventId, userId);
+  }
+
   @MessagePattern({ service: 'eventParticipate', action: 'update' })
   updateEventParticipate(
     @Payload()
@@ -38,6 +50,7 @@ export class EventParticipateController {
       updateEventParticipateDto: UpdateEventParticipateDto;
     },
   ) {
+    console.log('payload', payload);
     const { id, updateEventParticipateDto } = payload;
     return this.eventParticipateService.update(id, updateEventParticipateDto);
   }

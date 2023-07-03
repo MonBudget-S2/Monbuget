@@ -89,4 +89,32 @@ export class UserService {
       this.userService.send({ service: "user", cmd: "delete" }, id)
     );
   }
+
+  async updatePassword(
+    oldPassword: string,
+    newPassword: string,
+    user: any
+  ) {
+    const userData = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        user.id
+      )
+    );
+
+
+    if (user.id !== userData.id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
+    const id = user.id;
+    return await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "updatePassword" },
+        { id, oldPassword, newPassword }
+      )
+    );
+  }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -64,6 +64,8 @@ const TotalDebt = ({ isLoading }) => {
             ) : (
                 <CardWrapper border={false} content={false}>
                     <Box sx={{ p: 2.25 }}>
+                    <Fade in={true} timeout={600}>
+
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container alignItems="center">
@@ -92,6 +94,7 @@ const TotalDebt = ({ isLoading }) => {
                                 </Typography>
                             </Grid>
                         </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}

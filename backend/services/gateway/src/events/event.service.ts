@@ -7,6 +7,7 @@ import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from "./event-budget.request";
+import { InvitationStatus } from "./event-invitation.enum";
 
 @Injectable()
 export class EventService {
@@ -86,8 +87,41 @@ export class EventService {
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventBudget", action: "createInvitation" },
-        { eventId: id, userId: inviteeId }
+        { userId: inviteeId, eventId: id }
       )
+    );
+  }
+
+  async updateInvitation(invitationId: string, status: InvitationStatus, user) {
+    const invitation = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getById" },
+        invitationId
+      )
+    );
+    console.log("acceptInvitation", invitation, user);
+    if (!invitation) {
+      throw new HttpException("Invitation not found", HttpStatus.NOT_FOUND);
+    }
+    if (invitation.userId !== user.id) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    return await firstValueFrom(
+      this.eventService.send(
+        { service: "eventBudget", action: "updateInvitationStatus" },
+        { invitationId, status }
+      )
+    );
+  }
+
+  async markEventAsFinished(id: string, user) {
+    const event = await this.getEventById(id, user);
+    return await firstValueFrom(
+      this.eventService.send({ service: "eventBudget", action: "endEvent" }, id)
     );
   }
 }

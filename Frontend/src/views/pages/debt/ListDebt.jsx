@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { CardContent, Grid, Paper, Typography, CircularProgress, Button, Chip} from '@mui/material';
+import { CardContent, Grid, Paper, Typography, CircularProgress, Button, Chip } from '@mui/material';
 import { DataGrid, frFR } from '@mui/x-data-grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MainCard from 'ui-component/cards/MainCard';
@@ -17,7 +17,7 @@ const ListDebt = ({ isLoading }) => {
     const [showTable, setShowTable] = useState(false);
     const [selectedDebt, setSelectedDebt] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [debtState, setDebtState] = useState(debtData); 
+    const [debtState, setDebtState] = useState(debtData);
 
     useEffect(() => {
         // Simulate loading for 1.5 seconds
@@ -36,12 +36,12 @@ const ListDebt = ({ isLoading }) => {
             }
             return item;
         });
-    
+
         setDebtState(updatedDebtState);
         setSelectedDebt(debt);
         setIsModalOpen(true);
     };
-    
+
     const calculateTotalDebt = (debtList) => {
         return debtList.reduce((total, item) => total + item.remainingAmount, 0);
     };
@@ -52,25 +52,25 @@ const ListDebt = ({ isLoading }) => {
             // Update the debt in the state
             const newDebtData = cloneDeep(debtState);  // Make a deep copy of the state to not mutate the original state
             newDebtData[index] = updatedDebt;
-    
+
             // Update the status of the updated debt
             const status = getStatus({ row: updatedDebt });
             newDebtData[index].status = status;
-    
+
             // Set the new data
             setDebtState(newDebtData);
-            
+
             setIsModalOpen(false);
             // Afficher un message d'alerte indiquant que le remboursement a bien été effectué
             alert('Remboursement effectué avec succès !');
         }
     };
-    
+
 
     const getStatus = (params) => {
         if (params && params.row) {
             const { amount, remainingAmount } = params.row;
-    
+
             if (amount === 0) {
                 return 'Non remboursé';
             } else if (amount > 0 && remainingAmount > 0) {
@@ -79,10 +79,10 @@ const ListDebt = ({ isLoading }) => {
                 return 'Remboursé';
             }
         }
-    
+
         return 'Non remboursé';
     };
-    
+
 
 
     const getStatusColor = (status) => {
@@ -122,7 +122,20 @@ const ListDebt = ({ isLoading }) => {
             flex: 1,
             renderCell: (params) => (
                 getStatus(params) !== 'Remboursé' ? (
-                    <Button variant="outlined" size="small" onClick={() => handleRembourser(params.row)}>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => handleRembourser(params.row)}
+                        sx={{
+                            // Ajoutez ici les styles personnalisés
+                            color: 'red',
+                            borderColor: 'red',
+                            '&:hover': {
+                                backgroundColor: 'red',
+                                color: '#fff',
+                            },
+                        }}
+                    >
                         Rembourser
                     </Button>
                 ) : null
