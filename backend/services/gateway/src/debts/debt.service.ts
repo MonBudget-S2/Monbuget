@@ -34,7 +34,7 @@ export class DebtService {
     if (!debt) {
       throw new HttpException("Debt not found", HttpStatus.NOT_FOUND);
     }
-    if (!isAdmin && debt.userId !== user.id) {
+    if (!isAdmin && debt.debtorId !== user.id && debt.creditorId !== user.id) {
       throw new HttpException(
         "You are not authorized to access this resource",
         HttpStatus.FORBIDDEN
