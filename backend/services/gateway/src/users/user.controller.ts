@@ -6,13 +6,8 @@ import {
   Get,
   Put,
   Delete,
-<<<<<<< HEAD
   Patch,
   Param, UseInterceptors, UploadedFile, Res,
-=======
-  Param,
-  Patch,
->>>>>>> feature/login
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";

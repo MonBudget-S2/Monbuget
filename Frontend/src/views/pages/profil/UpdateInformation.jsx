@@ -13,8 +13,8 @@ const UpdateInformation = () => {
     const [isCardOpen, setCardOpen] = useState(false);
     const [showUpdatePassword, setShowUpdatePassword] = useState(false);
     const [isPasswordCollapseOpen, setPasswordCollapseOpen] = useState(false);
-    const [setImageFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+    /*const [setImageFile] = useState(null);*/
+    const [imagePreview] = useState(null);
 
     const [editedUser, setEditedUser] = useState({
         firstname: user?.userInfo?.firstname,
@@ -66,9 +66,11 @@ const UpdateInformation = () => {
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
+        const formData = new FormData();
         if (file) {
-            setImageFile(file);
-            setImagePreview(URL.createObjectURL(file));
+            console.log(file);
+            formData.append('file',file);
+            userService.uploadAvatar(user.id,formData);
         }
     };
 
