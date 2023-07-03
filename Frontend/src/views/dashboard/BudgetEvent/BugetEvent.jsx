@@ -1,13 +1,13 @@
 import Grid from '@mui/material/Grid';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import SeeAllButton from '../../../ui-component/buttons/SeeAllButton';
-import chartData from 'views/dashboard/BudgetEvent/BudgetEventChartDate';
 import React, { useEffect, useState } from 'react';
 import BudgetEventChart from 'views/dashboard/BudgetEvent/BudgetEventChart';
 import AddBudgetEvent from './AddBudgetEvent';
 import MainCard from 'ui-component/cards/MainCard';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import eventService from 'service/eventService';
+import { format } from 'date-fns';
 const BugetEvent = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isBudgetEventChanged, setIsBudgetEventChanged] = useState(false);
@@ -64,14 +64,7 @@ const BugetEvent = () => {
         />
       </Grid>
       <Grid item xs={12} md={12}>
-        <BudgetEventChart
-          isLoading={isLoading}
-          options={chartData.options}
-          series={chartData.series}
-          type={chartData.type}
-          height={chartData.height}
-          isBudgetEventChanged={isBudgetEventChanged}
-        />
+        <BudgetEventChart isLoading={isLoading} events={events} />
       </Grid>
       <Grid item xs={6} container alignItems="center" justifyContent="flex-start">
         <MainCard>
@@ -101,8 +94,8 @@ const BugetEvent = () => {
                     <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell align="center">{row.amount}</TableCell>
-                      <TableCell align="center">{row.startDate}</TableCell>
-                      <TableCell align="center">{row.endDate}</TableCell>
+                      <TableCell align="center">{format(new Date(row.startDate), 'dd-MM-yyyy')}</TableCell>
+                      <TableCell align="center">{format(new Date(row.endDate), 'dd-MM-yyyy')}</TableCell>
                       <TableCell align="center">
                         <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
                           Voir
@@ -124,14 +117,9 @@ const BugetEvent = () => {
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>Nom du budget</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                    Expense
-                  </TableCell>
+
                   <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
                     Amount
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }}>
-                    Date
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -140,9 +128,7 @@ const BugetEvent = () => {
                   expenses.slice(-5).map((row) => (
                     <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
                       <TableCell>{row.eventBudget?.name}</TableCell>
-                      <TableCell align="center">{row.amount}</TableCell>
-                      <TableCell align="center">{row.startDate}</TableCell>
-                      <TableCell align="center">{row.endDate}</TableCell>
+                      <TableCell align="center">{row.amountPaid}</TableCell>
                       <TableCell align="center">
                         <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
                           Voir
