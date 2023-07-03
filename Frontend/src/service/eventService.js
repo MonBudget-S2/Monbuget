@@ -25,13 +25,23 @@ const getAllInvitations = async () => {
   return await axiosInstance.get(`/events/participant/invitations`);
 };
 
+const acceptInvitation = async (id) => {
+  return await axiosInstance.patch(`/events/participant/invitations/${id}/accept`);
+};
+
+const rejectInvitation = async (id) => {
+  return await axiosInstance.patch(`/events/participant/invitations/${id}/reject`);
+};
+
 const eventService = {
   addEvent,
   updateEvent,
   getEvents,
   deleteEvent,
   getAllExpenses,
-  getAllInvitations
+  getAllInvitations,
+  acceptInvitation,
+  rejectInvitation
 };
 
 export default eventService;

@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -86,7 +87,7 @@ export class EventController {
     return this.eventService.inviteUserToEvent(id, inviteeId, user);
   }
 
-  @Post("/acceptInvitation/:invitationId")
+  @Patch("participant/invitations/:invitationId/accept")
   acceptInvitation(
     @Param("invitationId") invitationId: string,
     @Req() request: CustomRequest
@@ -99,7 +100,7 @@ export class EventController {
     );
   }
 
-  @Post("/rejectInvitation/:invitationId")
+  @Patch("participant/invitations/:invitationId/reject")
   rejectInvitation(
     @Param("invitationId") invitationId: string,
     @Req() request: CustomRequest

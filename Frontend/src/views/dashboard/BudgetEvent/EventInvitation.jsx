@@ -5,16 +5,26 @@ import { Button, Table, TableCell, TableContainer, TableRow, TableBody, Paper, T
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-export default function EventInvitation() {
+export default function EventInvitation({ setAlertMessage }) {
   const [eventInvitations, setEventInvitations] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const acceptInvitation = (id) => {
-    console.log(id);
+  const acceptInvitation = async (id) => {
+    const res = await eventService.acceptInvitation(id);
+    if (res.status === 200) {
+      setAlertMessage({ open: true, type: 'success', message: 'Invitation acceptée' });
+    } else {
+      setAlertMessage({ open: true, type: 'error', message: "Erreur lors de l'acceptation de l'invitation" });
+    }
   };
 
-  const refuserInvitation = (id) => {
-    console.log(id);
+  const refuserInvitation = async (id) => {
+    const res = await eventService.rejectInvitation(id);
+    if (res.status === 200) {
+      setAlertMessage({ open: true, type: 'success', message: 'Invitation refusée' });
+    } else {
+      setAlertMessage({ open: true, type: 'error', message: "Erreur lors du refus de l'invitation" });
+    }
   };
 
   useEffect(() => {

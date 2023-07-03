@@ -50,7 +50,6 @@ const BugetEvent = () => {
   }, []);
 
   return (
-    
     <Grid container alignItems="flex-start" spacing={3}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
 
@@ -72,7 +71,7 @@ const BugetEvent = () => {
         <BudgetEventChart isLoading={isLoading} events={events} />
       </Grid>
       <Grid item xs={12} md={5}>
-        <EventInvitation />
+        <EventInvitation setAlertMessage={setAlertMessage} />
       </Grid>
       <Grid item xs={6} md={12} container alignItems="center" justifyContent="flex-start">
         <MainCard>
