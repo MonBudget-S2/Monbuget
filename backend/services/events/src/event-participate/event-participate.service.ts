@@ -12,11 +12,13 @@ import { ClientProxy } from '@nestjs/microservices';
 
 export interface EventParticipateResponse extends EventParticipate {
   eventBudget: object;
+  user?: object;
 }
 @Injectable()
 export class EventParticipateService {
   constructor(
     @Inject('EVENT_SERVICE') private readonly eventService: ClientProxy,
+    @Inject('USER_SERVICE') private readonly userService: ClientProxy,
 
     @InjectRepository(EventParticipate)
     private eventParticipateRepository: Repository<EventParticipate>,
@@ -49,8 +51,38 @@ export class EventParticipateService {
     });
   }
 
-  async getAll(): Promise<EventParticipate[]> {
-    return this.eventParticipateRepository.find();
+  // async getAll(): Promise<EventParticipate[]> {
+  //   return this.eventParticipateRepository.find();
+  // }
+  async getAll(): Promise<EventParticipateResponse[]> {
+    const eventParticipates = await this.eventParticipateRepository.find();
+
+    const eventPromises = eventParticipates.map(async (eventParticipate) => {
+      const [eventBudget, user] = await Promise.all([
+        firstValueFrom(
+          this.eventService.send(
+            { service: 'eventBudget', action: 'getById' },
+            eventParticipate.eventBudgetId,
+          ),
+        ),
+        firstValueFrom(
+          this.userService.send(
+            { service: 'user', action: 'getById' },
+            eventParticipate.userId,
+          ),
+        ),
+      ]);
+
+      return {
+        ...eventParticipate,
+        eventBudget: {
+          name: eventBudget.name,
+        },
+        user,
+      };
+    });
+
+    return Promise.all(eventPromises);
   }
 
   async getAllByUser(userId: string): Promise<EventParticipateResponse[]> {
