@@ -28,12 +28,12 @@ export default function EventInvitation({ setAlertMessage }) {
   };
 
   useEffect(() => {
-    const getEventInvitations = async () => {
-      const eventInvitationsFromServer = await eventService.getEventInvitations();
+    const getAllInvitations = async () => {
+      const eventInvitationsFromServer = await eventService.getAllInvitations();
       setEventInvitations(eventInvitationsFromServer);
       setLoading(false);
     };
-    getEventInvitations();
+    getAllInvitations();
   }, []);
 
   return (

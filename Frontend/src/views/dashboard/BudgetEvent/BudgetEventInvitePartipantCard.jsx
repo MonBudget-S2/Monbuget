@@ -2,40 +2,42 @@ import { Box, FormControl, InputLabel, OutlinedInput, FormHelperText } from '@mu
 import { Formik } from 'formik';
 import { useTheme } from '@mui/material/styles';
 import DialogForm from 'ui-component/modal/DialogForm';
+import eventService from '../../../service/eventService';
+import { useParams } from 'react-router-dom';
 
-const BudgetInviteParticipantCard = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIsAddFormOpen}) => {
+
+const BudgetInviteParticipantCard = ({setAlertMessage, isAddFormOpen, setIsAddFormOpen}) => {
     const theme = useTheme();
-    const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
-        /*const { email } = values;
-        const data = {
-            email: email,
-        };*/
+    const { id: eventId } = useParams();
 
-/*
-            const response = await BudgetEventService.inviteEventParticipant(data);
-*/
-        const response = {
-            statm : 201,
-        };
-        if (response.statm === 201) {
-            setStatus({ success: true });
-            setSubmitting(false);
-            setIsAddFormOpen(false);
-            setAlertMessage({ open: true, type: 'success', message: 'Une Invitation Mail sera envoyée au User si le mail existe' });
-            setIsIncomeChanged(true);
-        } else {
-            setStatus({ success: false });
-            setErrors({ submit: response.data.message });
-            setSubmitting(false);
-            setAlertMessage({ open: true, type: 'error', message: response.data.message });
+    const handleSubmit = async (values, { setErrors, setStatus, setSubmitting }) => {
+        const { username } = values;
+    
+        try {
+            console.log(`eventId: ${eventId}, username: ${username}`);
+            const response = await eventService.sendInvitation(eventId, { username: username });
+            if (response.status === 201) {
+                setStatus({ success: true });
+                setSubmitting(false);
+                setIsAddFormOpen(false);
+                setAlertMessage({ open: true, type: 'success', message: 'Une Invitation Mail sera envoyée au User si le mail existe' });
+            } 
+        } catch (error) {
+            // setStatus({ success: false });
+            setErrors({ submit: error.message });
+            // setSubmitting(false);
+            // setAlertMessage({ open: true, type: 'error', message: error.message });
+            console.error(error);
+            
         }
     }
+    
 
     return (
         <>
             <Formik
                 initialValues={{
-                    email: '',
+                    username: '',
                     submit: null
                 }}
                 onSubmit={handleSubmit}
@@ -50,27 +52,26 @@ const BudgetInviteParticipantCard = ({ setAlertMessage, setIsIncomeChanged, isAd
                     >
                         <FormControl
                             fullWidth
-                            error={Boolean(touched.email && errors.email)}
+                            error={Boolean(touched.username && errors.username)}
                             sx={{ ...theme.typography.customInput }}
                         >
-                            <InputLabel htmlFor="outlined-participant-name">Email d&apos;utilisateur</InputLabel>
+                            <InputLabel htmlFor="outlined-participant-name">Nom d&apos;utilisateur</InputLabel>
                             <OutlinedInput
                                 id="outlined-participant-name"
                                 type="text"
-                                value={values.email}
-                                name="email"
+                                value={values.username}
+                                name="username"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
-                                label="Email d&apos;utilisateur"
+                                label="Nom d&apos;utilisateur"
                                 inputProps={{}}
                             />
-                            {touched.email && errors.email && (
-                                <FormHelperText error id="standard-weight-helper-text-email">
-                                    {errors.email}
+                            {touched.username && errors.username && (
+                                <FormHelperText error id="standard-weight-helper-text-username">
+                                    {errors.username}
                                 </FormHelperText>
                             )}
                         </FormControl>
-
 
                         {errors.submit && (
                             <Box sx={{ mt: 3 }}>

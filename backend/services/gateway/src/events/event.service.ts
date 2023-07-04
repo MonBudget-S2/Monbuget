@@ -126,12 +126,14 @@ export class EventService {
   }
 
   async inviteUserToEvent(id: string, inviteUsername: string, user) {
+    console.log("inviteUserToEvent");
     const invitee = await firstValueFrom(
       this.userService.send(
-        { service: "user", action: "getByUsername" },
+        { service: "user", cmd: "getUserByUsername" },
         inviteUsername
       )
     );
+    console.log("inviteUserToEvent", invitee);
     if (!user) {
       throw new HttpException(
         "Invitee username not found ",
@@ -144,8 +146,8 @@ export class EventService {
 
     return await firstValueFrom(
       this.eventService.send(
-        { service: "eventBudget", action: "createInvitationByUsername" },
-        { username: invitee.username, eventId: id }
+        { service: "eventBudget", action: "createInvitation" },
+        { eventId: id, userId: invitee.id }
       )
     );
   }
