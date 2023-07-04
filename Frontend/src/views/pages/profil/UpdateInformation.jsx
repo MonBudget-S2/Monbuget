@@ -6,25 +6,57 @@ import { useSelector } from 'react-redux';
 import UpdatePassword from './UpdatePassword';
 import userService from 'service/userService';
 
+
 const UpdateInformation = () => {
     const user= useSelector(getUser);
-
     const [alertMessage, setAlertMessage] = useState({ open: false, type: 'info', message: '' });
     const [isCardOpen, setCardOpen] = useState(false);
     const [showUpdatePassword, setShowUpdatePassword] = useState(false);
     const [isPasswordCollapseOpen, setPasswordCollapseOpen] = useState(false);
     /*const [setImageFile] = useState(null);*/
-    const [imagePreview] = useState(null);
+    const [imageData, setImageData] = useState(null);
+
 
     const [editedUser, setEditedUser] = useState({
         firstname: user?.userInfo?.firstname,
         lastName: user?.userInfo?.lastname,
         username: user?.userInfo?.username,
         email: user?.userInfo?.email,
+        avatarUrl:user?.userInfo?.avatarUrl,
     });
+
+    const fetchImage = async () => {
+        // Effectuez votre requête pour obtenir les données de l'image (par exemple, via Axios)
+        if (user.userInfo.avatarUrl)
+        {
+            const response = await userService.getAvatar(user.userInfo.avatarUrl);
+            // Convertissez les données binaires en une chaîne Base64
+            const base64Image = btoa(
+                new Uint8Array(response.data).reduce(
+                    (data, byte) => data + String.fromCharCode(byte),
+                    ''
+                )
+            );
+
+            // Créez l'URL d'objet à partir de la chaîne Base64
+            const imageUrl = `data:image/png;base64,${base64Image}`;
+            // Mettez à jour l'état avec l'URL de l'image
+            setImageData(imageUrl);
+        }
+        else {
+            setImageData(null);
+        }
+
+
+
+    };
 
     useEffect(() => {
         setCardOpen(true); // Ouvrir la carte une fois le composant monté
+    }, []);
+
+    useEffect(() => {
+        fetchImage();
     }, []);
 
     const handleFieldChange = (event) => {
@@ -68,11 +100,12 @@ const UpdateInformation = () => {
         const file = event.target.files[0];
         const formData = new FormData();
         if (file) {
-            console.log(file);
             formData.append('file',file);
             userService.uploadAvatar(user.id,formData);
+            window.location.reload()
         }
     };
+
 
     return (
         
@@ -89,9 +122,9 @@ const UpdateInformation = () => {
                     <CardContent>
                         <Box display="flex" alignItems="center" flexDirection="column" marginBottom={3}>
                             <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>
-                                {imagePreview ? (
+                                {imageData ? (
                                 <img
-                                    src={imagePreview}
+                                    src={imageData}
                                     alt="User"
                                     style={{ width: 120, height: 120, borderRadius: '50%', marginBottom: 16 }}
                                 />

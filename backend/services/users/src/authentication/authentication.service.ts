@@ -47,6 +47,7 @@ export class AuthenticationService {
         firstname: user.firstname,
         lastname: user.lastname,
         balance: user.balance,
+        avatarUrl: user.avatarUrl
       },
     };
   }
@@ -79,6 +80,7 @@ export class AuthenticationService {
           firstname: user.firstname,
           lastname: user.lastname,
           balance: user.balance,
+          avatarUrl: user.avatarUrl
         },
       };
     } catch (error) {
