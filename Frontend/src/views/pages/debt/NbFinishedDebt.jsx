@@ -50,7 +50,7 @@ const NbFinishedDebt = ({ isLoading, debts }) => {
   const [nbFinishedDebt, setNbFinishedDebt] = React.useState(0);
 
   React.useEffect(() => {
-    const paidDebts = debts.filter((debt) => debt.remainingAmount === 0).length;
+    const paidDebts = debts.filter((debt) => debt.remainingAmount == 0).length;
     setNbFinishedDebt(paidDebts);
   }, [debts]);
 

@@ -20,17 +20,17 @@ const ListDebt = ({ isLoading, debts, setAlertMessage, setIsDebtChanged }) => {
   const getStatus = (params) => {
     if (params && params.row) {
       const { amount, remainingAmount } = params.row;
-
-      if (amount === 0) {
-        return 'Non remboursé';
-      } else if (amount > 0 && remainingAmount > 0) {
-        return 'Remboursé partiellement';
-      } else if (remainingAmount === 0) {
+      console.log('amount', amount, 'remainingAmount', remainingAmount);
+      if (remainingAmount == 0) {
         return 'Remboursé';
       }
+      if (amount === remainingAmount) {
+        return 'Non remboursé';
+      }
+      if (amount > 0 && remainingAmount > 0) {
+        return 'Remboursé partiellement';
+      }
     }
-
-    return 'Non remboursé';
   };
 
   const getStatusColor = (status) => {
