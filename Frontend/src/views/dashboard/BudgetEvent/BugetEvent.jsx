@@ -119,7 +119,7 @@ const BugetEvent = () => {
       <Grid item xs={6} md={12} container alignItems="center" justifyContent="flex-start">
         <MainCard>
           <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-            <h3>Mes dépenses dans l'événements </h3>
+            <h3>Mes dépenses</h3>
             <Table>
               <TableHead>
                 <TableRow>

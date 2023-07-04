@@ -10,49 +10,59 @@ import TotalDebt from './TotalDebt';
 import ListDebt from './ListDebt';
 import NbUnifinishedDebt from './NbUnifinishedDebt';
 import NbFinishedDebt from './NbFinishedDebt';
-
+import debtService from 'service/debtService';
 
 // ==============================|| DEBT PAGE ||============================== //
 
-
 const Debt = () => {
-    const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
-    const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-    const [isLoading, setLoading] = useState(true);
+  const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [debts, setDebts] = useState([]);
 
+  useEffect(() => {
+    const getDebts = async () => {
+      try {
+        const res = await debtService.getDebts();
+        setDebts(res.data);
+      } catch (err) {
+        console.log(err);
+        setAlertMessage({
+          open: true,
+          type: 'error',
+          message: 'Erreur lors du chargement des données. Veuillez réessayer plus tard.'
+        });
+      }
+      setLoading(false);
+    };
 
-    useEffect(() => {
-        setLoading(false);
-    }, []);
+    getDebts();
+  }, []);
 
-    return (
+  return (
+    <Grid container spacing={gridSpacing}>
+      <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
+      <Grid item xs={12}>
+        <AddDebt setAlertMessage={setAlertMessage} isAddFormOpen={isAddFormOpen} setIsAddFormOpen={setIsAddFormOpen} />
+      </Grid>
+      <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-            <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
-            <Grid item xs={12}>
-                <AddDebt
-                    setAlertMessage={setAlertMessage}
-                    isAddFormOpen={isAddFormOpen}
-                    setIsAddFormOpen={setIsAddFormOpen} 
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <TotalDebt isLoading={isLoading} />
-                    </Grid>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <NbUnifinishedDebt isLoading={isLoading} />
-                    </Grid>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <NbFinishedDebt isLoading={isLoading} />
-                    </Grid> 
-                </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <ListDebt />
-            </Grid>
+          <Grid item lg={4} md={6} sm={6} xs={12}>
+            <TotalDebt isLoading={isLoading} debts={debts} />
+          </Grid>
+          <Grid item lg={4} md={6} sm={6} xs={12}>
+            <NbUnifinishedDebt isLoading={isLoading} debts={debts} />
+          </Grid>
+          <Grid item lg={4} md={6} sm={6} xs={12}>
+            <NbFinishedDebt isLoading={isLoading} debts={debts} />
+          </Grid>
         </Grid>
-    );
+      </Grid>
+      <Grid item xs={12}>
+        <ListDebt debts={debts} />
+      </Grid>
+    </Grid>
+  );
 };
 
 export default Debt;
