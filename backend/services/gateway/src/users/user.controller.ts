@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
   Patch,
-  Param, UseInterceptors, UploadedFile, Res,
+  Param, UseInterceptors, UploadedFile, Res, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
@@ -55,7 +55,13 @@ export class UserController {
         callback(null, `${uniqueSuffix}${extension}`);
       },
     })}))
-  uploadUserAvatar(@Param("id") id: string, @UploadedFile() file : Express.Multer.File,@CurrentUser() user: any){
+  uploadUserAvatar(@Param("id") id: string, @UploadedFile(
+      new ParseFilePipe({
+        validators:[
+            new MaxFileSizeValidator({ maxSize:10000 })
+        ]
+      })
+  ) file : Express.Multer.File,@CurrentUser() user: any){
     return this.userService.uploadUserAvatar(id, file.filename, user);
   }
 
