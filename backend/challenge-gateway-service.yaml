@@ -39,7 +39,6 @@ spec:
       containers:
       - name: challenge-gateway-service
         image: ronantr/challenge-gateway-service:latest
-
         env:
         - name: NODE_ENV
           value: "production"
