@@ -1,5 +1,5 @@
 // assets
-import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney } from '@tabler/icons';
+import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney, IconCalendarEvent } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -9,7 +9,8 @@ const icons = {
   IconBrightness,
   IconSettings,
   IconOlympics,
-  IconReportMoney
+  IconReportMoney,
+  IconCalendarEvent
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -153,6 +154,14 @@ const pages = {
       type: 'item',
       url: 'settings',
       icon: icons.IconSettings,
+      breadcrumbs: false
+    },
+    {
+      id: 'customerAdvisor',
+      title: 'Contactez un conseiller',
+      type: 'item',
+      url: 'customerAdvisor',
+      icon: icons.IconCalendarEvent,
       breadcrumbs: false
     }
   ]

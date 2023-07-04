@@ -21,6 +21,7 @@ import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpens
 import Debt from 'views/pages/debt/Debt';
 // import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
+import CustomerAdvisor from 'views/pages/customer-advisor/CustomerAdvisor';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -120,6 +121,10 @@ const MainRoutes = {
     {
       path: 'profil',
       element: <Profil />
+    },
+    {
+      path: 'customerAdvisor',
+      element: <CustomerAdvisor />
     },
     {
       path: 'settings',
