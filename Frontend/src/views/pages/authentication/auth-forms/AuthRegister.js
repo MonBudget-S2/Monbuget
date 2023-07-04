@@ -280,7 +280,7 @@ const AuthRegister = ({ ...others }) => {
               </Box>
             )}
 
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 2 }} textAlign={matchDownSM ? 'center' : 'inherit'}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
                   S&apos;inscrire

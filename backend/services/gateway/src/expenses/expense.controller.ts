@@ -10,6 +10,7 @@ import {
   Put,
   Req,
   UseGuards,UseInterceptors,UploadedFile,
+
 } from "@nestjs/common";
 import { ExpenseService } from "./expense.service";
 import { CreateExpenseDto, UpdateExpenseDto } from "./expense.request";
@@ -22,6 +23,7 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
 import {extname} from "path";
 import {Express} from "express";
+
 
 @AuthenticationRequired()
 @Controller("expenses")
@@ -44,6 +46,7 @@ export class ExpenseController {
     @Body() createExpenseDto: CreateExpenseDto,
     @Req() request: CustomRequest
   ) {
+    console.log("dto",createExpenseDto);
     createExpenseDto.userId = request.user.id;
     createExpenseDto.receiptImage = file.filename;
     return this.expenseService.createExpense(createExpenseDto);

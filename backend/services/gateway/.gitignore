@@ -3,4 +3,8 @@ dist
 node_modules
 .node_repl_history
 package-lock.json
+<<<<<<< HEAD
 uploads/*
+=======
+uploads/
+>>>>>>> feature/upload

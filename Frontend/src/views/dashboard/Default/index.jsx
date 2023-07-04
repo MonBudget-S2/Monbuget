@@ -38,7 +38,7 @@ const Dashboard = () => {
           <Grid item lg={4} md={6} sm={6} xs={12}>
             <IncomeCard 
               isLoading={isLoading}
-              title="Total des revenus"
+              title="Revenus cumulés"
               total={totalIncome} />
           </Grid>
           <Grid item lg={4} md={6} sm={6} xs={12}>

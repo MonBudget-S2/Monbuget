@@ -64,7 +64,6 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
     };
 
     if (!isEditing) {
-      const response = await expenseService.addExpense(dataExpense);
 
       if (response.status === 201) {
         setStatus({ success: true });
@@ -178,7 +177,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
           dateSpent: isEditing ? expense.date : '',
           description: isEditing ? expense.description : '',
           location: isEditing ? expense.location : '',
-          recieptImage: isEditing ? expense.recieptImage : '',
+          receiptImage: isEditing ? expense.receiptImage : '',
           submit: null
         }}
         onSubmit={handleSubmit}
