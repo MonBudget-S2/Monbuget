@@ -4,6 +4,10 @@ const addExpense = async (credentials) => {
   return await axiosInstance.post('/expenses', credentials);
 };
 
+const uploadFacture = async (id,file)=>{
+  return await axiosInstance.patch(`/expenses/upload/facture/${id}`,file);
+}
+
 const getExpenses = async () => {
   return await axiosInstance.get('/expenses');
 };
@@ -36,7 +40,8 @@ const expenseService = {
   getExpenses,
   deleteExpense,
   getExpensesByCategoryAndPeriod,
-  getExpensesByPeriod
+  getExpensesByPeriod,
+  uploadFacture
 };
 
 export default expenseService;
