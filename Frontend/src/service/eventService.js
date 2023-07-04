@@ -9,6 +9,10 @@ const getEvents = async () => {
   return await axiosInstance.get('/events');
 };
 
+const getEventById = async (id) => {
+  return await axiosInstance.get(`/events/${id}`);
+};
+
 const updateEvent = async (id, event) => {
   return await axiosInstance.put(`/events/${id}`, event);
 };
@@ -19,6 +23,10 @@ const deleteEvent = async (id) => {
 
 const getAllExpenses = async () => {
   return await axiosInstance.get(`/events/participant/expenses`);
+};
+
+const getAllExpensesByEventId = async (id) => {
+  return await axiosInstance.get(`/events/${id}/expenses`);
 };
 
 const getAllInvitations = async () => {
@@ -37,8 +45,10 @@ const eventService = {
   addEvent,
   updateEvent,
   getEvents,
+  getEventById,
   deleteEvent,
   getAllExpenses,
+  getAllExpensesByEventId,
   getAllInvitations,
   acceptInvitation,
   rejectInvitation

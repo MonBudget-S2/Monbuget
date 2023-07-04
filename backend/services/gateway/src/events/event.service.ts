@@ -66,6 +66,7 @@ export class EventService {
         { eventId: id, userId: user.id }
       )
     );
+    console.log("eventParticipants", eventParticipants);
     if (!eventParticipants) {
       throw new HttpException(
         "You are not part of this event",
