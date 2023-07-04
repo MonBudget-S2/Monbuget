@@ -22,6 +22,7 @@ import Debt from 'views/pages/debt/Debt';
 // import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
 import CustomerAdvisor from 'views/pages/customer-advisor/CustomerAdvisor';
+import ClientCalendar from 'views/pages/customer-advisor/ClientCalendar';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -125,6 +126,11 @@ const MainRoutes = {
     {
       path: 'customerAdvisor',
       element: <CustomerAdvisor />
+    },
+
+    {
+      path: 'clientCalendar',
+      element: <ClientCalendar />
     },
     {
       path: 'settings',

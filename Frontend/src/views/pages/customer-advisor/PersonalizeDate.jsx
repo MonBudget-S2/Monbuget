@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, FormGroup, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
 
 const PersonalizeDate = ({ open, onClose, onSave, initialSettings }) => {
-  const weekdays = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
-  const timeslots = ['9h', '10h', '11h', '14h', '15h'];
-
   const [slotSettings, setSlotSettings] = useState(initialSettings || {});
+
+  // Simulated data from the database
+  const days = [
+    { "day": "lundi", "startHour": "08:00", "endHour": "17:00" },
+    { "day": "mardi", "startHour": "08:00", "endHour": "17:00" },
+    { "day": "mercredi", "startHour": "08:00", "endHour": "17:00" },
+    { "day": "jeudi", "startHour": "08:00", "endHour": "17:00" },
+    { "day": "vendredi", "startHour": "08:00", "endHour": "17:00" },
+    // Add more days if needed...
+  ];
 
   const handleCheckboxChange = (day, slot, checked) => {
     setSlotSettings((prevSettings) => ({
@@ -17,16 +24,30 @@ const PersonalizeDate = ({ open, onClose, onSave, initialSettings }) => {
     }));
   };
 
+  // Generate 1h timeslots for a given range
+  const getTimeSlots = (start, end) => {
+    let startHour = parseInt(start.split(':')[0], 10);
+    const endHour = parseInt(end.split(':')[0], 10);
+    const slots = [];
+
+    while (startHour < endHour) {
+      slots.push(`${startHour}h - ${startHour + 1}h`);
+      startHour++;
+    }
+
+    return slots;
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Personnaliser les heures de travail</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
-          {weekdays.map((day) => (
+          {days.map(({ day, startHour, endHour }) => (
             <Grid item xs={2} key={day}>
               <FormGroup>
                 <div>{day}</div>
-                {timeslots.map((slot) => (
+                {getTimeSlots(startHour, endHour).map((slot) => (
                   <FormControlLabel
                     key={`${day}-${slot}`}
                     control={
