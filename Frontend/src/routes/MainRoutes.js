@@ -22,6 +22,7 @@ import Debt from 'views/pages/debt/Debt';
 import Profil from 'views/pages/profil/Profil';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BugetEventPartage from 'views/dashboard/BudgetEvent/BudgetEventPartage';
+import MeetingPage from 'views/pages/video/MeetingPage';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -129,6 +130,10 @@ const MainRoutes = {
     {
       path: 'settings',
       element: <Settings />
+    },
+    {
+      path: 'meeting/:meetingId',
+      element: <MeetingPage />
     }
 
     // {
