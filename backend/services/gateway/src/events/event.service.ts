@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 
 import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 import { Role } from "src/authentication/authentication.enum";
 import {
   CreateEventBudgetDto,
@@ -74,12 +74,15 @@ export class EventService {
         HttpStatus.FORBIDDEN
       );
     }
-    return await firstValueFrom(
+
+    const allExpenses = await firstValueFrom(
       this.expenseService.send(
         { service: "expense", action: "getAllByEvent" },
         id
       )
     );
+
+    return allExpenses;
   }
 
   async getParticipantExpenses(user) {
@@ -91,15 +94,26 @@ export class EventService {
       )
     );
 
-    console.log("eventParticipants", eventParticipants);
-
     if (!eventParticipants) {
       throw new HttpException(
         "You are not part of this event",
         HttpStatus.FORBIDDEN
       );
     }
-    return eventParticipants;
+
+    const userPromises = eventParticipants.map(async (participant) => {
+      const user = await lastValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          participant.userId
+        )
+      );
+      return { ...participant, user };
+    });
+
+    const participantsWithUsers = await Promise.all(userPromises);
+    // return eventParticipants;
+    return participantsWithUsers;
   }
 
   async updateEvent(
@@ -126,15 +140,36 @@ export class EventService {
   }
 
   async inviteUserToEvent(id: string, inviteUsername: string, user) {
-    console.log("inviteUserToEvent");
     const invitee = await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "getUserByUsername" },
         inviteUsername
       )
     );
-    console.log("inviteUserToEvent", invitee);
-    if (!user) {
+
+    const invitations = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getByEventId" },
+        { eventId: id }
+      )
+    );
+
+    if (invitations.find((i) => i.userId === invitee.id)) {
+      if (
+        invitations.find(
+          (i) =>
+            i.userId === invitee.id && i.status === InvitationStatus.ACCEPTED
+        )
+      ) {
+        throw new HttpException(
+          "User already accepted invitation",
+          HttpStatus.BAD_REQUEST
+        );
+      }
+      throw new HttpException("User already invited", HttpStatus.BAD_REQUEST);
+    }
+
+    if (!invitee) {
       throw new HttpException(
         "Invitee username not found ",
         HttpStatus.NOT_FOUND
