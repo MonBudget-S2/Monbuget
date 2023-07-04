@@ -64,4 +64,22 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async updatePassword(
+    id: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<User | null> {
+    const user = await this.userRepository.findOneByOrFail({ id });
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordMatch) {
+      throw new Error('Invalid password');
+    }
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      password: await bcrypt.hash(newPassword, 10),
+    });
+
+    return updatedUser;
+  }
 }

@@ -51,6 +51,18 @@ export class EventBudgetController {
     return this.appService.delete(id);
   }
 
+  @MessagePattern({ service: 'eventBudget', action: 'createInvitation' })
+  createInvitation(
+    @Payload()
+    payload: {
+      eventId: string;
+      userId: string;
+    },
+  ) {
+    const { eventId, userId } = payload;
+    return this.appService.createInvitation(eventId, userId);
+  }
+
   @MessagePattern({ service: 'eventBudget', action: 'updateInvitationStatus' })
   updateInvitationStatus(
     @Payload()
@@ -63,26 +75,9 @@ export class EventBudgetController {
     return this.appService.updateInvitationStatus(invitationId, status);
   }
 
-  @MessagePattern({ service: 'eventBudget', action: 'deleteInvitation' })
-  deleteInvitation(
-    @Payload()
-    payload: {
-      invitationId: string;
-    },
-  ) {
-    const { invitationId } = payload;
-    return this.appService.deleteInvitation(invitationId);
-  }
-
-  @MessagePattern({ service: 'eventBudget', action: 'createInvitation' })
-  createInvitation(
-    @Payload()
-    payload: {
-      eventId: string;
-      userId: string;
-    },
-  ) {
-    const { eventId, userId } = payload;
-    return this.appService.createInvitation(eventId, userId);
+  @MessagePattern({ service: 'eventBudget', action: 'endEvent' })
+  endEvent(@Payload() payload: { eventId: string }) {
+    const { eventId } = payload;
+    return this.appService.setEndofEvent(eventId);
   }
 }

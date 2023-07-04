@@ -6,12 +6,43 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventBudget } from './event-budget.entity';
 import { EventParticipateService } from 'src/event-participate/event-participate.service';
 import { EventInvitationModule } from 'src/event-invitation/event-invitation.module';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
     EventInvitationModule,
     EventParticipateModule,
     TypeOrmModule.forFeature([EventBudget]),
+    ClientsModule.register([
+      {
+        name: 'EXPENSE_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-expenses-service',
+          port: 3004,
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'DEBT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-debts-service',
+          port: 3008,
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'EVENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-events-service',
+          port: 3009,
+        },
+      },
+    ]),
   ],
   controllers: [EventBudgetController],
   providers: [EventBudgetService],

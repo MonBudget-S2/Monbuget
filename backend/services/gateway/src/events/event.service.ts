@@ -7,11 +7,13 @@ import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from "./event-budget.request";
+import { InvitationStatus } from "./event-invitation.enum";
 
 @Injectable()
 export class EventService {
   constructor(
-    @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy
+    @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy,
+    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy
   ) {}
 
   async createEvent(createEventBudgetDto: CreateEventBudgetDto) {
@@ -56,6 +58,48 @@ export class EventService {
     return event;
   }
 
+  async getEventExpenses(id: string, user) {
+    console.log("getEventExpenses", id, user);
+    const eventParticipants = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventParticipate", action: "getByEventAndUser" },
+        { eventId: id, userId: user.id }
+      )
+    );
+    if (!eventParticipants) {
+      throw new HttpException(
+        "You are not part of this event",
+        HttpStatus.FORBIDDEN
+      );
+    }
+    return await firstValueFrom(
+      this.expenseService.send(
+        { service: "expense", action: "getAllByEvent" },
+        id
+      )
+    );
+  }
+
+  async getParticipantExpenses(user) {
+    console.log("test", user);
+    const eventParticipants = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventParticipate", action: "getAllByUser" },
+        user.id
+      )
+    );
+
+    console.log("eventParticipants", eventParticipants);
+
+    if (!eventParticipants) {
+      throw new HttpException(
+        "You are not part of this event",
+        HttpStatus.FORBIDDEN
+      );
+    }
+    return eventParticipants;
+  }
+
   async updateEvent(
     id: string,
     updateEventBudgetDto: UpdateEventBudgetDto,
@@ -86,8 +130,50 @@ export class EventService {
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventBudget", action: "createInvitation" },
-        { eventId: id, userId: inviteeId }
+        { userId: inviteeId, eventId: id }
       )
+    );
+  }
+
+  async updateInvitation(invitationId: string, status: InvitationStatus, user) {
+    const invitation = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getById" },
+        invitationId
+      )
+    );
+    console.log("acceptInvitation", invitation, user);
+    if (!invitation) {
+      throw new HttpException("Invitation not found", HttpStatus.NOT_FOUND);
+    }
+    if (invitation.userId !== user.id) {
+      throw new HttpException(
+        "You are not authorized to access this resource",
+        HttpStatus.FORBIDDEN
+      );
+    }
+
+    return await firstValueFrom(
+      this.eventService.send(
+        { service: "eventBudget", action: "updateInvitationStatus" },
+        { invitationId, status }
+      )
+    );
+  }
+
+  async getInvitations(user) {
+    return await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getAllByUser" },
+        user.id
+      )
+    );
+  }
+
+  async markEventAsFinished(id: string, user) {
+    const event = await this.getEventById(id, user);
+    return await firstValueFrom(
+      this.eventService.send({ service: "eventBudget", action: "endEvent" }, id)
     );
   }
 }

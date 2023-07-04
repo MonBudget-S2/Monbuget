@@ -120,9 +120,15 @@ const pages = {
         },
         {
           id: 'AllEvenementielBudget',
-          title: 'Liste des EventBudgets',
+          title: 'Mes EventBudgets',
           type: 'item',
           url: 'budgetEvenementielAll'
+        },
+        {
+          id: 'BudgetEventPartagee',
+          title: 'EventBudgets Partagée',
+          type: 'item',
+          url: '/budgetEventPartagee',
         },
         {
           id: 'AllEvenementielBudgetExpense',

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Expense } from './expense.entity';
-import { Between, IsNull, Repository } from 'typeorm';
+import { Between, IsNull, Not, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateExpenseDto, UpdateExpenseDto } from './expense.request';
 import { firstValueFrom } from 'rxjs';
@@ -30,7 +30,41 @@ export class AppService {
 
   async create(createExpenseDto: CreateExpenseDto): Promise<any> {
     const newExpense = this.expenseRepository.create(createExpenseDto);
+
     await this.expenseRepository.save(newExpense);
+    if (createExpenseDto.eventBudgetId) {
+      const eventParticipant = await firstValueFrom(
+        this.eventBudgetService.send(
+          { service: 'eventParticipate', action: 'getByEventAndUser' },
+          {
+            eventId: createExpenseDto.eventBudgetId,
+            userId: createExpenseDto.userId,
+          },
+        ),
+      );
+
+      console.log(eventParticipant);
+      if (!eventParticipant) {
+        return {
+          message: 'You are not a participant of this event',
+          newExpense,
+        };
+      }
+
+      eventParticipant.amountPaid += createExpenseDto.amount;
+
+      const updatedEventParticipate = await firstValueFrom(
+        this.eventBudgetService.send(
+          { service: 'eventParticipate', action: 'update' },
+          {
+            id: eventParticipant.id,
+            updateEventParticipateDto: eventParticipant,
+          },
+        ),
+      );
+      console.log(updatedEventParticipate);
+    }
+
     return { message: 'Expense created successfully', newExpense };
   }
 
@@ -191,10 +225,32 @@ export class AppService {
     return updatedExpense;
   }
 
+  async getAllByEvent(eventId: string): Promise<Expense[]> {
+    const expenses = await this.expenseRepository.find({
+      where: {
+        eventBudgetId: eventId,
+      },
+    });
+
+    console.log(expenses, eventId);
+    return expenses;
+  }
+
   async delete(id: string): Promise<boolean> {
     const result = await this.expenseRepository.delete(id);
     return result.affected > 0;
   }
+
+  // async getTotalAmountByUserForEvents(userId: string) {
+  //   const expenses = await this.expenseRepository.find({
+  //     where: { userId, eventBudgetId: Not(IsNull()) },
+  //   });
+  //   let totalAmount = 0;
+  //   expenses.forEach((expense) => {
+  //     totalAmount += expense.amount;
+  //   });
+  //   return totalAmount;
+  // }
 
   async getTotalAmountByCategoryAndPeriod(
     userId?: string,

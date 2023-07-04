@@ -7,14 +7,21 @@ import BudgetEventParticipate from "./BudgetEventParticipate";
 import {gridSpacing} from "../../../store/constant";
 import BudgetEventDateBetweenCard from "./BudgetEventDateBetweenCard";
 import BudgetEventNbParticipantCard from "./BudgetEventNbParticipantCard";
-import {Typography} from "@mui/material";
+import {Button, Typography} from "@mui/material";
 import BudgetEventMostExpensiveCard from "./BudgetEventMostExpensiveCard";
 import ListeBudgetExpenseCard from "./ListeBudgetExpenseCard";
+import CustomAlert from "../../../ui-component/alert/CustomAlert";
+import BudgetInviteParticipantCard from "./BudgetEventInvitePartipantCard";
 
 export default function BudgetEventShow(){
     const [totalRealExpenses, setTotalRealExpenses] = useState(0);
     const [isLoading, setLoading] = useState(true);
     const [budgetFixee, setBudgetFixee] = useState(0);
+    const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+    const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
+    const [isInvited, setIsInvited] = useState(false);
+
+
     useEffect(() => {
         setLoading(false);
         const realBudgetFixee = DataBudget[0].amount;
@@ -23,14 +30,39 @@ export default function BudgetEventShow(){
         setTotalRealExpenses(realExpenses);
     }, []);
 
+    useEffect(() => {
+        if (isInvited) {
+            setIsInvited(false);
+        }
+    }, [isInvited]);
+
+
+
     /*Get Id Event
     const { id } = useParams();
     */
+    const handleClickOpen = () => {
+        setIsInviteFormOpen(true);
+    };
     return(
         <Grid>
+            <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
             <Typography variant="h3" sx={{ pb:3 }}>
                 Evenement : { DataBudget[0].name }
             </Typography>
+            <Grid item xs={12} mb={2} >
+                <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                    <Typography style={{ color: 'white' }} variant="subtitle1">
+                        Inviter une Participant
+                    </Typography>
+                </Button>
+                <BudgetInviteParticipantCard
+                    setAlertMessage={setAlertMessage}
+                    setIsInvited={setIsInvited}
+                    isAddFormOpen={isInviteFormOpen}
+                    setIsAddFormOpen={setIsInviteFormOpen}
+                />
+            </Grid>
             <Grid container spacing={2}>
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                     <ExpenseCard isLoading={isLoading} title="Total des dépenses réelles" total={totalRealExpenses} />

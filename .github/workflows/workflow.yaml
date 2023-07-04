@@ -15,6 +15,7 @@ env:
   PRODUCT_REPO_EVENTS: ${{secrets.PRODUCT_REPO_EVENTS}}
   PRODUCT_REPO_EXPENSES: ${{secrets.PRODUCT_REPO_EXPENSES}}
   PRODUCT_REPO_INCOMES: ${{secrets.PRODUCT_REPO_INCOMES}}
+  PRODUCT_REPO_MEETINGS: ${{secrets.PRODUCT_REPO_MEETINGS}}
 jobs:
   create-image:
     runs-on: ubuntu-latest
@@ -49,6 +50,9 @@ jobs:
           rm -rf backend/services/incomes/src/env.ts
           touch backend/services/incomes/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/incomes/src/env.ts
+          rm -rf backend/services/meetings/src/env.ts
+          touch backend/services/meetings/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/meetings/src/env.ts
       - name: Build services docker image
         run: | 
           docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
@@ -60,6 +64,7 @@ jobs:
           docker build backend/services/events/ --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
           docker build backend/services/expenses/ --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
           docker build backend/services/incomes/ --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+          docker build backend/services/meetings/ --file backend/services/meetings/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_MEETINGS:latest"
       - name: Push services docker image
         run: |
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
@@ -71,6 +76,7 @@ jobs:
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_MEETINGS:latest"
   deployment:
     needs: [create-image]
     runs-on: ubuntu-latest
@@ -84,3 +90,7 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GKE_CLUSTER: ${{ secrets.CLUSTER_NAME }}
           GKE_LOCATION: ${{ secrets.ZONE_NAME }}
+      - name: Deploy to GKE
+        run: | 
+          kubectl apply -f backend/challenge-gateway-deployment.yaml
+

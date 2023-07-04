@@ -11,10 +11,10 @@ export class EventInvitationService {
     private eventInvitationRepository: Repository<EventInvitation>,
   ) {}
 
-  async create(userId: string, eventId: string): Promise<any> {
+  async create(eventId: string, userId: string): Promise<any> {
     const newEventInvitation = this.eventInvitationRepository.create({
-      userId,
       eventId,
+      userId,
       status: InvitationStatus.PENDING,
     });
 
@@ -31,6 +31,10 @@ export class EventInvitationService {
 
   async getAll(): Promise<EventInvitation[]> {
     return this.eventInvitationRepository.find();
+  }
+
+  async getAllByUser(userId: string): Promise<EventInvitation[]> {
+    return this.eventInvitationRepository.findBy({ userId });
   }
 
   async update(

@@ -3,9 +3,22 @@ import { EventParticipateService } from './event-participate.service';
 import { EventParticipateController } from './event-participate.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventParticipate } from './event-participate.entity';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EventParticipate])],
+  imports: [
+    TypeOrmModule.forFeature([EventParticipate]),
+    ClientsModule.register([
+      {
+        name: 'EVENT_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'challenge-events-service',
+          port: 3009,
+        },
+      },
+    ]),
+  ],
   controllers: [EventParticipateController],
   providers: [EventParticipateService],
   exports: [EventParticipateService],

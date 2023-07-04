@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -19,6 +20,7 @@ import {
   CreateEventBudgetDto,
   UpdateEventBudgetDto,
 } from "./event-budget.request";
+import { InvitationStatus } from "./event-invitation.enum";
 
 @AuthenticationRequired()
 @Controller("events")
@@ -44,6 +46,18 @@ export class EventController {
   getEventById(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.getEventById(id, user);
+  }
+  @Get("participant/expenses")
+  getParticipantExpenses(@Req() request: CustomRequest) {
+    console.log("getParticipantExpenses");
+    const user = request.user;
+    return this.eventService.getParticipantExpenses(user);
+  }
+  @Get(":id/expenses")
+  getEventExpenses(@Param("id") id: string, @Req() request: CustomRequest) {
+    console.log("getEventExpenses");
+    const user = request.user;
+    return this.eventService.getEventExpenses(id, user);
   }
 
   @Put(":id")
@@ -71,5 +85,42 @@ export class EventController {
     const inviteeId = userId;
     const user = request.user;
     return this.eventService.inviteUserToEvent(id, inviteeId, user);
+  }
+
+  @Patch("participant/invitations/:invitationId/accept")
+  acceptInvitation(
+    @Param("invitationId") invitationId: string,
+    @Req() request: CustomRequest
+  ) {
+    const user = request.user;
+    return this.eventService.updateInvitation(
+      invitationId,
+      InvitationStatus.ACCEPTED,
+      user
+    );
+  }
+
+  @Patch("participant/invitations/:invitationId/reject")
+  rejectInvitation(
+    @Param("invitationId") invitationId: string,
+    @Req() request: CustomRequest
+  ) {
+    const user = request.user;
+    return this.eventService.updateInvitation(
+      invitationId,
+      InvitationStatus.REJECTED,
+      user
+    );
+  }
+
+  @Get("/invitations")
+  getInvitations(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getInvitations(user);
+  }
+  @Post(":id/finished")
+  markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.markEventAsFinished(id, user);
   }
 }

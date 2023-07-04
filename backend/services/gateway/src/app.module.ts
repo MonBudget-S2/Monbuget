@@ -10,6 +10,7 @@ import { UserModule } from "./users/user.module";
 import { IncomeModule } from "./incomes/income.module";
 import { ExpenseModule } from "./expenses/expense.module";
 import { EventModule } from "./events/event.module";
+import { DebtModule } from "./debts/debt.module";
 
 @Module({
   imports: [
@@ -30,14 +31,6 @@ import { EventModule } from "./events/event.module";
           port: 3008,
         },
       },
-      {
-        name: "EVENT_SERVICE",
-        transport: Transport.TCP,
-        options: {
-          host: "challenge-events-service",
-          port: 3009,
-        },
-      },
     ]),
     BudgetModule,
     AlertModule,
@@ -47,6 +40,7 @@ import { EventModule } from "./events/event.module";
     IncomeModule,
     ExpenseModule,
     EventModule,
+    DebtModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -56,10 +56,9 @@ const App = () => {
       })
       .catch((data) => {
         setIsCheckingToken(false);
+        localStorage.removeItem('token');
+        console.log('error', data);
         if (window.location.pathname.startsWith('/dashboard')) {
-          localStorage.removeItem('token');
-          console.log('error', data);
-
           navigate('/login');
         }
       });

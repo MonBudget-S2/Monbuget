@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateDebtDto {
@@ -16,9 +15,15 @@ export class CreateDebtDto {
 
   @IsString()
   debtType: string;
+
+  @IsString()
+  debtorId: string;
+
+  @IsString()
+  creditorId: string;
 }
 
-export class UpdateDebtDto extends PartialType(CreateDebtDto) {
+export class UpdateDebtDto {
   @IsString()
   motif: string;
 
@@ -33,4 +38,32 @@ export class UpdateDebtDto extends PartialType(CreateDebtDto) {
 
   @IsString()
   debtType: string;
+
+  @IsString()
+  debtorId?: string;
+
+  @IsString()
+  creditorId?: string;
+}
+
+export class CreateDebtPaymentDto {
+  @IsNumber()
+  amount: number;
+
+  @IsDate()
+  date: Date;
+
+  @IsString()
+  debtId: string;
+}
+
+export class UpdateDebtPaymentDto {
+  @IsNumber()
+  amount: number;
+
+  @IsDate()
+  date: Date;
+
+  @IsString()
+  debtId: string;
 }
