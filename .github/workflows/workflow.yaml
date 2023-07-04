@@ -1,7 +1,7 @@
 name: Docker Build Deploy
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 env:
   DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
@@ -93,3 +93,4 @@ jobs:
       - name: Deploy to GKE
         run: | 
           kubectl apply -f backend/challenge-gateway-deployment.yaml
+
