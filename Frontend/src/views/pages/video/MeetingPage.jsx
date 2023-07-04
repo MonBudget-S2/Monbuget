@@ -71,16 +71,10 @@ function JoinScreen({ updateMeetingId, getMeetingAndToken }) {
 }
 
 function MeetingPage() {
-  const [token, setToken] = useState(process.env.REACT_APP_VIDEOSDK_TOKEN);
-  console.log('token', setToken);
-  // const [token, setToken] = useState('f06f2830-95ec-4837-8810-151a4d59a598');
+  const token = process.env.REACT_APP_VIDEOSDK_TOKEN;
   const [meetingId, setMeetingId] = useState(null);
 
   const getMeetingAndToken = async () => {
-    // const token = await getToken();
-    // const token = localStorage.getItem('token');
-    // setToken(token);
-    // setMeetingId('f06f2830-95ec-4837-8810-151a4d59a598');
     setMeetingId(meetingId ? meetingId : await meetingService.createMeeting(token));
   };
 
