@@ -33,12 +33,20 @@ const getAllInvitations = async () => {
   return await axiosInstance.get(`/events/participant/invitations`);
 };
 
+const sendInvitation = async (id, username) => {
+  return await axiosInstance.post(`/events/${id}/invite`, username);
+};
+
 const acceptInvitation = async (id) => {
   return await axiosInstance.patch(`/events/participant/invitations/${id}/accept`);
 };
 
 const rejectInvitation = async (id) => {
   return await axiosInstance.patch(`/events/participant/invitations/${id}/reject`);
+};
+
+const endEvent = async (id) => {
+  return await axiosInstance.patch(`/events/${id}/finish`);
 };
 
 const eventService = {
@@ -51,7 +59,9 @@ const eventService = {
   getAllExpensesByEventId,
   getAllInvitations,
   acceptInvitation,
-  rejectInvitation
+  rejectInvitation,
+  endEvent,
+  sendInvitation
 };
 
 export default eventService;

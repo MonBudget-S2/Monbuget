@@ -21,7 +21,7 @@ import { AuthenticationModule } from "src/authentication/authentication.module";
         transport: Transport.TCP,
         options: {
           host: "challenge-expenses-service",
-          port: 3003,
+          port: 3004,
         },
       },
     ]),

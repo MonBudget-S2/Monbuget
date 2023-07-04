@@ -13,7 +13,8 @@ import { InvitationStatus } from "./event-invitation.enum";
 export class EventService {
   constructor(
     @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy,
-    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy
+    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy,
+    @Inject("USER_SERVICE") private readonly userService: ClientProxy
   ) {}
 
   async createEvent(createEventBudgetDto: CreateEventBudgetDto) {
@@ -124,14 +125,27 @@ export class EventService {
     );
   }
 
-  async inviteUserToEvent(id: string, inviteeId: string, user) {
+  async inviteUserToEvent(id: string, inviteUsername: string, user) {
+    const invitee = await firstValueFrom(
+      this.userService.send(
+        { service: "user", action: "getByUsername" },
+        inviteUsername
+      )
+    );
+    if (!user) {
+      throw new HttpException(
+        "Invitee username not found ",
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     const event = await this.getEventById(id, user);
-    console.log("inviteUserToEvent", id, inviteeId, user);
+    console.log("inviteUserToEvent", id, inviteUsername, user);
 
     return await firstValueFrom(
       this.eventService.send(
-        { service: "eventBudget", action: "createInvitation" },
-        { userId: inviteeId, eventId: id }
+        { service: "eventBudget", action: "createInvitationByUsername" },
+        { username: invitee.username, eventId: id }
       )
     );
   }
