@@ -4,8 +4,13 @@ const getDebts = async () => {
   return await axiosInstance.get('/debts');
 };
 
+const payDebt = async (debtId, amount) => {
+  return await axiosInstance.patch(`/debts/${debtId}/pay`, { amount });
+};
+
 const debtService = {
-  getDebts
+  getDebts,
+  payDebt
 };
 
 export default debtService;

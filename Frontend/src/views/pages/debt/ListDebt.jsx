@@ -4,46 +4,17 @@ import { CardContent, Grid, Button, Chip } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
-import { cloneDeep } from 'lodash';
 
-import SelectedDebt from './SelectedDebt';
 import DataTable from 'ui-component/table/DataTable';
+import DebtPayment from './DebtPayment';
 
-const ListDebt = ({ isLoading, debts }) => {
+const ListDebt = ({ isLoading, debts, setAlertMessage, setIsDebtChanged }) => {
   const [selectedDebt, setSelectedDebt] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleRembourser = (debt) => {
-    // const updatedDebtState = debtState.map((item) => {
-    //   if (item.id === debt.id) {
-    //     return { ...item, remainingAmount: debt.remainingAmount };
-    //   }
-    //   return item;
-    // });
-
-    // setDebtState(updatedDebtState);
     setSelectedDebt(debt);
     setIsModalOpen(true);
-  };
-
-  const updateDebtInTable = (updatedDebt) => {
-    const index = debtState.findIndex((debt) => debt.id === updatedDebt.id);
-    if (index !== -1) {
-      // Update the debt in the state
-      const newDebtData = cloneDeep(debtState); // Make a deep copy of the state to not mutate the original state
-      newDebtData[index] = updatedDebt;
-
-      // Update the status of the updated debt
-      const status = getStatus({ row: updatedDebt });
-      newDebtData[index].status = status;
-
-      // Set the new data
-      setDebtState(newDebtData);
-
-      setIsModalOpen(false);
-      // Afficher un message d'alerte indiquant que le remboursement a bien été effectué
-      alert('Remboursement effectué avec succès !');
-    }
   };
 
   const getStatus = (params) => {
@@ -105,10 +76,6 @@ const ListDebt = ({ isLoading, debts }) => {
     }
   ];
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
   return (
     <>
       {isLoading ? (
@@ -125,12 +92,12 @@ const ListDebt = ({ isLoading, debts }) => {
         </MainCard>
       )}
 
-      <SelectedDebt
-        selectedDebt={selectedDebt}
-        updateSelectedDebt={setSelectedDebt}
+      <DebtPayment
+        setAlertMessage={setAlertMessage}
+        setIsDebtChanged={setIsDebtChanged}
         isOpen={isModalOpen}
-        setIsOpen={handleModalClose}
-        updateDebtInTable={updateDebtInTable}
+        setIsOpen={setIsModalOpen}
+        selectedDebt={selectedDebt}
       />
     </>
   );

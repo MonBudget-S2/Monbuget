@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { gridSpacing } from 'store/constant';
 import { Grid } from '@mui/material';
 
-import AddDebt from './SelectedDebt';
+import AddDebt from './DebtPayment';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import TotalDebt from './TotalDebt';
 import ListDebt from './ListDebt';
@@ -19,25 +19,22 @@ const Debt = () => {
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [debts, setDebts] = useState([]);
+  const [isDebtChanged, setIsDebtChanged] = useState(false);
 
   useEffect(() => {
     const getDebts = async () => {
-      try {
-        const res = await debtService.getDebts();
-        setDebts(res.data);
-      } catch (err) {
-        console.log(err);
-        setAlertMessage({
-          open: true,
-          type: 'error',
-          message: 'Erreur lors du chargement des données. Veuillez réessayer plus tard.'
-        });
+      const res = await debtService.getDebts();
+      if (res.status !== 200) {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la récupération des dettes' });
+        return;
       }
+      setDebts(res.data);
+
       setLoading(false);
     };
 
     getDebts();
-  }, []);
+  }, [isDebtChanged]);
 
   return (
     <Grid container spacing={gridSpacing}>
@@ -59,7 +56,7 @@ const Debt = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <ListDebt debts={debts} />
+        <ListDebt debts={debts} setAlertMessage={setAlertMessage} setIsDebtChanged={setIsDebtChanged} />
       </Grid>
     </Grid>
   );

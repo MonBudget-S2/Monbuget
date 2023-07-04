@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -32,7 +33,7 @@ export class DebtController {
     return this.debtService.getDebtById(id, user);
   }
 
-  @Post(":id/pay")
+  @Patch(":id/pay")
   async payDebt(
     @Param("id") id: string,
     @Body("amount") amount: number,
