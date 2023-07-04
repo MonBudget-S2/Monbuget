@@ -30,6 +30,7 @@ export default function BudgetEventShow(){
         const fetchEvent = async () => {
             const event = await eventService.getEventById(id);
             setEvent(event.data);
+            // console.log(event.data, "event");
         };
         
         const fetchExpenses = async () => {
@@ -57,6 +58,8 @@ export default function BudgetEventShow(){
         }
     }, [isInvited]);
 
+    const startDate = new Date(event.startDate).toLocaleDateString();
+    const endDate = new Date(event.endDate).toLocaleDateString();
 
 
     /*Get Id Event
@@ -98,8 +101,8 @@ export default function BudgetEventShow(){
                         <Grid item sm={6} xs={12} md={6} lg={12}>
                             <BudgetEventDateBetweenCard
                                 isLoading={isLoading}
-                                dateStart={ DataBudget[0].startDate }
-                                dateEnd={ DataBudget[0].endDate }
+                                dateStart={ startDate }
+                                dateEnd={ endDate }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12} md={6} lg={12}>

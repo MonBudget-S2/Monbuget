@@ -56,6 +56,21 @@ export class EventService {
         HttpStatus.FORBIDDEN
       );
     }
+    if(event?.eventParticipants?.length > 0){
+
+      const userPromises = event.eventParticipants.map(async (participant) => {
+        const user = await lastValueFrom(
+          this.userService.send(
+            { service: "user", cmd: "getUserById" },
+            participant.userId
+          )
+        );
+        return { ...participant, user };
+      });
+      event.eventParticipants = await Promise.all(userPromises);
+      console.log("event.participants", event.eventParticipants);
+    }
+    console.log("event **************", event);
     return event;
   }
 
@@ -140,6 +155,7 @@ export class EventService {
   }
 
   async inviteUserToEvent(id: string, inviteUsername: string, user) {
+  
     const invitee = await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "getUserByUsername" },
@@ -150,10 +166,11 @@ export class EventService {
     const invitations = await firstValueFrom(
       this.eventService.send(
         { service: "eventInvitation", action: "getByEventId" },
-        { eventId: id }
+        id
       )
     );
-
+        console.log("invitations ************", invitations);
+        console.log("invitee **************", invitee);
     if (invitations.find((i) => i.userId === invitee.id)) {
       if (
         invitations.find(
