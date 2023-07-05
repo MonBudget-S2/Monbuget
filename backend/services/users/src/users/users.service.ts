@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto, UpdateUserDto } from './user.request';
+import { Role } from 'src/authentication/authentication.enum';
 
 @Injectable()
 export class UsersService {
@@ -41,6 +42,10 @@ export class UsersService {
 
   public getUserById(id: string) {
     return this.userRepository.findOneBy({ id });
+  }
+
+  public getUsersByRole(role: Role) {
+    return this.userRepository.find({ where: { role } });
   }
 
   public deleteUser(id: string) {

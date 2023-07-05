@@ -6,27 +6,15 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
+import { Role } from "./authentication/authentication.enum";
 
 @Injectable()
 export class AppService {
-  // private readonly authService: ClientProxy;
-  // private readonly userService: ClientProxy;
-  // private readonly incomeService: ClientProxy;
-
-  // constructor() {
-  //   this.authService = ClientProxyFactory.create({ transport: Transport.TCP });
-  //   this.userService = ClientProxyFactory.create({ transport: Transport.TCP });
-  //   this.incomeService = ClientProxyFactory.create({
-  //     transport: Transport.TCP,
-  //   });
-  // }
-
   constructor(
     @Inject("USER_SERVICE") private readonly authService: ClientProxy,
     @Inject("USER_SERVICE") private readonly userService: ClientProxy,
-  ) // @Inject("BUDGET_SERVICE") private readonly budgetService: ClientProxy
-
-  {}
+    @Inject("MEETING_SERVICE") private readonly meetingService: ClientProxy
+  ) {}
 
   async login(data: { username: string; password: string }) {
     Logger.log("Login request", "***********AppService***********");
@@ -50,4 +38,24 @@ export class AppService {
   }
 
   // Other API Gateway methods...
+
+  async getAllAdvisors() {
+    return await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUsersByRole" },
+        Role.ADVISOR
+      )
+    );
+  }
+
+  async createMeeting(data: {
+    startTime: Date;
+    endTime: Date;
+    advisorId: string;
+    clientId: string;
+  }) {
+    return await firstValueFrom(
+      this.meetingService.send({ service: "meeting", action: "create" }, data)
+    );
+  }
 }

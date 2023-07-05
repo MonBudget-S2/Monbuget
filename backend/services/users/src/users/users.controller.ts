@@ -11,6 +11,7 @@ import { UsersService } from './users.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UpdateUserDto } from './user.request';
 import { RemoveFieldsInterceptor } from './interceptors/remove-fields.interceptor';
+import { Role } from 'src/authentication/authentication.enum';
 
 @Controller()
 @UseInterceptors(new RemoveFieldsInterceptor(['password']))
@@ -25,6 +26,11 @@ export class UsersController {
   @MessagePattern({ service: 'user', cmd: 'getUserById' })
   async getUserById(id: string) {
     return this.usersService.getUserById(id);
+  }
+
+  @MessagePattern({ service: 'user', cmd: 'getUsersByRole' })
+  async getUsersByRole(role: Role) {
+    return this.usersService.getUsersByRole(role);
   }
 
   @MessagePattern({ service: 'user', cmd: 'getUserByUsername' })

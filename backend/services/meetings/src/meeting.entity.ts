@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { MeetingRequestStatus } from './meeting.enum';
 
 @Entity()
 export class Meeting {
@@ -16,4 +17,7 @@ export class Meeting {
 
   @Column({ type: 'timestamp' })
   endTime: Date;
+
+  @Column({ default: MeetingRequestStatus.PENDING })
+  status: MeetingRequestStatus;
 }
