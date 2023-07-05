@@ -12,9 +12,9 @@ export class Schedule {
   @Column({ type: 'enum', enum: DayOfWeek })
   dayOfWeek: DayOfWeek;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'time', nullable: true })
   startTime: string;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'time', nullable: true })
   endTime: string;
 }

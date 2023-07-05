@@ -45,6 +45,7 @@ export class AppController {
 
   @MessagePattern({ service: 'meeting', action: 'createSchedule' })
   createSchedule(createScheduleDto: CreateScheduleDto) {
+    console.log('createScheduleDto', createScheduleDto);
     return this.appService.createSchedule(createScheduleDto);
   }
 

@@ -62,8 +62,9 @@ export class AppService {
 
   async createSchedule(createScheduleDto: CreateScheduleDto): Promise<any> {
     const newSchedule = this.scheduleRepository.create(createScheduleDto);
-    await this.scheduleRepository.save(newSchedule);
-    return { message: 'Schedule created successfully', newSchedule };
+    const res = await this.scheduleRepository.save(newSchedule);
+    console.log('res', res);
+    return { message: 'Schedule created successfully', res };
   }
 
   async getAllSchedules(): Promise<any> {

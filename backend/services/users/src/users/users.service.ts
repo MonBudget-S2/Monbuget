@@ -29,7 +29,7 @@ export class UsersService {
     newUser.role = Role.ADVISOR;
     await this.userRepository.save(newUser);
 
-    return { message: 'Advisor registered successfully' };
+    return newUser;
   }
 
   // async findByEmail(email: string): Promise<User | undefined> {

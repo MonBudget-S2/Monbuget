@@ -49,7 +49,7 @@ export class AppService {
       DayOfWeek.FRIDAY,
     ];
 
-    const advisor = await lastValueFrom(
+    const advisor = await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "createAdvisor" },
         createAdvisorDto
@@ -97,7 +97,7 @@ export class AppService {
       );
     });
 
-    await Promise.all(weekendPromises);
+    console.log(await Promise.all(weekendPromises));
   }
 
   async getAllAdvisors() {
