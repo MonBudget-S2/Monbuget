@@ -1,5 +1,14 @@
 // assets
-import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney, IconCalendarEvent } from '@tabler/icons';
+import {
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
+  IconBrightness,
+  IconSettings,
+  IconOlympics,
+  IconReportMoney,
+  IconCalendarEvent
+} from '@tabler/icons';
 
 // constant
 const icons = {
@@ -25,22 +34,21 @@ const pages = {
       title: 'Gestion des Revenus',
       type: 'item',
       url: 'income',
-      icon: icons.IconMoneybag,
+      icon: icons.IconMoneybag
     },
     {
       id: 'ManageExpense',
       title: 'Gestion des Dépenses',
       type: 'item',
       url: 'expense',
-      icon: icons.IconBusinessplan,
+      icon: icons.IconBusinessplan
     },
     {
       id: 'ManageCategoricalBudget',
       title: 'Gestion des Budgets catégoriels',
       type: 'item',
       url: 'categoricalbudget',
-      icon: icons.IconBrightness,
-
+      icon: icons.IconBrightness
     },
     {
       id: 'ManageEvenementielBudget',
@@ -71,7 +79,7 @@ const pages = {
           id: 'BudgetEventPartagee',
           title: 'EventBudgets Partagée',
           type: 'item',
-          url: '/budgetEventPartagee',
+          url: '/budgetEventPartagee'
         },
         {
           id: 'AllEvenementielBudgetExpense',
@@ -86,7 +94,7 @@ const pages = {
       title: 'Gestion des Dettes',
       type: 'item',
       url: 'debt',
-      icon: icons.IconReportMoney,
+      icon: icons.IconReportMoney
       // children: [
       //   {
       //     id: 'Debt',
@@ -105,10 +113,10 @@ const pages = {
       breadcrumbs: false
     },
     {
-      id: 'customerAdvisor',
-      title: 'Contactez un conseiller',
+      id: 'appointments',
+      title: 'Mes Rendez-vous',
       type: 'item',
-      url: 'customerAdvisor',
+      url: 'clientCalendar',
       icon: icons.IconCalendarEvent,
       breadcrumbs: false
     }
