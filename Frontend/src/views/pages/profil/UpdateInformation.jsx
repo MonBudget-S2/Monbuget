@@ -24,7 +24,6 @@ const UpdateInformation = () => {
         email: user?.userInfo?.email,
         avatarUrl:user?.userInfo?.avatarUrl,
     });
-
     const fetchImage = async () => {
         // Effectuez votre requête pour obtenir les données de l'image (par exemple, via Axios)
         if (user.userInfo.avatarUrl)
