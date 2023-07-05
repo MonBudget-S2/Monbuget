@@ -31,7 +31,8 @@ export default function EventInvitation({ setAlertMessage }) {
     const getAllInvitations = async () => {
       const res = await eventService.getAllInvitations();
       if (res.status === 200) {
-        setEventInvitations(res.data);
+        const filterPedingsInvitations = res.data.filter((invitation) => invitation.status === 'pending');
+        setEventInvitations(filterPedingsInvitations);
       }
       setLoading(false);
     };
