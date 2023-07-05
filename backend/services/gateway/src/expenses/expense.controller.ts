@@ -8,7 +8,7 @@ import {
   ParseIntPipe, Patch,
   Post,
   Put,
-  Req, UploadedFile,
+  Req, Res, UploadedFile,
   UseGuards, UseInterceptors,
 } from "@nestjs/common";
 import { ExpenseService } from "./expense.service";
@@ -20,8 +20,9 @@ import {
 import { Role } from "src/authentication/authentication.enum";
 import {FileInterceptor} from "@nestjs/platform-express";
 import { Express } from 'express';
-import { extname } from 'path';
+import {extname, join} from 'path';
 import {diskStorage} from "multer";
+import {of} from "rxjs";
 
 
 @AuthenticationRequired()
@@ -36,6 +37,12 @@ export class ExpenseController {
   ) {
     createExpenseDto.userId = request.user.id;
     return this.expenseService.createExpense(createExpenseDto);
+  }
+
+  @Get("file/:id")
+  findFacture(@Param("id") id:string,@Res() res)
+  {
+    return of(res.sendFile(join(process.cwd(),'uploads/'+id)));
   }
 
   @Patch("upload/facture/:id")

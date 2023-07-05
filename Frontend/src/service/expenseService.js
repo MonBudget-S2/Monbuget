@@ -8,6 +8,12 @@ const uploadFacture = async (id,file)=>{
   return await axiosInstance.patch(`/expenses/upload/facture/${id}`,file);
 }
 
+const downloadFile = async (filename) =>{
+  return await axiosInstance.get(`/expenses/file/${filename}`,{
+    responseType: 'blob',
+  });
+}
+
 const getExpenses = async () => {
   return await axiosInstance.get('/expenses');
 };
@@ -41,7 +47,8 @@ const expenseService = {
   deleteExpense,
   getExpensesByCategoryAndPeriod,
   getExpensesByPeriod,
-  uploadFacture
+  uploadFacture,
+  downloadFile
 };
 
 export default expenseService;
