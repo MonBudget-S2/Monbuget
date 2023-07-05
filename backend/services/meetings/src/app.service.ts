@@ -71,6 +71,10 @@ export class AppService {
     return this.scheduleRepository.find();
   }
 
+  async getAllSchedulesByAdvisor(advisorId: string): Promise<any> {
+    return this.scheduleRepository.find({ where: { advisorId } });
+  }
+
   async getScheduleByDay(dayOfWeek: DayOfWeek): Promise<any> {
     return this.scheduleRepository.find({ where: { dayOfWeek } });
   }

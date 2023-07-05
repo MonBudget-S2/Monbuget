@@ -4,7 +4,7 @@ import { MeetingProvider, MeetingConsumer, useMeeting } from '@videosdk.live/rea
 
 // import { getToken, createMeeting } from "./api";
 import ParticipantView from './ParticipantView';
-import meetingService from 'service/meetingService';
+import { meetingService } from 'service/meetingService';
 
 const chunk = (arr) => {
   const newArr = [];

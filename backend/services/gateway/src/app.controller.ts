@@ -73,4 +73,11 @@ export class AppController {
   approveMeeting(@Payload() data: { id: string }) {
     return this.appService.approveMeeting(data.id);
   }
+
+  @Get("advisors/schedules")
+  @AuthenticationRequired()
+  @HasRole(Role.ADVISOR)
+  getAdvisorSchedule(@Req() request: CustomRequest) {
+    return this.appService.getAdvisorSchedule(request.user.id);
+  }
 }

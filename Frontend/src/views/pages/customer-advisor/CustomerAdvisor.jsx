@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import 'moment/locale/fr';
-import PersonalizeDate from './PersonalizeDate';
+import ScheduleDialog from './ScheduleDialog';
 
 const CustomerAdvisor = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -27,40 +27,40 @@ const CustomerAdvisor = () => {
 
   const getCalendarEvents = () => {
     const events = [];
-  
+
     // Simulated data from the database
     const meetings = [
-      { "meetingId":"1", "date": "2023-07-07T09:00:00", "adviserId":"123", "clientId":"875" },
-      { "meetingId":"2", "date": "2023-07-07T10:00:00", "adviserId":"123", "clientId":"876" },
-      { "meetingId":"3", "date": "2023-07-08T11:00:00", "adviserId":"123", "clientId":"877" },
-      { "meetingId":"4", "date": "2023-07-08T15:00:00", "adviserId":"123", "clientId":"878" },
-      { "meetingId":"5", "date": "2023-07-09T10:00:00", "adviserId":"123", "clientId":"879" },
-      { "meetingId":"6", "date": "2023-07-09T14:00:00", "adviserId":"123", "clientId":"880" },
-      { "meetingId":"7", "date": "2023-07-12T10:00:00", "adviserId":"123", "clientId":"881" },
-      { "meetingId":"8", "date": "2023-07-13T10:00:00", "adviserId":"123", "clientId":"882" },
-      { "meetingId":"9", "date": "2023-07-14T14:00:00", "adviserId":"123", "clientId":"883" },
-      { "meetingId":"10", "date": "2023-07-15T14:00:00", "adviserId":"123", "clientId":"884" },
+      { meetingId: '1', date: '2023-07-07T09:00:00', adviserId: '123', clientId: '875' },
+      { meetingId: '2', date: '2023-07-07T10:00:00', adviserId: '123', clientId: '876' },
+      { meetingId: '3', date: '2023-07-08T11:00:00', adviserId: '123', clientId: '877' },
+      { meetingId: '4', date: '2023-07-08T15:00:00', adviserId: '123', clientId: '878' },
+      { meetingId: '5', date: '2023-07-09T10:00:00', adviserId: '123', clientId: '879' },
+      { meetingId: '6', date: '2023-07-09T14:00:00', adviserId: '123', clientId: '880' },
+      { meetingId: '7', date: '2023-07-12T10:00:00', adviserId: '123', clientId: '881' },
+      { meetingId: '8', date: '2023-07-13T10:00:00', adviserId: '123', clientId: '882' },
+      { meetingId: '9', date: '2023-07-14T14:00:00', adviserId: '123', clientId: '883' },
+      { meetingId: '10', date: '2023-07-15T14:00:00', adviserId: '123', clientId: '884' }
     ];
-  
+
     // find next Monday
     let date = moment().startOf('week').add(1, 'week');
-  
+
     // iterate for the next 14 days
     for (let i = 0; i < 14; i++) {
       const day = date.locale('fr').format('dddd');
       const daySettings = slotSettings[day];
-  
+
       if (daySettings) {
         Object.keys(daySettings).forEach((slot) => {
           const startTime = date.hour(parseInt(slot)).minutes(0).seconds(0).toDate();
           const endTime = moment(startTime).add(1, 'hours').toDate();
-  
+
           // Check if there is a meeting scheduled for this slot
           const meeting = meetings.find((m) => {
             const meetingDate = moment(m.date);
             return meetingDate.isSame(startTime, 'hour');
           });
-  
+
           if (meeting) {
             // If a meeting is scheduled, add it to the calendar
             events.push({
@@ -68,7 +68,7 @@ const CustomerAdvisor = () => {
               start: startTime,
               end: endTime,
               allDay: false,
-              backgroundColor: 'red', // Different color for meetings
+              backgroundColor: 'red' // Different color for meetings
             });
           } else if (daySettings[slot]) {
             // If no meeting is scheduled and the advisor is available, add an available slot
@@ -76,20 +76,17 @@ const CustomerAdvisor = () => {
               title: 'Disponible',
               start: startTime,
               end: endTime,
-              allDay: false,
+              allDay: false
             });
           }
         });
       }
-  
+
       // advance to the next day
       date = date.add(1, 'days');
     }
-  
     return events;
   };
-  
-  
 
   return (
     <Grid container spacing={2}>
@@ -112,7 +109,7 @@ const CustomerAdvisor = () => {
             right: 'dayGridMonth,dayGridWeek,dayGridDay'
           }}
           buttonText={{
-            today: 'aujourd\'hui',
+            today: "aujourd'hui",
             month: 'mois',
             week: 'semaine',
             day: 'jour'
@@ -122,7 +119,7 @@ const CustomerAdvisor = () => {
           firstDay={1} // The week starts on Monday
         />
       </Grid>
-      <PersonalizeDate open={openDialog} onClose={handleDialogClose} onSave={handleSaveSlotSettings} initialSettings={slotSettings} />
+      <ScheduleDialog isOpen={openDialog} handleClose={handleDialogClose} onSave={handleSaveSlotSettings} initialSettings={slotSettings} />
     </Grid>
   );
 };

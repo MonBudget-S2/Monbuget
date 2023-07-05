@@ -26,21 +26,6 @@ const pages = {
       type: 'item',
       url: 'income',
       icon: icons.IconMoneybag,
-
-      // children: [
-      //   {
-      //     id: 'expense',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'income'
-      //   },
-      //   // {
-      //   //   id: 'listincomehistory',
-      //   //   title: 'Historique des revenus',
-      //   //   type: 'item',
-      //   //   url: 'listincomehistory'
-      //   // }
-      // ]
     },
     {
       id: 'ManageExpense',
@@ -48,28 +33,6 @@ const pages = {
       type: 'item',
       url: 'expense',
       icon: icons.IconBusinessplan,
-
-      // children: [
-      //   {
-      //     id: 'expense',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'expense'
-      //     // target: false -> ouvre nouvel onglet
-      //   },
-      //   {
-      //     id: 'addExpense',
-      //     title: 'Ajouter une dépense',
-      //     type: 'item',
-      //     url: 'addexpense'
-      //   },
-      //   {
-      //     id: 'listExpense',
-      //     title: 'Liste des dépenses',
-      //     type: 'item',
-      //     url: 'listexpense'
-      //   }
-      // ]
     },
     {
       id: 'ManageCategoricalBudget',
@@ -78,27 +41,6 @@ const pages = {
       url: 'categoricalbudget',
       icon: icons.IconBrightness,
 
-      // children: [
-      //   {
-      //     id: 'categoricalBudget',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'categoricalbudget'
-      //     // target: false -> ouvre nouvel onglet
-      //   },
-      //   {
-      //     id: 'budgetAllocation',
-      //     title: 'Créer un budget catégoriel',
-      //     type: 'item',
-      //     url: 'budgetallocation'
-      //   },
-      //   {
-      //     id: 'detailCategoricalBudgetModal',
-      //     title: 'Budget catégoriel détaillé',
-      //     type: 'item',
-      //     url: 'detailcategoricalbudget'
-      //   }
-      // ]
     },
     {
       id: 'ManageEvenementielBudget',

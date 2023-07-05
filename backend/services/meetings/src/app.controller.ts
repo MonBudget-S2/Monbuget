@@ -54,6 +54,11 @@ export class AppController {
     return this.appService.getAllSchedules();
   }
 
+  @MessagePattern({ service: 'meeting', action: 'getAllSchedulesByAdvisor' })
+  getAllSchedulesByAdvisor(advisorId: string) {
+    return this.appService.getAllSchedulesByAdvisor(advisorId);
+  }
+
   @MessagePattern({ service: 'meeting', action: 'getSchedulesByDay' })
   getScheduleByDay(day: DayOfWeek) {
     return this.appService.getScheduleByDay(day);

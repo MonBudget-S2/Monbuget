@@ -1,4 +1,4 @@
-// import axiosInstance from './axiosInterceptor';
+import axiosInstance from './axiosInterceptor';
 
 const createMeeting = async (token) => {
   console.log('token', token);
@@ -14,12 +14,6 @@ const createMeeting = async (token) => {
   const { roomId } = await res.json();
   return roomId;
 };
-
-const meetingService = {
-  createMeeting
-};
-
-export default meetingService;
 
 // const API_BASE_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -44,3 +38,13 @@ export default meetingService;
 //   const { meetingId } = await res.json();
 //   return meetingId;
 // };
+
+const getSchedules = async () => {
+  const res = await axiosInstance.get('/advisors/schedules');
+  return res;
+};
+
+export const meetingService = {
+  createMeeting,
+  getSchedules
+};

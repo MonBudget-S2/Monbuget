@@ -131,4 +131,13 @@ export class AppService {
       )
     );
   }
+
+  async getAdvisorSchedule(advisorId: string) {
+    return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "getAllSchedulesByAdvisor" },
+        advisorId
+      )
+    );
+  }
 }
