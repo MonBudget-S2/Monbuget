@@ -32,6 +32,15 @@ export class AppController {
 
   // Other API Gateway methods...
 
+  @Post("users/advisors")
+  @AuthenticationRequired()
+  @HasRole(Role.ADMIN)
+  createAdvisor(
+    @Payload()
+    createUserDto: CreateUserDto
+  ) {
+    return this.appService.createAdvisor(createUserDto);
+  }
   @Get("users/advisors")
   @AuthenticationRequired()
   getAllAdvisors() {

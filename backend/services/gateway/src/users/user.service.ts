@@ -28,6 +28,7 @@ export class UserService {
       )
     );
   }
+
   async getAllUsers() {
     return await firstValueFrom(
       this.userService.send({ service: "user", cmd: "getUsers" }, {})

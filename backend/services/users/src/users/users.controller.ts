@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UpdateUserDto } from './user.request';
+import { CreateUserDto, UpdateUserDto } from './user.request';
 import { RemoveFieldsInterceptor } from './interceptors/remove-fields.interceptor';
 import { Role } from 'src/authentication/authentication.enum';
 

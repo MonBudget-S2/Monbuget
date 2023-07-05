@@ -2,7 +2,7 @@ import { Body, Controller, Logger, ValidationPipe } from '@nestjs/common';
 import { LoginRequest, TokenValidateRequest } from './authentication.request';
 import { AuthenticationService } from './authentication.service';
 import { UsersService } from 'src/users/users.service';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateUserDto } from 'src/users/user.request';
 
 @Controller()
@@ -35,5 +35,10 @@ export class AuthenticationController {
   @MessagePattern({ service: 'auth', cmd: 'register' })
   async register(@Body() createUserDto: CreateUserDto) {
     return this.userService.register(createUserDto);
+  }
+
+  @MessagePattern({ service: 'user', cmd: 'createAdvisor' })
+  createAdvisor(@Payload() createUserDto: CreateUserDto) {
+    return this.userService.createAdvisor(createUserDto);
   }
 }

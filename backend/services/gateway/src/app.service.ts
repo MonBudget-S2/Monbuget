@@ -4,10 +4,10 @@ import {
   ClientProxyFactory,
   Transport,
 } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
 import { Role } from "./authentication/authentication.enum";
-import { MeetingRequestStatus } from "./meeting.enum";
+import { DayOfWeek, MeetingRequestStatus } from "./meeting.enum";
 
 @Injectable()
 export class AppService {
@@ -39,6 +39,64 @@ export class AppService {
   }
 
   // Other API Gateway methods...
+
+  async createAdvisor(createAdvisorDto: CreateUserDto) {
+    const weekdays = [
+      DayOfWeek.MONDAY,
+      DayOfWeek.TUESDAY,
+      DayOfWeek.WEDNESDAY,
+      DayOfWeek.THURSDAY,
+      DayOfWeek.FRIDAY,
+    ];
+
+    const advisor = await lastValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "createAdvisor" },
+        { user: createAdvisorDto }
+      )
+    );
+
+    const weekdayPromises = weekdays.map(async (day) => {
+      const startTime = "09:00"; // Set the desired start time
+      const endTime = "18:00"; // Set the desired end time
+
+      const createScheduleDto = {
+        dayOfWeek: day,
+        startTime,
+        endTime,
+        advisorId: advisor.id, // Assuming you have the advisor ID available here
+      };
+
+      await lastValueFrom(
+        this.meetingService.send(
+          { service: "meeting", action: "createSchedule" },
+          createScheduleDto
+        )
+      );
+    });
+
+    await Promise.all(weekdayPromises);
+
+    const weekends = [DayOfWeek.SATURDAY, DayOfWeek.SUNDAY];
+
+    const weekendPromises = weekends.map(async (day) => {
+      const createScheduleDto = {
+        dayOfWeek: day,
+        startTime: null,
+        endTime: null,
+        advisorId: advisor.id, // Assuming you have the advisor ID available here
+      };
+
+      await lastValueFrom(
+        this.meetingService.send(
+          { service: "meeting", action: "createSchedule" },
+          createScheduleDto
+        )
+      );
+    });
+
+    await Promise.all(weekendPromises);
+  }
 
   async getAllAdvisors() {
     return await firstValueFrom(

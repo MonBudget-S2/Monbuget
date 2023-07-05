@@ -1,5 +1,5 @@
-import { IsUUID, IsDateString, IsOptional, IsEnum } from 'class-validator';
-import { DayOfWeek } from './meeting.enum';
+import { IsUUID, IsDateString, IsOptional, IsEnum } from "class-validator";
+import { DayOfWeek } from "./meeting.enum";
 
 export class CreateMeetingDto {
   @IsUUID()

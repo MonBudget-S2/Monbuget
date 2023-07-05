@@ -14,14 +14,20 @@ export class UsersService {
   ) {}
 
   async register(createUserDto: CreateUserDto) {
-    // const newUser = this.userRepository.create(createUserDto);
-    // await this.userRepository.save(newUser);
-
     const newUser = this.userRepository.create(createUserDto);
     newUser.password = await bcrypt.hash(createUserDto.password, 10);
     await this.userRepository.save(newUser);
 
     return { message: 'User registered successfully' };
+  }
+
+  async createAdvisor(createUserDto: CreateUserDto) {
+    const newUser = this.userRepository.create(createUserDto);
+    newUser.password = await bcrypt.hash(createUserDto.password, 10);
+    newUser.role = Role.ADVISOR;
+    await this.userRepository.save(newUser);
+
+    return { message: 'Advisor registered successfully' };
   }
 
   // async findByEmail(email: string): Promise<User | undefined> {
