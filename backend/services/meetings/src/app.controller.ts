@@ -5,6 +5,7 @@ import {
   CreateMeetingDto,
   CreateScheduleDto,
   UpdateMeetingDto,
+  UpdateScheduleDto,
 } from './meeting.request';
 import { DayOfWeek } from './meeting.enum';
 
@@ -68,10 +69,15 @@ export class AppController {
   updateSchedulesByDay(
     @Payload()
     payload: {
-      schedules: { dayOfWeek: DayOfWeek; startTime: string; endTime: string }[];
+      advisorId: string;
+      schedules: UpdateScheduleDto[];
     },
   ) {
-    const { schedules } = payload;
-    return this.appService.updateSchedulesByDay(schedules);
+    const { advisorId, schedules } = payload;
+    console.log('updateSchedulesByDay', schedules);
+    // schedules.forEach((schedule) => {
+    //   console.log('schedule', schedule);
+    // });
+    return this.appService.updateSchedulesByDay(advisorId, schedules);
   }
 }

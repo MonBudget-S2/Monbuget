@@ -8,6 +8,7 @@ import { firstValueFrom, lastValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
 import { Role } from "./authentication/authentication.enum";
 import { DayOfWeek, MeetingRequestStatus } from "./meeting.enum";
+import { UpdateScheduleDto } from "./meeting.request";
 
 @Injectable()
 export class AppService {
@@ -137,6 +138,15 @@ export class AppService {
       this.meetingService.send(
         { service: "meeting", action: "getAllSchedulesByAdvisor" },
         advisorId
+      )
+    );
+  }
+
+  async updateAdvisorSchedule(schedules: UpdateScheduleDto[], user) {
+    return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "updateSchedulesByDay" },
+        { advisorId: user.id, schedules: schedules }
       )
     );
   }

@@ -11,17 +11,17 @@ const ClientCalendar = ({ clientId }) => {
   useEffect(() => {
     // Simulated data from the database
     const meetings = [
-      { "meetingId":"1", "date": "2023-07-11T00:00:00", "adviserId":"123", "clientId":"875" },
-      { "meetingId":"2", "date": "2023-07-12T00:00:00", "adviserId":"123", "clientId":"876" },
-      { "meetingId":"3", "date": "2023-07-13T00:00:00", "adviserId":"123", "clientId":"877" },
+      { meetingId: '1', date: '2023-07-11T00:00:00', advisorId: '123', clientId: '875' },
+      { meetingId: '2', date: '2023-07-12T00:00:00', advisorId: '123', clientId: '876' },
+      { meetingId: '3', date: '2023-07-13T00:00:00', advisorId: '123', clientId: '877' }
       // add more meetings...
     ];
 
     // filter meetings for this client
     //const clientMeetings = meetings.filter(m => m.clientId === clientId);
-const clientMeetings = meetings
+    const clientMeetings = meetings;
     // map meetings to events
-    const eventList = clientMeetings.map(m => {
+    const eventList = clientMeetings.map((m) => {
       const startTime = moment(m.date).toDate();
       const endTime = moment(startTime).add(1, 'hours').toDate();
 
@@ -30,7 +30,7 @@ const clientMeetings = meetings
         start: startTime,
         end: endTime,
         allDay: false,
-        backgroundColor: 'red', // Different color for meetings
+        backgroundColor: 'red' // Different color for meetings
       };
     });
 
@@ -48,7 +48,7 @@ const clientMeetings = meetings
         right: 'dayGridMonth,dayGridWeek,dayGridDay'
       }}
       buttonText={{
-        today: 'aujourd\'hui',
+        today: "aujourd'hui",
         month: 'mois',
         week: 'semaine',
         day: 'jour'

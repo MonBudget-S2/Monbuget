@@ -44,7 +44,13 @@ const getSchedules = async () => {
   return res;
 };
 
+const updateSchedule = async (data) => {
+  const res = await axiosInstance.patch('/advisors/schedules', data);
+  return res;
+};
+
 export const meetingService = {
   createMeeting,
-  getSchedules
+  getSchedules,
+  updateSchedule
 };

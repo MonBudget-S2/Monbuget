@@ -7,6 +7,7 @@ import {
   CreateMeetingDto,
   CreateScheduleDto,
   UpdateMeetingDto,
+  UpdateScheduleDto,
 } from './meeting.request';
 import { Schedule } from './schedule.entity';
 import { DayOfWeek } from './meeting.enum';
@@ -80,13 +81,33 @@ export class AppService {
   }
 
   async updateSchedulesByDay(
-    schedules: { dayOfWeek: DayOfWeek; startTime: string; endTime: string }[],
+    advisorId: string,
+    schedules: UpdateScheduleDto[],
   ): Promise<any> {
+    // schedules = schedules.map((schedule) => {
+    //   return {
+    //     ...schedule,
+    //     advisorId,
+    //   };
+    // });
+    console.log('schedules**********', schedules);
+
+    // Find all schedules for the user
+    const existingSchedules = await this.scheduleRepository.find({
+      where: { advisorId: advisorId },
+    });
+    console.log('existingSchedules', existingSchedules.length > 0);
+
+    // Map existing schedules by dayOfWeek for easier lookup
+    const existingSchedulesByDay: { [key in DayOfWeek]?: Schedule } = {};
+    existingSchedules.forEach((schedule) => {
+      existingSchedulesByDay[schedule.dayOfWeek] = schedule;
+    });
+
     for (const schedule of schedules) {
       const { dayOfWeek, startTime, endTime } = schedule;
-      const existingSchedule = await this.scheduleRepository.findOne({
-        where: { dayOfWeek },
-      });
+      const existingSchedule = existingSchedulesByDay[dayOfWeek];
+
       if (existingSchedule) {
         // Update the existing schedule with the provided data
         existingSchedule.startTime = startTime;
@@ -94,11 +115,13 @@ export class AppService {
         await this.scheduleRepository.save(existingSchedule);
       } else {
         // Create a new schedule if it doesn't exist for the specified dayOfWeek
-        const newSchedule = this.scheduleRepository.create({
+        const newScheduleData = {
+          advisorId: advisorId, // Set the advisor ID
           dayOfWeek,
           startTime,
           endTime,
-        });
+        };
+        const newSchedule = this.scheduleRepository.create(newScheduleData);
         await this.scheduleRepository.save(newSchedule);
       }
     }

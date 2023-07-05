@@ -7,6 +7,7 @@ import {
 } from "./authentication/authentication.decorator";
 import { Role } from "./authentication/authentication.enum";
 import { CreateUserDto } from "./users/user.request";
+import { UpdateScheduleDto } from "./meeting.request";
 
 @Controller()
 export class AppController {
@@ -79,5 +80,18 @@ export class AppController {
   @HasRole(Role.ADVISOR)
   getAdvisorSchedule(@Req() request: CustomRequest) {
     return this.appService.getAdvisorSchedule(request.user.id);
+  }
+
+  @Patch("advisors/schedules")
+  @AuthenticationRequired()
+  @HasRole(Role.ADVISOR)
+  updateAdvisorSchedule(
+    @Payload()
+    data,
+    @Req() request: CustomRequest
+  ) {
+    const schedules: UpdateScheduleDto[] = data.schedules;
+    console.log("Schedules", schedules);
+    return this.appService.updateAdvisorSchedule(schedules, request.user);
   }
 }
