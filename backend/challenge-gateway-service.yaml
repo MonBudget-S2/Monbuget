@@ -5,7 +5,7 @@ metadata:
   name: challenge-gateway-service
 spec:
   selector:
-    app: challenge-gateway-service
+    gateway: challenge-gateway-service
   ports:
     - protocol: TCP
       port: 8000
@@ -20,9 +20,9 @@ metadata:
   name : challenge-gateway-service
   namespace: challenge-service
   labels:
-    app: challenge-gateway-service
+    gateway: challenge-gateway-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -30,11 +30,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-gateway-service
+      gateway: challenge-gateway-service
   template:
     metadata:
       labels:
-        app: challenge-gateway-service
+        gateway: challenge-gateway-service
     spec:
       containers:
       - name: challenge-gateway-service
@@ -65,7 +65,7 @@ metadata:
   name: challenge-alerts-service
 spec:
   selector:
-    app: challenge-alerts-service
+    alerts: challenge-alerts-service
   ports:
     - protocol: TCP
       port: 3006
@@ -77,9 +77,9 @@ metadata:
   name : challenge-alerts-service
   namespace: challenge-service
   labels:
-    app: challenge-alerts-service
+    alerts: challenge-alerts-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -87,11 +87,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-alerts-service
+      alerts: challenge-alerts-service
   template:
     metadata:
       labels:
-        app: challenge-alerts-service
+        alerts: challenge-alerts-service
     spec:
       containers:
       - name: challenge-alerts-service
@@ -123,7 +123,7 @@ metadata:
   name: challenge-budgets-service
 spec:
   selector:
-    app: challenge-budgets-service
+    budgets: challenge-budgets-service
   ports:
     - protocol: TCP
       port: 3005
@@ -136,9 +136,9 @@ metadata:
   name : challenge-budgets-service
   namespace: challenge-service
   labels:
-    app: challenge-budgets-service
+    budgets: challenge-budgets-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -146,11 +146,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-budgets-service
+      budgets: challenge-budgets-service
   template:
     metadata:
       labels:
-        app: challenge-budgets-service
+        budgets: challenge-budgets-service
     spec:
       containers:
       - name: challenge-budgets-service
@@ -182,7 +182,7 @@ metadata:
   name: challenge-debts-service
 spec:
   selector:
-    app: challenge-debts-service
+    debts: challenge-debts-service
   ports:
     - protocol: TCP
       port: 3008
@@ -195,9 +195,9 @@ metadata:
   name : challenge-debts-service
   namespace: challenge-service
   labels:
-    app: challenge-debts-service
+    debts: challenge-debts-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -205,11 +205,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-debts-service
+      debts: challenge-debts-service
   template:
     metadata:
       labels:
-        app: challenge-debts-service
+        debts: challenge-debts-service
     spec:
       containers:
       - name: challenge-debts-service
@@ -241,7 +241,7 @@ metadata:
   name: challenge-events-service
 spec:
   selector:
-    app: challenge-events-service
+    events: challenge-events-service
   ports:
     - protocol: TCP
       port: 3009
@@ -254,9 +254,9 @@ metadata:
   name : challenge-events-service
   namespace: challenge-service
   labels:
-    app: challenge-events-service
+    events: challenge-events-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -264,11 +264,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-events-service
+      events: challenge-events-service
   template:
     metadata:
       labels:
-        app: challenge-events-service
+        events: challenge-events-service
     spec:
       containers:
       - name: challenge-events-service
@@ -300,7 +300,7 @@ metadata:
   name: challenge-expenses-service
 spec:
   selector:
-    app: challenge-expenses-service
+    expenses: challenge-expenses-service
   ports:
     - protocol: TCP
       port: 3004
@@ -313,9 +313,9 @@ metadata:
   name : challenge-expenses-service
   namespace: challenge-service
   labels:
-    app: challenge-expenses-service
+    expenses: challenge-expenses-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -323,11 +323,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-expenses-service
+      expenses: challenge-expenses-service
   template:
     metadata:
       labels:
-        app: challenge-expenses-service
+        expenses: challenge-expenses-service
     spec:
       containers:
       - name: challenge-expenses-service
@@ -359,7 +359,7 @@ metadata:
   name: challenge-incomes-service
 spec:
   selector:
-    app: challenge-incomes-service
+    incomes: challenge-incomes-service
   ports:
     - protocol: TCP
       port: 3010
@@ -372,9 +372,9 @@ metadata:
   name : challenge-incomes-service
   namespace: challenge-service
   labels:
-    app: challenge-incomes-service
+    incomes: challenge-incomes-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -382,11 +382,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-incomes-service
+      incomes: challenge-incomes-service
   template:
     metadata:
       labels:
-        app: challenge-incomes-service
+        incomes: challenge-incomes-service
     spec:
       containers:
       - name: challenge-incomes-service
@@ -417,7 +417,7 @@ metadata:
   name: challenge-users-service
 spec:
   selector:
-    app: challenge-users-service
+    users: challenge-users-service
   ports:
     - protocol: TCP
       port: 3002
@@ -429,9 +429,9 @@ metadata:
   name : challenge-users-service
   namespace: challenge-service
   labels:
-    app: challenge-users-service
+    users: challenge-users-service
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -439,11 +439,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-users-service
+      users: challenge-users-service
   template:
     metadata:
       labels:
-        app: challenge-users-service
+        users: challenge-users-service
     spec:
       containers:
       - name: challenge-users-service
@@ -464,6 +464,63 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 3002
+          initialDelaySeconds: 5
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: challenge-service
+  name: challenge-categories-service
+spec:
+  selector:
+    categories: challenge-categories-service
+  ports:
+    - protocol: TCP
+      port: 3007
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name : challenge-categories-service
+  namespace: challenge-service
+  labels:
+    categories: challenge-categories-service
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      categories: challenge-categories-service
+  template:
+    metadata:
+      labels:
+        categories: challenge-categories-service
+    spec:
+      containers:
+      - name: challenge-categories-service
+        image: ronantr/challenge-categories-service:latest
+
+        env:
+        - name: NODE_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3007
+        readinessProbe:
+          tcpSocket:
+            port: 3007
           initialDelaySeconds: 5
           periodSeconds: 5
 ---
@@ -517,9 +574,9 @@ spec:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 3007
+        - containerPort: 3011
         readinessProbe:
           tcpSocket:
-            port: 3007
+            port: 3011
           initialDelaySeconds: 5
           periodSeconds: 5

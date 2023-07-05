@@ -33,6 +33,10 @@ export class EventInvitationService {
     return this.eventInvitationRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<EventInvitation[]> {
+    return this.eventInvitationRepository.findBy({ userId });
+  }
+
   async update(
     id: string,
     status: InvitationStatus,

@@ -15,12 +15,13 @@ import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate
 // import ListExpense from 'views/pages/expense/ListExpense';
 // import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
 // import ListIncomeHistory from 'views/pages/income/ListIncomeHistory';
-import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BudgetEventIndex from 'views/dashboard/BudgetEvent/BudgetEventIndex';
 import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpense';
 import Debt from 'views/pages/debt/Debt';
 // import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
+import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
+import BugetEventPartage from 'views/dashboard/BudgetEvent/BudgetEventPartage';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -100,6 +101,10 @@ const MainRoutes = {
     {
       path: 'budgetEvent/:id',
       element: <BudgetEventShow />
+    },
+    {
+      path: 'budgetEventPartagee',
+      element: <BugetEventPartage />
     },
     {
       path: 'budgetEvenementielAll',

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateIncomeDto, UpdateIncomeDto } from './income.request';
 import { Raw } from 'typeorm';
 import { IncomeType } from './income.enum';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class AppService {
@@ -29,7 +30,7 @@ export class AppService {
     return this.incomeRepository.find();
   }
 
-  async getAllByUser(userId: string): Promise<Income[]> {
+  async getAllByUser(userId: string): Promise<any> {
     console.log('userId', userId);
     const incomes = await this.incomeRepository.find({ where: { userId } });
     console.log('incomes', incomes);

@@ -16,6 +16,14 @@ import { AuthenticationModule } from "src/authentication/authentication.module";
           port: 3002,
         },
       },
+      {
+        name: "EXPENSE_SERVICE",
+        transport: Transport.TCP,
+        options: {
+          host: "challenge-expenses-service",
+          port: 3004,
+        },
+      },
     ]),
     ClientsModule.register([
       {

@@ -70,10 +70,10 @@ export class AppService {
 
     const debtPayment = new DebtPayment();
     debtPayment.amount = amount;
-    debtPayment.debt = debt;
+    debt.payments.push(debtPayment);
 
     const savedDebtPayment = await this.debtPaymentRepository.save(debtPayment);
-
+    console.log('savedDebtPayment', savedDebtPayment);
     if (debt.remainingAmount - amount < 0) return null;
     debt.remainingAmount -= amount;
 

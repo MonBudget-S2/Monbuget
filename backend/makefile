@@ -29,6 +29,9 @@ start:
 	docker compose exec challenge-budgets-service  rm -rf node_modules
 	docker compose exec challenge-budgets-service npm install 
 	docker compose exec -d challenge-budgets-service npm run start:dev 
+	docker compose exec challenge-meetings-service  rm -rf node_modules
+	docker compose exec challenge-meetings-service npm install 
+	docker compose exec -d challenge-meetings-service npm run start:dev 
 
 
 start-mac:

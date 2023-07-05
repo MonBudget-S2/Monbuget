@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Put,
   Req,
@@ -46,6 +47,18 @@ export class EventController {
     const user = request.user;
     return this.eventService.getEventById(id, user);
   }
+  @Get("participant/expenses")
+  getParticipantExpenses(@Req() request: CustomRequest) {
+    console.log("getParticipantExpenses");
+    const user = request.user;
+    return this.eventService.getParticipantExpenses(user);
+  }
+  @Get(":id/expenses")
+  getEventExpenses(@Param("id") id: string, @Req() request: CustomRequest) {
+    console.log("getEventExpenses");
+    const user = request.user;
+    return this.eventService.getEventExpenses(id, user);
+  }
 
   @Put(":id")
   updateEvent(
@@ -66,15 +79,15 @@ export class EventController {
   @Post(":id/invite")
   inviteUserToEvent(
     @Param("id") id: string,
-    @Body("userId") userId: string,
+    @Body("username") username: string,
     @Req() request: CustomRequest
   ) {
-    const inviteeId = userId;
+    const inviteUsername = username;
     const user = request.user;
-    return this.eventService.inviteUserToEvent(id, inviteeId, user);
+    return this.eventService.inviteUserToEvent(id, inviteUsername, user);
   }
 
-  @Post("/acceptInvitation/:invitationId")
+  @Patch("participant/invitations/:invitationId/accept")
   acceptInvitation(
     @Param("invitationId") invitationId: string,
     @Req() request: CustomRequest
@@ -87,7 +100,7 @@ export class EventController {
     );
   }
 
-  @Post("/rejectInvitation/:invitationId")
+  @Patch("participant/invitations/:invitationId/reject")
   rejectInvitation(
     @Param("invitationId") invitationId: string,
     @Req() request: CustomRequest
@@ -100,10 +113,14 @@ export class EventController {
     );
   }
 
-  @Post(":id/finished")
+  @Get("/invitations")
+  getInvitations(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getInvitations(user);
+  }
+  @Post(":id/finish")
   markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.markEventAsFinished(id, user);
   }
-
 }

@@ -64,13 +64,8 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
     };
 
     if (!isEditing) {
-      const formData = new FormData();
-      formData.append('file',selectedImage);
-      const formData2 = new  FormData();
-      formData2.append("createExpenseDto",dataExpense);
-      formData.append('createExpenseDto',formData2);
-      const response = await expenseService.addExpense(formData);
-
+      const response = await expenseService.addExpense(dataExpense);
+      console.log("res",response.data.newExpense.id);
       if (response.status === 201) {
         setStatus({ success: true });
         setSubmitting(false);
@@ -81,6 +76,11 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
           message: 'La dépense a été ajoutée avec succès !'
         });
         setIsExpenseChanged(true);
+        if (dataExpense.receiptImage){
+          const formData = new FormData();
+          formData.append('file',dataExpense.receiptImage);
+          await expenseService.uploadFacture(response.data.newExpense.id,formData);
+        }
       } else {
         setStatus({ success: false });
         setErrors({ submit: response.data.message });
@@ -183,7 +183,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
           dateSpent: isEditing ? expense.date : '',
           description: isEditing ? expense.description : '',
           location: isEditing ? expense.location : '',
-          receiptImage: isEditing ? expense.receiptImage : '',
+          recieptImage: isEditing ? expense.recieptImage : '',
           submit: null
         }}
         onSubmit={handleSubmit}

@@ -12,6 +12,12 @@ export class AppController {
     return this.appService.create(createExpenseDto);
   }
 
+  @MessagePattern({ service:'expense', action:'uploadFacture'})
+  uploadFacture(@Payload() payload: {id: string; receiptImage:string}){
+    const {id,receiptImage} =payload;
+    return this.appService.upload(id,receiptImage);
+  }
+
   @MessagePattern({ service: 'expense', action: 'getAll' })
   getAllExpenses() {
     return this.appService.getAll();
@@ -52,6 +58,20 @@ export class AppController {
     // const { eventId } = payload;
     return this.appService.getAllByEvent(eventId);
   }
+
+  // @MessagePattern({
+  //   service: 'expense',
+  //   action: 'getTotalAmountByUserForEvents',
+  // })
+  // getTotalAmountByUserForEvents(
+  //   @Payload()
+  //   payload: {
+  //     userId: string;
+  //   },
+  // ) {
+  //   const { userId } = payload;
+  //   return this.appService.getTotalAmountByUserForEvents(userId);
+  // }
 
   @MessagePattern({ service: 'expense', action: 'update' })
   updateExpense(
