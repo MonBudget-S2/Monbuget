@@ -7,6 +7,7 @@ import {
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
 import { Role } from "./authentication/authentication.enum";
+import { MeetingRequestStatus } from "./meeting.enum";
 
 @Injectable()
 export class AppService {
@@ -56,6 +57,18 @@ export class AppService {
   }) {
     return await firstValueFrom(
       this.meetingService.send({ service: "meeting", action: "create" }, data)
+    );
+  }
+
+  async approveMeeting(meetingId: string) {
+    return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "update" },
+        {
+          meetingId,
+          updateMeetingDto: { status: MeetingRequestStatus.ACCEPTED },
+        }
+      )
     );
   }
 }

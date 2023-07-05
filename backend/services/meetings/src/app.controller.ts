@@ -27,6 +27,7 @@ export class AppController {
     @Payload() payload: { id: string; updateMeetingDto: UpdateMeetingDto },
   ) {
     const { id, updateMeetingDto } = payload;
+    console.log('updateMeetingDto', updateMeetingDto);
     return this.appService.update(id, updateMeetingDto);
   }
 
