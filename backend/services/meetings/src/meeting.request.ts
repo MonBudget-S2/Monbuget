@@ -31,3 +31,25 @@ export class UpdateMeetingDto {
   @IsDateString()
   endTime?: string;
 }
+
+export class CreateScheduleDto {
+  @IsUUID()
+  advisorId: string;
+
+  @IsDateString()
+  startTime: string;
+
+  @IsDateString()
+  endTime: string;
+}
+
+export class UpdateScheduleDto {
+  @IsUUID()
+  advisorId: string;
+
+  @IsDateString()
+  startTime?: string;
+
+  @IsDateString()
+  endTime?: string;
+}

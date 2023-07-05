@@ -1,7 +1,12 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
-import { CreateMeetingDto, UpdateMeetingDto } from './meeting.request';
+import {
+  CreateMeetingDto,
+  CreateScheduleDto,
+  UpdateMeetingDto,
+} from './meeting.request';
+import { DayOfWeek } from './meeting.enum';
 
 @Controller('meeting')
 export class AppController {
@@ -9,17 +14,17 @@ export class AppController {
 
   @MessagePattern({ service: 'meeting', action: 'create' })
   createMeeting(createMeetingDto: CreateMeetingDto) {
-    return this.appService.create(createMeetingDto);
+    return this.appService.createMeeting(createMeetingDto);
   }
 
   @MessagePattern({ service: 'meeting', action: 'getAll' })
   getAllMeetings() {
-    return this.appService.getAll();
+    return this.appService.getAllMeetings();
   }
 
   @MessagePattern({ service: 'meeting', action: 'getById' })
   getMeetingById(id: string) {
-    return this.appService.getById(id);
+    return this.appService.getMeetingById(id);
   }
 
   @MessagePattern({ service: 'meeting', action: 'update' })
@@ -28,11 +33,39 @@ export class AppController {
   ) {
     const { id, updateMeetingDto } = payload;
     console.log('updateMeetingDto', updateMeetingDto);
-    return this.appService.update(id, updateMeetingDto);
+    return this.appService.updateMeeting(id, updateMeetingDto);
   }
 
   @MessagePattern({ service: 'meeting', action: 'delete' })
   deleteMeeting(id: string) {
-    return this.appService.delete(id);
+    return this.appService.deleteMeeting(id);
+  }
+
+  /**** Schedules  ****/
+
+  @MessagePattern({ service: 'meeting', action: 'createSchedule' })
+  createSchedule(createScheduleDto: CreateScheduleDto) {
+    return this.appService.createSchedule(createScheduleDto);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'getAllSchedules' })
+  getAllSchedules() {
+    return this.appService.getAllSchedules();
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'getSchedulesByDay' })
+  getScheduleByDay(day: DayOfWeek) {
+    return this.appService.getScheduleByDay(day);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'updateSchedulesByDay' })
+  updateSchedulesByDay(
+    @Payload()
+    payload: {
+      schedules: { dayOfWeek: DayOfWeek; startTime: string; endTime: string }[];
+    },
+  ) {
+    const { schedules } = payload;
+    return this.appService.updateSchedulesByDay(schedules);
   }
 }
