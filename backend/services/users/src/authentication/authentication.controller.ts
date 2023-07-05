@@ -39,6 +39,7 @@ export class AuthenticationController {
 
   @MessagePattern({ service: 'user', cmd: 'createAdvisor' })
   createAdvisor(@Payload() createUserDto: CreateUserDto) {
+    console.log('createAdvisor request', '***********Auth***********');
     return this.userService.createAdvisor(createUserDto);
   }
 }

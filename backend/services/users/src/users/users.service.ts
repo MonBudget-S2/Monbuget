@@ -20,10 +20,12 @@ export class UsersService {
 
     return { message: 'User registered successfully' };
   }
-
   async createAdvisor(createUserDto: CreateUserDto) {
+    console.log('createAdvisor request', createUserDto);
     const newUser = this.userRepository.create(createUserDto);
-    newUser.password = await bcrypt.hash(createUserDto.password, 10);
+    console.log('newUser', newUser.password);
+    const hashedPassword = await bcrypt.hash(newUser.password, 10);
+    newUser.password = hashedPassword;
     newUser.role = Role.ADVISOR;
     await this.userRepository.save(newUser);
 

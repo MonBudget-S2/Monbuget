@@ -37,6 +37,9 @@ export class CreateScheduleDto {
   @IsUUID()
   advisorId: string;
 
+  @IsEnum(DayOfWeek)
+  dayOfWeek: DayOfWeek;
+
   @IsDateString()
   startTime: string;
 

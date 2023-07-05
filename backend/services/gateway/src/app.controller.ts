@@ -32,7 +32,7 @@ export class AppController {
 
   // Other API Gateway methods...
 
-  @Post("users/advisors")
+  @Post("/advisors")
   @AuthenticationRequired()
   @HasRole(Role.ADMIN)
   createAdvisor(
@@ -41,7 +41,7 @@ export class AppController {
   ) {
     return this.appService.createAdvisor(createUserDto);
   }
-  @Get("users/advisors")
+  @Get("/advisors")
   @AuthenticationRequired()
   getAllAdvisors() {
     return this.appService.getAllAdvisors();

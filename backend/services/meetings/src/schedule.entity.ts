@@ -7,7 +7,7 @@ export class Schedule {
   id: number;
 
   @Column()
-  advisorId: number;
+  advisorId: string;
 
   @Column({ type: 'enum', enum: DayOfWeek })
   dayOfWeek: DayOfWeek;

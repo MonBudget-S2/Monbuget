@@ -16,6 +16,7 @@ export class AppService {
   constructor(
     @InjectRepository(Meeting)
     private meetingRepository: Repository<Meeting>,
+    @InjectRepository(Schedule)
     private scheduleRepository: Repository<Schedule>,
   ) {}
 

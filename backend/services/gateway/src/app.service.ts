@@ -52,9 +52,11 @@ export class AppService {
     const advisor = await lastValueFrom(
       this.userService.send(
         { service: "user", cmd: "createAdvisor" },
-        { user: createAdvisorDto }
+        createAdvisorDto
       )
     );
+
+    console.log("Advisor created************", advisor);
 
     const weekdayPromises = weekdays.map(async (day) => {
       const startTime = "09:00"; // Set the desired start time
