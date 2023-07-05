@@ -214,6 +214,7 @@ export class EventService {
   }
 
   async getInvitations(user) {
+    console.log("calling microservice eventInvitation");
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventInvitation", action: "getAllByUser" },

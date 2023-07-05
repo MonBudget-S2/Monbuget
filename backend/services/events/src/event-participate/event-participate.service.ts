@@ -38,7 +38,7 @@ export class EventParticipateService {
   }
 
   async getById(id: string): Promise<EventParticipate | null> {
-    return this.eventParticipateRepository.findOneBy({ id });
+    return this.eventParticipateRepository.findOne({ where: { id } });
   }
 
   async getByEventAndUser(
