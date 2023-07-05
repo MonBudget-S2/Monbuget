@@ -23,6 +23,16 @@ export class AppController {
     return this.appService.getAllMeetings();
   }
 
+  @MessagePattern({ service: 'meeting', action: 'getAllMeetingsByAdvisor' })
+  getAllMeetingsByAdvisor(advisorId: string) {
+    return this.appService.getAllMeetingsByAdvisor(advisorId);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'getAllMeetingsByClient' })
+  getAllMeetingsByClient(clientId: string) {
+    return this.appService.getAllMeetingsByClient(clientId);
+  }
+
   @MessagePattern({ service: 'meeting', action: 'getById' })
   getMeetingById(id: string) {
     return this.appService.getMeetingById(id);

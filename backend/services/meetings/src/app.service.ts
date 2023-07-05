@@ -35,6 +35,14 @@ export class AppService {
     return this.meetingRepository.find();
   }
 
+  async getAllMeetingsByAdvisor(advisorId: string): Promise<Meeting[]> {
+    return this.meetingRepository.find({ where: { advisorId } });
+  }
+
+  async getAllMeetingsByClient(clientId: string): Promise<Meeting[]> {
+    return this.meetingRepository.find({ where: { clientId } });
+  }
+
   async updateMeeting(
     id: string,
     updateMeetingDto: UpdateMeetingDto,

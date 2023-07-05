@@ -3,22 +3,12 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, G
 import { meetingService } from 'service/meetingService';
 import { Stack } from '@mui/system';
 
-const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
+const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage, schedules, setIsScheduleChanged, isLoading }) => {
   const [scheduleData, setScheduleData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulated API call to fetch schedule data
-    const fetchScheduleData = async () => {
-      const res = await meetingService.getSchedules();
-      if (res.status === 200) {
-        setScheduleData(res.data);
-      }
-      setIsLoading(false);
-    };
-
-    fetchScheduleData();
-  }, []);
+    setScheduleData(schedules);
+  }, [schedules]);
 
   const handleChangeTime = (dayOfWeek, field) => (event) => {
     const updatedScheduleData = scheduleData.map((schedule) => {
@@ -55,6 +45,7 @@ const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
       if (res.status === 200) {
         setAlertMessage({ open: true, type: 'success', message: 'Données de planification enregistrées avec succès.' });
         handleClose();
+        setIsScheduleChanged(true);
       } else {
         setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la sauvegarde des données de planification.' });
       }
@@ -71,7 +62,7 @@ const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
         <>
           <DialogContent>
             <Grid container spacing={2}>
-              {scheduleData.map((schedule) => (
+              {scheduleData?.map((schedule) => (
                 <Grid item xs={12} key={schedule.id}>
                   <Stack direction="row" spacing={2}>
                     <Grid item xs={3}>
@@ -100,8 +91,8 @@ const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
             <Button onClick={handleSubmit} color="primary">
               Modifier
             </Button>
-            <Button onClick={handleClose} color="primary">
-              Cancel
+            <Button onClick={handleClose} color="secondary">
+              Annuler
             </Button>
           </DialogActions>
         </>

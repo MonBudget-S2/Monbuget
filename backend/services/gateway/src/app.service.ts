@@ -110,6 +110,24 @@ export class AppService {
     );
   }
 
+  async getAllMeetingsByUser(user) {
+    if (user.role === Role.ADVISOR) {
+      return await firstValueFrom(
+        this.meetingService.send(
+          { service: "meeting", action: "getAllMeetingsByAdvisor" },
+          user.id
+        )
+      );
+    } else {
+      return await firstValueFrom(
+        this.meetingService.send(
+          { service: "meeting", action: "getAllMeetingsByClient" },
+          user.id
+        )
+      );
+    }
+  }
+
   async createMeeting(data: {
     startTime: Date;
     endTime: Date;

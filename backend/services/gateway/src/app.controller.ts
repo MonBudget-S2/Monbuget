@@ -48,6 +48,11 @@ export class AppController {
     return this.appService.getAllAdvisors();
   }
 
+  @Get("meetings")
+  @AuthenticationRequired()
+  getAllMeetings(@Req() request: CustomRequest) {
+    return this.appService.getAllMeetingsByUser(request.user);
+  }
   @Post("meetings")
   @AuthenticationRequired()
   createMeeting(

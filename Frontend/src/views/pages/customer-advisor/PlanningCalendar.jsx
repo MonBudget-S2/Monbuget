@@ -8,11 +8,16 @@ import 'moment/locale/fr';
 import ScheduleDialog from './ScheduleDialog';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import { useEffect } from 'react';
+import { meetingService } from 'service/meetingService';
 
 const PlanningCalendar = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [slotSettings, setSlotSettings] = useState({});
+  const [schedules, setSchedules] = useState([]);
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [isScheduleChanged, setIsScheduleChanged] = useState(false);
+  const [meetings, setMeetings] = useState([]);
 
   const handleDialogOpen = () => {
     setOpenDialog(true);
@@ -22,74 +27,52 @@ const PlanningCalendar = () => {
     setOpenDialog(false);
   };
 
-  const handleSaveSlotSettings = (newSettings) => {
-    setSlotSettings(newSettings);
-    setOpenDialog(false);
-  };
-
   const getCalendarEvents = () => {
     const events = [];
 
-    // Simulated data from the database
-    const meetings = [
-      { meetingId: '1', date: '2023-07-07T09:00:00', advisorId: '123', clientId: '875' },
-      { meetingId: '2', date: '2023-07-07T10:00:00', advisorId: '123', clientId: '876' },
-      { meetingId: '3', date: '2023-07-08T11:00:00', advisorId: '123', clientId: '877' },
-      { meetingId: '4', date: '2023-07-08T15:00:00', advisorId: '123', clientId: '878' },
-      { meetingId: '5', date: '2023-07-09T10:00:00', advisorId: '123', clientId: '879' },
-      { meetingId: '6', date: '2023-07-09T14:00:00', advisorId: '123', clientId: '880' },
-      { meetingId: '7', date: '2023-07-12T10:00:00', advisorId: '123', clientId: '881' },
-      { meetingId: '8', date: '2023-07-13T10:00:00', advisorId: '123', clientId: '882' },
-      { meetingId: '9', date: '2023-07-14T14:00:00', advisorId: '123', clientId: '883' },
-      { meetingId: '10', date: '2023-07-15T14:00:00', advisorId: '123', clientId: '884' }
-    ];
+    for (let i = 0; i < meetings.length; i++) {
+      const meeting = meetings[i];
+      const startTime = moment(meeting.date).toDate();
+      const endTime = moment(meeting.date).add(1, 'hour').toDate();
 
-    // find next Monday
-    let date = moment().startOf('week').add(1, 'week');
-
-    // iterate for the next 14 days
-    for (let i = 0; i < 14; i++) {
-      const day = date.locale('fr').format('dddd');
-      const daySettings = slotSettings[day];
-
-      if (daySettings) {
-        Object.keys(daySettings).forEach((slot) => {
-          const startTime = date.hour(parseInt(slot)).minutes(0).seconds(0).toDate();
-          const endTime = moment(startTime).add(1, 'hours').toDate();
-
-          // Check if there is a meeting scheduled for this slot
-          const meeting = meetings.find((m) => {
-            const meetingDate = moment(m.date);
-            return meetingDate.isSame(startTime, 'hour');
-          });
-
-          if (meeting) {
-            // If a meeting is scheduled, add it to the calendar
-            events.push({
-              title: 'Meeting',
-              start: startTime,
-              end: endTime,
-              allDay: false,
-              backgroundColor: 'red' // Different color for meetings
-            });
-          } else if (daySettings[slot]) {
-            // If no meeting is scheduled and the advisor is available, add an available slot
-            events.push({
-              title: 'Disponible',
-              start: startTime,
-              end: endTime,
-              allDay: false
-            });
-          }
-        });
-      }
-
-      // advance to the next day
-      date = date.add(1, 'days');
+      events.push({
+        title: `Meeting with ${meeting.clientId}`,
+        start: startTime,
+        end: endTime,
+        allDay: false,
+        backgroundColor: 'red', // Different color for meetings
+        extendedProps: {
+          meetingId: meeting.meetingId,
+          advisorId: meeting.advisorId,
+          clientId: meeting.clientId
+        }
+      });
     }
+
     return events;
   };
 
+  useEffect(() => {
+    // Simulated API call to fetch schedule data
+    const fetchScheduleData = async () => {
+      const res = await meetingService.getSchedules();
+      if (res.status === 200) {
+        setSchedules(res.data);
+      }
+    };
+
+    const fetchMeetingData = async () => {
+      const response = await meetingService.getMeetings();
+      if (response.status === 200) {
+        const meetingsData = response.data;
+        setMeetings(meetingsData);
+      }
+    };
+
+    fetchScheduleData();
+    fetchMeetingData();
+    setIsLoading(false);
+  }, [isScheduleChanged]);
   return (
     <Grid container spacing={2}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
@@ -127,8 +110,9 @@ const PlanningCalendar = () => {
         isOpen={openDialog}
         handleClose={handleDialogClose}
         setAlertMessage={setAlertMessage}
-        onSave={handleSaveSlotSettings}
-        initialSettings={slotSettings}
+        schedules={schedules}
+        setIsScheduleChanged={setIsScheduleChanged}
+        isLoading={isLoading}
       />
     </Grid>
   );

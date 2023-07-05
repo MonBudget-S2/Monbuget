@@ -49,8 +49,14 @@ const updateSchedule = async (data) => {
   return res;
 };
 
+const getMeetings = async () => {
+  const res = await axiosInstance.get('/meetings');
+  return res;
+};
+
 export const meetingService = {
   createMeeting,
   getSchedules,
-  updateSchedule
+  updateSchedule,
+  getMeetings
 };
