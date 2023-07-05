@@ -29,15 +29,17 @@ export default function EventInvitation({ setAlertMessage }) {
 
   useEffect(() => {
     const getAllInvitations = async () => {
-      const eventInvitationsFromServer = await eventService.getAllInvitations();
-      setEventInvitations(eventInvitationsFromServer);
+      const res = await eventService.getAllInvitations();
+      if (res.status === 200) {
+        setEventInvitations(res.data);
+      }
       setLoading(false);
     };
     getAllInvitations();
   }, []);
 
   return (
-    isLoading && (
+    !isLoading && (
       <MainCard>
         <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
           <h3>Mes Invitations</h3>
@@ -57,8 +59,8 @@ export default function EventInvitation({ setAlertMessage }) {
               {eventInvitations?.length > 0 &&
                 eventInvitations.map((row) => (
                   <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
-                    <TableCell>{row.userId}</TableCell>
-                    <TableCell align="center">{row.eventId}</TableCell>
+                    <TableCell>{row.owner.username}</TableCell>
+                    <TableCell align="center">{row.event.name}</TableCell>
                     <TableCell align="center">
                       <Button variant="outlined" color="success" onClick={() => acceptInvitation(row.id)} sx={{ marginRight: '8px' }}>
                         Accepter

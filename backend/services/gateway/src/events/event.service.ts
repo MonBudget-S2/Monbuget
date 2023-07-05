@@ -215,12 +215,31 @@ export class EventService {
 
   async getInvitations(user) {
     console.log("calling microservice eventInvitation");
-    return await firstValueFrom(
+    const invitations = await firstValueFrom(
       this.eventService.send(
         { service: "eventInvitation", action: "getAllByUser" },
         user.id
       )
     );
+
+    const eventPromises = invitations.map(async (invitation) => {
+      const event = await lastValueFrom(
+        this.eventService.send(
+          { service: "eventBudget", action: "getById" },
+          invitation.eventId
+        )
+      );
+      const owner = await lastValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          event.userId
+        )
+      );
+      return { ...invitation, event, owner };
+    });
+    const invitationsWithEventsAndUsers = await Promise.all(eventPromises);
+
+    return invitationsWithEventsAndUsers;
   }
 
   async markEventAsFinished(id: string, user) {

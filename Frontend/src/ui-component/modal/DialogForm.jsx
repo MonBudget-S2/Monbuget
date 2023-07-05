@@ -12,7 +12,6 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
     if (onSubmit) {
       onSubmit();
     }
-    onSubmit();
   };
   const handleCancel = () => {
     setIsOpen(false);
@@ -49,7 +48,7 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button size="large" type="submit" variant="contained" color="secondary">
+          <Button onClick={handleSubmit} size="large" type="submit" variant="contained" color="secondary">
             Valider
           </Button>
           <Button onClick={handleCancel} disabled={isSubmitting}>
