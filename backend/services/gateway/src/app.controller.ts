@@ -90,8 +90,9 @@ export class AppController {
     data,
     @Req() request: CustomRequest
   ) {
-    const schedules: UpdateScheduleDto[] = data.schedules;
-    console.log("Schedules", schedules);
+    console.log("data", data);
+    const schedules: UpdateScheduleDto[] = data?.schedules;
+    console.log("schedules", schedules);
     return this.appService.updateAdvisorSchedule(schedules, request.user);
   }
 }

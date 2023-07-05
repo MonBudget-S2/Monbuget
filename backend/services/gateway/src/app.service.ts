@@ -143,6 +143,9 @@ export class AppService {
   }
 
   async updateAdvisorSchedule(schedules: UpdateScheduleDto[], user) {
+    if (schedules.length === 0) {
+      return Error("No schedules to update");
+    }
     return await firstValueFrom(
       this.meetingService.send(
         { service: "meeting", action: "updateSchedulesByDay" },

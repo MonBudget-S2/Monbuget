@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -8,8 +7,9 @@ import moment from 'moment';
 import 'moment/locale/fr';
 import ScheduleDialog from './ScheduleDialog';
 import CustomAlert from 'ui-component/alert/CustomAlert';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 
-const CustomerAdvisor = () => {
+const PlanningCalendar = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [slotSettings, setSlotSettings] = useState({});
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
@@ -97,8 +97,8 @@ const CustomerAdvisor = () => {
       <Grid item xs={12}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
           <h1>Prenez un rendez-vous avec un conseiller</h1>
-          <Button variant="contained" startIcon={<AddIcon />} onClick={handleDialogOpen}>
-            Ajouter des créneaux
+          <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={handleDialogOpen}>
+            Voir mon planning
           </Button>
         </Box>
       </Grid>
@@ -134,4 +134,4 @@ const CustomerAdvisor = () => {
   );
 };
 
-export default CustomerAdvisor;
+export default PlanningCalendar;

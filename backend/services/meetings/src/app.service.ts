@@ -73,7 +73,28 @@ export class AppService {
   }
 
   async getAllSchedulesByAdvisor(advisorId: string): Promise<any> {
-    return this.scheduleRepository.find({ where: { advisorId } });
+    const schedules = await this.scheduleRepository.find({
+      where: { advisorId },
+    });
+
+    const desiredOrder = [
+      DayOfWeek.MONDAY,
+      DayOfWeek.TUESDAY,
+      DayOfWeek.WEDNESDAY,
+      DayOfWeek.THURSDAY,
+      DayOfWeek.FRIDAY,
+      DayOfWeek.SATURDAY,
+      DayOfWeek.SUNDAY,
+    ];
+
+    // Sort the schedules based on the desired order
+    const sortedSchedules = schedules.sort((a, b) => {
+      const dayA = desiredOrder.indexOf(a.dayOfWeek);
+      const dayB = desiredOrder.indexOf(b.dayOfWeek);
+      return dayA - dayB;
+    });
+
+    return sortedSchedules;
   }
 
   async getScheduleByDay(dayOfWeek: DayOfWeek): Promise<any> {
@@ -84,19 +105,10 @@ export class AppService {
     advisorId: string,
     schedules: UpdateScheduleDto[],
   ): Promise<any> {
-    // schedules = schedules.map((schedule) => {
-    //   return {
-    //     ...schedule,
-    //     advisorId,
-    //   };
-    // });
-    console.log('schedules**********', schedules);
-
     // Find all schedules for the user
     const existingSchedules = await this.scheduleRepository.find({
       where: { advisorId: advisorId },
     });
-    console.log('existingSchedules', existingSchedules.length > 0);
 
     // Map existing schedules by dayOfWeek for easier lookup
     const existingSchedulesByDay: { [key in DayOfWeek]?: Schedule } = {};
@@ -125,6 +137,7 @@ export class AppService {
         await this.scheduleRepository.save(newSchedule);
       }
     }
+    return { message: 'Schedules updated successfully' };
     // ...
   }
 }

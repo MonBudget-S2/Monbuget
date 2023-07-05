@@ -20,7 +20,7 @@ import BudgetEventExpense from '../views/dashboard/BudgetEvent/BudgetEventExpens
 import Debt from 'views/pages/debt/Debt';
 // import ListCategoricalBudget from 'views/pages/categoricalBudget/ListCategoricalBudget';
 import Profil from 'views/pages/profil/Profil';
-import CustomerAdvisor from 'views/pages/customer-advisor/CustomerAdvisor';
+import PlanningCalendar from 'views/pages/customer-advisor/PlanningCalendar';
 import ClientCalendar from 'views/pages/customer-advisor/ClientCalendar';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BugetEventPartage from 'views/dashboard/BudgetEvent/BudgetEventPartage';
@@ -131,7 +131,7 @@ const MainRoutes = {
     },
     {
       path: 'customerAdvisor',
-      element: <CustomerAdvisor />
+      element: <PlanningCalendar />
     },
 
     {

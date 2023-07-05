@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid } from '@mui/material';
 import { meetingService } from 'service/meetingService';
+import { Stack } from '@mui/system';
 
 const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
   const [scheduleData, setScheduleData] = useState([]);
@@ -52,13 +53,14 @@ const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
       // Simulated API call to save schedule data
       const res = await meetingService.updateSchedule(payload);
       if (res.status === 200) {
-        setAlertMessage('Planning mis à jour avec succès.');
+        setAlertMessage({ open: true, type: 'success', message: 'Données de planification enregistrées avec succès.' });
         handleClose();
       } else {
-        setAlertMessage('Erreur lors de la sauvegarde des données de planification.');
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la sauvegarde des données de planification.' });
       }
     } catch (error) {
-      setAlertMessage('Erreur lors de la sauvegarde des données de planification.');
+      console.log('error', error);
+      setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la sauvegarde des données de planification.' });
     }
   };
 
@@ -68,21 +70,35 @@ const ScheduleDialog = ({ isOpen, handleClose, setAlertMessage }) => {
       {!isLoading && (
         <>
           <DialogContent>
-            {scheduleData.map((schedule) => (
-              <div key={schedule.id}>
-                <span>{schedule.dayOfWeek}: </span>
-                <TextField
-                  label="Start Time"
-                  value={schedule.startTime || ''}
-                  onChange={handleChangeTime(schedule.dayOfWeek, 'startTime')}
-                />
-                <TextField label="End Time" value={schedule.endTime || ''} onChange={handleChangeTime(schedule.dayOfWeek, 'endTime')} />
-              </div>
-            ))}
+            <Grid container spacing={2}>
+              {scheduleData.map((schedule) => (
+                <Grid item xs={12} key={schedule.id}>
+                  <Stack direction="row" spacing={2}>
+                    <Grid item xs={3}>
+                      <span>{schedule.dayOfWeek}: </span>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField
+                        label="Start Time"
+                        value={schedule.startTime || ''}
+                        onChange={handleChangeTime(schedule.dayOfWeek, 'startTime')}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <TextField
+                        label="End Time"
+                        value={schedule.endTime || ''}
+                        onChange={handleChangeTime(schedule.dayOfWeek, 'endTime')}
+                      />
+                    </Grid>
+                  </Stack>
+                </Grid>
+              ))}
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleSubmit} color="primary">
-              Save
+              Modifier
             </Button>
             <Button onClick={handleClose} color="primary">
               Cancel
