@@ -6,22 +6,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
-export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {},isSubmitting =false, children }) {
-  const handleSubmit = () => {
+export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {}, isSubmitting = false, children }) {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form refresh
+    if (onSubmit) {
+      onSubmit();
+    }
     onSubmit();
-    // setIsOpen(false);
   };
   const handleCancel = () => {
     setIsOpen(false);
     onCancel();
   };
   return (
-    <Box
-      component="form"
-      onSubmit={(e) => {
-        onSubmit ? onSubmit() : e.preventDefault();
-      }}
-    >
+    <Box component="form" onSubmit={handleSubmit}>
       <Dialog
         open={isOpen}
         onClose={() => {
@@ -51,10 +49,12 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit} size="large" type="submit" variant="contained" color="secondary">
+          <Button size="large" type="submit" variant="contained" color="secondary">
             Valider
           </Button>
-          <Button onClick={handleCancel} disabled={isSubmitting}>Annuler</Button>
+          <Button onClick={handleCancel} disabled={isSubmitting}>
+            Annuler
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>
