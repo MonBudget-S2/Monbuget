@@ -1,63 +1,113 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Box, Button, Grid } from '@mui/material';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import 'moment/locale/fr';
+import ScheduleDialog from './ScheduleDialog';
+import CustomAlert from 'ui-component/alert/CustomAlert';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import { useEffect } from 'react';
+import { meetingService } from 'service/meetingService';
+import AppointementDialog from './AppointementDialog';
 
-const ClientCalendar = ({ clientId }) => {
-  const [events, setEvents] = useState([]);
+const PlanningCalendar = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [meetings, setMeetings] = useState([]);
 
-  useEffect(() => {
-    // Simulated data from the database
-    const meetings = [
-      { meetingId: '1', date: '2023-07-11T00:00:00', advisorId: '123', clientId: '875' },
-      { meetingId: '2', date: '2023-07-12T00:00:00', advisorId: '123', clientId: '876' },
-      { meetingId: '3', date: '2023-07-13T00:00:00', advisorId: '123', clientId: '877' }
-      // add more meetings...
-    ];
+  const handleDialogOpen = () => {
+    setOpenDialog(true);
+  };
 
-    // filter meetings for this client
-    //const clientMeetings = meetings.filter(m => m.clientId === clientId);
-    const clientMeetings = meetings;
-    // map meetings to events
-    const eventList = clientMeetings.map((m) => {
-      const startTime = moment(m.date).toDate();
-      const endTime = moment(startTime).add(1, 'hours').toDate();
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+  };
 
-      return {
-        title: 'Meeting',
+  const getCalendarEvents = () => {
+    const events = [];
+
+    for (let i = 0; i < meetings.length; i++) {
+      const meeting = meetings[i];
+      const startTime = moment(meeting.date).toDate();
+      const endTime = moment(meeting.date).add(1, 'hour').toDate();
+
+      events.push({
+        title: `Meeting with ${meeting.clientId}`,
         start: startTime,
         end: endTime,
         allDay: false,
-        backgroundColor: 'red' // Different color for meetings
-      };
-    });
+        backgroundColor: 'red', // Different color for meetings
+        extendedProps: {
+          meetingId: meeting.meetingId,
+          advisorId: meeting.advisorId,
+          clientId: meeting.clientId
+        }
+      });
+    }
 
-    setEvents(eventList);
-  }, [clientId]);
+    return events;
+  };
 
+  useEffect(() => {
+    // Simulated API call to fetch schedule data
+    const fetchScheduleData = async () => {
+      const res = await meetingService.getSchedules();
+      if (res.status === 200) {
+        setSchedules(res.data);
+      }
+    };
+
+    const fetchMeetingData = async () => {
+      const response = await meetingService.getMeetings();
+      if (response.status === 200) {
+        const meetingsData = response.data;
+        setMeetings(meetingsData);
+      }
+    };
+
+    fetchScheduleData();
+    fetchMeetingData();
+    setIsLoading(false);
+  }, [isScheduleChanged]);
   return (
-    <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      events={events}
-      headerToolbar={{
-        left: 'prev,next',
-        center: 'title',
-        right: 'dayGridMonth,dayGridWeek,dayGridDay'
-      }}
-      buttonText={{
-        today: "aujourd'hui",
-        month: 'mois',
-        week: 'semaine',
-        day: 'jour'
-      }}
-      locale="fr"
-      allDaySlot={false}
-      firstDay={1} // The week starts on Monday
-    />
+    <Grid container spacing={2}>
+      <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
+
+      <Grid item xs={12}>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+          <h1>Prenez un rendez-vous avec un conseiller</h1>
+          <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={handleDialogOpen}>
+            Voir mon planning
+          </Button>
+        </Box>
+      </Grid>
+      <Grid item xs={12}>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          events={getCalendarEvents()}
+          headerToolbar={{
+            left: 'prev,next',
+            center: 'title',
+            right: 'dayGridMonth,dayGridWeek,dayGridDay'
+          }}
+          buttonText={{
+            today: "aujourd'hui",
+            month: 'mois',
+            week: 'semaine',
+            day: 'jour'
+          }}
+          locale="fr"
+          allDaySlot={false}
+          firstDay={1} // The week starts on Monday
+        />
+      </Grid>
+      <AppointementDialog isOpen={openDialog} handleClose={handleDialogClose} setAlertMessage isLoading />
+    </Grid>
   );
 };
 
-export default ClientCalendar;
+export default PlanningCalendar;
