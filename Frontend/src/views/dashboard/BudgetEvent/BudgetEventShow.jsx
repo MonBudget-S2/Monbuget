@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 import Grid from "@mui/material/Grid"
 import ExpenseCard from "../../pages/expense/ExpenseCard";
 import chartData from "views/pages/expense/expense-chart-data";
@@ -7,14 +8,42 @@ import BudgetEventParticipate from "./BudgetEventParticipate";
 import {gridSpacing} from "../../../store/constant";
 import BudgetEventDateBetweenCard from "./BudgetEventDateBetweenCard";
 import BudgetEventNbParticipantCard from "./BudgetEventNbParticipantCard";
-import {Typography} from "@mui/material";
+import {Button, Typography} from "@mui/material";
 import BudgetEventMostExpensiveCard from "./BudgetEventMostExpensiveCard";
 import ListeBudgetExpenseCard from "./ListeBudgetExpenseCard";
+import CustomAlert from "../../../ui-component/alert/CustomAlert";
+import BudgetInviteParticipantCard from "./BudgetEventInvitePartipantCard";
+import eventService from '../../../service/eventService';
 
 export default function BudgetEventShow(){
+    const {id} = useParams();
     const [totalRealExpenses, setTotalRealExpenses] = useState(0);
     const [isLoading, setLoading] = useState(true);
     const [budgetFixee, setBudgetFixee] = useState(0);
+    const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
+    const [isInviteFormOpen, setIsInviteFormOpen] = useState(false);
+    const [isInvited, setIsInvited] = useState(false);
+    const [event, setEvent] = useState({});
+    const [expenses, setExpenses] = useState([]);
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            const event = await eventService.getEventById(id);
+            setEvent(event.data);
+            // console.log(event.data, "event");
+        };
+        
+        const fetchExpenses = async () => {
+            const expenses = await eventService.getAllExpensesByEventId(id);
+            setExpenses(expenses.data);
+        };
+        fetchEvent();
+        fetchExpenses();
+        setLoading(false);
+        
+    }, [id]);
+    
+    
     useEffect(() => {
         setLoading(false);
         const realBudgetFixee = DataBudget[0].amount;
@@ -23,14 +52,43 @@ export default function BudgetEventShow(){
         setTotalRealExpenses(realExpenses);
     }, []);
 
+    useEffect(() => {
+        if (isInvited) {
+            setIsInvited(false);
+        }
+    }, [isInvited]);
+
+    const startDate = new Date(event.startDate).toLocaleDateString();
+    const endDate = new Date(event.endDate).toLocaleDateString();
+
+
     /*Get Id Event
     const { id } = useParams();
     */
+    const handleClickOpen = () => {
+        setIsInviteFormOpen(true);
+    };
     return(
         <Grid>
+        {!isLoading ? (
+            <>
+            <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
             <Typography variant="h3" sx={{ pb:3 }}>
-                Evenement : { DataBudget[0].name }
+                Evenement : { event.name }
             </Typography>
+            <Grid item xs={12} mb={2} >
+                <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                    <Typography style={{ color: 'white' }} variant="subtitle1">
+                        Inviter une Participant
+                    </Typography>
+                </Button>
+                <BudgetInviteParticipantCard
+                    setAlertMessage={setAlertMessage}
+                    setIsInvited={setIsInvited}
+                    isAddFormOpen={isInviteFormOpen}
+                    setIsAddFormOpen={setIsInviteFormOpen}
+                />
+            </Grid>
             <Grid container spacing={2}>
                 <Grid item lg={4} md={6} sm={6} xs={12}>
                     <ExpenseCard isLoading={isLoading} title="Total des dépenses réelles" total={totalRealExpenses} />
@@ -43,8 +101,8 @@ export default function BudgetEventShow(){
                         <Grid item sm={6} xs={12} md={6} lg={12}>
                             <BudgetEventDateBetweenCard
                                 isLoading={isLoading}
-                                dateStart={ DataBudget[0].startDate }
-                                dateEnd={ DataBudget[0].endDate }
+                                dateStart={ startDate }
+                                dateEnd={ endDate }
                             />
                         </Grid>
                         <Grid item sm={6} xs={12} md={6} lg={12}>
@@ -62,12 +120,19 @@ export default function BudgetEventShow(){
                     <BudgetEventMostExpensiveCard />
                 </Grid>
                 <Grid item xs={12}>
-                    <ListeBudgetExpenseCard
+                    <ListeBudgetExpenseCard expenses={expenses}
                     />
                 </Grid>
             </Grid>
-        </Grid>
+            </>
+        ) : (
+            <Typography variant="h3" sx={{ pb:3 }}>
+                Chargement...
+            </Typography>
+            )}
+            </Grid>
 
-    );
+    )
+
+
 }
-

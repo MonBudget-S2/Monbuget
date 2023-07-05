@@ -33,6 +33,15 @@ export class EventInvitationService {
     return this.eventInvitationRepository.find();
   }
 
+  async getAllByUser(userId: string): Promise<EventInvitation[]> {
+    console.log('userId', userId);
+    const eventInvitations = await this.eventInvitationRepository.find({
+      where: { userId },
+    });
+    console.log('eventInvitations--------', eventInvitations);
+    return eventInvitations;
+  }
+
   async update(
     id: string,
     status: InvitationStatus,

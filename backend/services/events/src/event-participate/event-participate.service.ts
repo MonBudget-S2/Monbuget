@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EventParticipate } from './event-participate.entity';
@@ -6,10 +6,20 @@ import {
   CreateEventParticipateDto,
   UpdateEventParticipateDto,
 } from './event-participate.request';
+import { EventBudgetService } from 'src/event-budget/event-budget.service';
+import { firstValueFrom } from 'rxjs';
+import { ClientProxy } from '@nestjs/microservices';
 
+export interface EventParticipateResponse extends EventParticipate {
+  eventBudget: object;
+  user?: object;
+}
 @Injectable()
 export class EventParticipateService {
   constructor(
+    @Inject('EVENT_SERVICE') private readonly eventService: ClientProxy,
+    @Inject('USER_SERVICE') private readonly userService: ClientProxy,
+
     @InjectRepository(EventParticipate)
     private eventParticipateRepository: Repository<EventParticipate>,
   ) {}
@@ -28,7 +38,7 @@ export class EventParticipateService {
   }
 
   async getById(id: string): Promise<EventParticipate | null> {
-    return this.eventParticipateRepository.findOneBy({ id });
+    return this.eventParticipateRepository.findOne({ where: { id } });
   }
 
   async getByEventAndUser(
@@ -39,15 +49,66 @@ export class EventParticipateService {
       eventBudgetId: eventId,
       userId,
     });
-    
   }
 
-  async getAll(): Promise<EventParticipate[]> {
-    return this.eventParticipateRepository.find();
+  // async getAll(): Promise<EventParticipate[]> {
+  //   return this.eventParticipateRepository.find();
+  // }
+  async getAll(): Promise<EventParticipateResponse[]> {
+    const eventParticipates = await this.eventParticipateRepository.find();
+
+    const eventPromises = eventParticipates.map(async (eventParticipate) => {
+      const [eventBudget, user] = await Promise.all([
+        firstValueFrom(
+          this.eventService.send(
+            { service: 'eventBudget', action: 'getById' },
+            eventParticipate.eventBudgetId,
+          ),
+        ),
+        firstValueFrom(
+          this.userService.send(
+            { service: 'user', action: 'getById' },
+            eventParticipate.userId,
+          ),
+        ),
+      ]);
+
+      return {
+        ...eventParticipate,
+        eventBudget: {
+          name: eventBudget.name,
+        },
+        user,
+      };
+    });
+
+    return Promise.all(eventPromises);
   }
 
-  async getAllByUser(userId: string): Promise<EventParticipate[]> {
-    return this.eventParticipateRepository.find({ where: { userId } });
+  async getAllByUser(userId: string): Promise<EventParticipateResponse[]> {
+    console.log('userId', userId);
+    const eventParticipates = await this.eventParticipateRepository.find({
+      where: { userId },
+    });
+
+    console.log('eventParticipates', eventParticipates);
+
+    const eventPromises = eventParticipates.map(async (eventParticipate) => {
+      const eventBudget = await firstValueFrom(
+        this.eventService.send(
+          { service: 'eventBudget', action: 'getById' },
+          eventParticipate.eventBudgetId,
+        ),
+      );
+      return {
+        ...eventParticipate,
+        eventBudget: {
+          name: eventBudget.name,
+        },
+      };
+    });
+
+    return Promise.all(eventPromises);
   }
 
   async update(
