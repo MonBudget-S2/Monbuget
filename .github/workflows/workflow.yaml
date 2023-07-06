@@ -17,7 +17,38 @@ env:
   PRODUCT_REPO_INCOMES: ${{secrets.PRODUCT_REPO_INCOMES}}
   PRODUCT_REPO_MEETINGS: ${{secrets.PRODUCT_REPO_MEETINGS}}
 jobs:
-  create-image:
+  create-image-users:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |      
+          rm -rf backend/services/users/src/env.ts
+          touch backend/services/users/src/env.ts
+          echo "${{secrets.ENV}}" >> backend/services/users/src/env.ts
+      - name: Build services docker image user
+        run: | 
+          docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+      - name: Push services docker image user
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
+  create-image-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: Build services docker image gateway
+        run: | 
+          docker build backend/services/gateway/ --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+      - name: Push services docker image gateway
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
+  create-image-alerts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,59 +57,143 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - name: rm and touch prod env
         run: |          
-          rm -rf backend/services/users/src/env.ts
-          touch backend/services/users/src/env.ts
-          echo "${{secrets.ENV}}" >> backend/services/users/src/env.ts
           rm -rf backend/services/alerts/src/env.ts
           touch backend/services/alerts/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/alerts/src/env.ts
+      - name: Build services docker image alerts
+        run: | 
+          docker build backend/services/alerts/ --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+      - name: Push services docker image alerts
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
+  create-image-categories:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/categories/src/env.ts
           touch backend/services/categories/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/categories/src/env.ts
+      - name: Build services docker image categories
+        run: | 
+          docker build backend/services/categories/ --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+      - name: Push services docker image categories
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
+  create-image-budgets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/budgets/src/env.ts
           touch backend/services/budgets/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/budgets/src/env.ts
+      - name: Build services docker image budgets
+        run: | 
+          docker build backend/services/budgets/ --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+      - name: Push services docker image budgets
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
+  create-image-debts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/debts/src/env.ts
           touch backend/services/debts/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/debts/src/env.ts
+      - name: Build services docker image debts
+        run: | 
+          docker build backend/services/debts/ --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+      - name: Push services docker image
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
+  create-image-events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/events/src/env.ts
           touch backend/services/events/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/events/src/env.ts
+      - name: Build services docker image events
+        run: | 
+          docker build backend/services/events/ --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+      - name: Push services docker image
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
+  create-image-expenses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/expenses/src/env.ts
           touch backend/services/expenses/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/expenses/src/env.ts
+      - name: Build services docker image expenses
+        run: | 
+          docker build backend/services/expenses/ --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+      - name: Push services docker image expenses
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
+  create-image-incomes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/incomes/src/env.ts
           touch backend/services/incomes/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/incomes/src/env.ts
+      - name: Build services docker image incomes
+        run: | 
+          docker build backend/services/incomes/ --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+      - name: Push services docker image incomes
+        run: |
+          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
+  create-image-meetings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker login
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: rm and touch prod env
+        run: |          
           rm -rf backend/services/meetings/src/env.ts
           touch backend/services/meetings/src/env.ts
           echo "${{secrets.ENV}}" >> backend/services/meetings/src/env.ts
       - name: Build services docker image
         run: | 
-          docker build backend/services/users/ --file backend/services/users/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
-          docker build backend/services/alerts/ --file backend/services/alerts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
-          docker build backend/services/gateway/ --file backend/services/gateway/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
-          docker build backend/services/categories/ --file backend/services/categories/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
-          docker build backend/services/budgets/ --file backend/services/budgets/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
-          docker build backend/services/debts/ --file backend/services/debts/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
-          docker build backend/services/events/ --file backend/services/events/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
-          docker build backend/services/expenses/ --file backend/services/expenses/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
-          docker build backend/services/incomes/ --file backend/services/incomes/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
           docker build backend/services/meetings/ --file backend/services/meetings/Dockerfile -t "$DOCKER_USERNAME/$PRODUCT_REPO_MEETINGS:latest"
       - name: Push services docker image
         run: |
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_USERS:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_ALERTS:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_GATEWAY:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_CATEGORIES:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_BUDGETS:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_DEBTS:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EVENTS:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_EXPENSES:latest"
-          docker push "$DOCKER_USERNAME/$PRODUCT_REPO_INCOMES:latest"
           docker push "$DOCKER_USERNAME/$PRODUCT_REPO_MEETINGS:latest"
   deployment:
-    needs: [create-image]
+    needs: [create-image-gateway, create-image-categories, create-image-budgets, create-image-debts, create-image-events, create-image-expenses, create-image-incomes, create-image-meetings, create-image-users,create-image-alerts]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
