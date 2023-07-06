@@ -237,15 +237,22 @@ export class AppService {
           isSameDay(new Date(meeting.startTime), currentDate),
         );
 
-        const availableSlots = slots.filter((slot) => {
-          return !currentDateMeetings.some((meeting) => {
-            const meetingStartTime = new Date(meeting.startTime);
-            const meetingEndTime = new Date(meeting.endTime);
-            return isWithinInterval(slot, {
-              start: meetingStartTime,
-              end: meetingEndTime,
-            });
+        const bookedSlots = currentDateMeetings.reduce((slots, meeting) => {
+          const meetingStartTime = new Date(meeting.startTime);
+          const meetingEndTime = new Date(meeting.endTime);
+          const slot = set(currentDate, {
+            hours: getHours(meetingStartTime),
+            minutes: getMinutes(meetingStartTime),
+            seconds: getSeconds(meetingStartTime),
           });
+          slots.push(slot);
+          return slots;
+        }, []);
+
+        const availableSlots = slots.filter((slot) => {
+          return !bookedSlots.some((bookedSlot) =>
+            isSameHour(slot, bookedSlot),
+          );
         });
 
         availability.push(...availableSlots);

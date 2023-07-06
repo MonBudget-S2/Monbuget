@@ -49,8 +49,18 @@ const updateSchedule = async (data) => {
   return res;
 };
 
+const getAvailableSlotsForAppointment = async (advisorId) => {
+  const res = await axiosInstance.get(`/advisors/${advisorId}/availability-for-appointment`);
+  return res;
+};
+
 const getMeetings = async () => {
   const res = await axiosInstance.get('/meetings');
+  return res;
+};
+
+const requestMeeting = async (data) => {
+  const res = await axiosInstance.post('/meetings', data);
   return res;
 };
 
@@ -58,5 +68,7 @@ export const meetingService = {
   createMeeting,
   getSchedules,
   updateSchedule,
-  getMeetings
+  getMeetings,
+  getAvailableSlotsForAppointment,
+  requestMeeting
 };

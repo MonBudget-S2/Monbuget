@@ -72,7 +72,7 @@ const PlanningCalendar = () => {
     fetchScheduleData();
     fetchMeetingData();
     setIsLoading(false);
-  }, [isScheduleChanged]);
+  }, []);
   return (
     <Grid container spacing={2}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
@@ -81,7 +81,7 @@ const PlanningCalendar = () => {
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
           <h1>Prenez un rendez-vous avec un conseiller</h1>
           <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={handleDialogOpen}>
-            Voir mon planning
+            Prendre un rendez-vous
           </Button>
         </Box>
       </Grid>

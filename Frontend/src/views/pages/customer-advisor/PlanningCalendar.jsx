@@ -79,7 +79,7 @@ const PlanningCalendar = () => {
 
       <Grid item xs={12}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
-          <h1>Prenez un rendez-vous avec un conseiller</h1>
+          <h1>Mon Agenda</h1>
           <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={handleDialogOpen}>
             Voir mon planning
           </Button>
