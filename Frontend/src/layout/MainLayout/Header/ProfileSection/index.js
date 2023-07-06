@@ -106,9 +106,7 @@ const ProfileSection = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  useEffect(() => {
-    fetchImage();
-  },[]);
+
 
   const prevOpen = useRef(open);
   useEffect(() => {
@@ -118,6 +116,10 @@ const ProfileSection = () => {
 
     prevOpen.current = open;
   }, [open]);
+
+  useEffect(() => {
+    fetchImage();
+  },[]);
 
   return (
     <>
@@ -142,7 +144,7 @@ const ProfileSection = () => {
           }
         }}
         icon={
-          avatarImg ? <Avatar src={avatarImg} /> : <BackgroundLetterAvatars fullname={user?.userInfo?.firstName + ' ' + user.userInfo.lastName} anchorRef={anchorRef} open={open} />
+          avatarImg ? <Avatar src={avatarImg}  /> : <BackgroundLetterAvatars fullname={user?.userInfo?.firstName + ' ' + user.userInfo.lastName} anchorRef={anchorRef} open={open} />
 
           // <Avatar
           //   sx={{
