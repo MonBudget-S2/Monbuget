@@ -9,7 +9,7 @@ const MeetingVideo = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   let { meetingId } = useParams();
-  meetingId = '89c30435-4b35-4148-aeb4-fbacd84f5ddc';
+  console.log(meetingId);
 
   useEffect(() => {
     const fetchToken = async () => {

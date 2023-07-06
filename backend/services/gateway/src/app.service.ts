@@ -234,7 +234,7 @@ export class AppService {
     return token;
   };
 
-  validateMeetingToken = async (meetingId: string, token: string, user) => {
+  async validateMeetingToken(meetingId: string, token: string, user) {
     const meeting = await this.getMeetingById(meetingId, user);
     return await firstValueFrom(
       this.meetingService.send(
@@ -242,10 +242,13 @@ export class AppService {
         { meetingId, token }
       )
     );
-  };
+  }
 
-  async approveMeeting(meetingId: string) {
-    return await firstValueFrom(
+  async approveMeeting(meetingId: string, user) {
+    console.log(meetingId);
+    const meeting = await this.getMeetingById(meetingId, user);
+    console.log("************************************");
+    const approved = await firstValueFrom(
       this.meetingService.send(
         { service: "meeting", action: "update" },
         {
@@ -254,6 +257,17 @@ export class AppService {
         }
       )
     );
+
+    const room = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "createRoom" },
+        meetingId
+      )
+    );
+    console.log("ROOM", room);
+    console.log("test******************", approved);
+
+    return approved;
   }
 
   async getAvailabilityForAppointment(advisorId: string) {

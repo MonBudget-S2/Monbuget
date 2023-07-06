@@ -49,6 +49,7 @@ export class AppService {
   ) {}
   private readonly API_KEY = process.env.API_KEY;
   private readonly SECRET_KEY = process.env.SECRET_KEY;
+  private readonly VIDEOSDK_API_ENDPOINT = process.env.VIDEOSDK_API_ENDPOINT;
 
   async createMeeting(createMeetingDto: CreateMeetingDto): Promise<any> {
     const newMeeting = this.meetingRepository.create(createMeetingDto);
@@ -89,6 +90,51 @@ export class AppService {
     console.log('updatedMeeting', updatedMeeting);
 
     return updatedMeeting;
+  }
+
+  async createRoom(meetingId: string): Promise<any> {
+    const meeting = await this.getMeetingById(meetingId);
+    if (!meeting) {
+      throw new RpcException('Meeting not found');
+    }
+
+    // Create meeting room
+    const token = jwt.sign(
+      {
+        apikey: this.API_KEY,
+        permissions: ['allow_join'],
+      },
+      this.SECRET_KEY,
+      {
+        algorithm: 'HS256',
+        expiresIn: '24h',
+        jwtid: uuidv4(),
+      },
+    );
+
+    console.log('token', token);
+
+    const url = `${this.VIDEOSDK_API_ENDPOINT}/api/meetings`;
+    const options = {
+      method: 'POST',
+      headers: { Authorization: token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roomId: meetingId }),
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      console.log('result', result);
+      // Check if meeting room creation was successful
+      if (!result.userId) {
+        throw new RpcException('Failed to create meeting room');
+      }
+    } catch (error) {
+      console.error('error', error);
+      throw new RpcException('Failed to create meeting room');
+    }
+
+    return { message: 'Meeting room created successfully' };
   }
 
   async deleteMeeting(id: string): Promise<boolean> {

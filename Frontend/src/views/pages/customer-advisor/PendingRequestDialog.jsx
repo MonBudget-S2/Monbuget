@@ -13,7 +13,7 @@ const PendingRequestsDialog = ({ isOpen, handleClose, pendingRequests, setAlertM
 
   const handleAcceptRequest = async (request) => {
     console.log(request);
-    const res = await meetingService.acceptMeetingRequest(request.meetingId);
+    const res = await meetingService.acceptMeetingRequest(request.id);
     if (res.status === 200) {
       setAlertMessage({ open: true, type: 'success', message: 'Meeting request accepted successfully.' });
       setIsMeetingChanged(true);

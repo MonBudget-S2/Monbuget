@@ -114,8 +114,8 @@ export class AppController {
   @Patch("meetings/:id/approve")
   @AuthenticationRequired()
   @HasRole(Role.ADVISOR)
-  approveMeeting(@Payload() data: { id: string }) {
-    return this.appService.approveMeeting(data.id);
+  approveMeeting(@Param("id") id: string, @Req() request: CustomRequest) {
+    return this.appService.approveMeeting(id, request.user);
   }
 
   @Get("advisors/:id/availability-for-appointment")

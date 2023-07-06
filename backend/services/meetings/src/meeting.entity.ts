@@ -18,9 +18,6 @@ export class Meeting {
   @Column({ type: 'timestamp' })
   endTime: Date;
 
-  @Column({ nullable: true })
-  meetingVideoId: string;
-
   @Column({ default: MeetingRequestStatus.PENDING })
   status: MeetingRequestStatus;
 }

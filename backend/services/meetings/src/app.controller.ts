@@ -47,6 +47,12 @@ export class AppController {
     return this.appService.updateMeeting(id, updateMeetingDto);
   }
 
+  @MessagePattern({ service: 'meeting', action: 'createRoom' })
+  createRoom(meetingId: string) {
+    console.log('createRoom', meetingId);
+    return this.appService.createRoom(meetingId);
+  }
+
   @MessagePattern({ service: 'meeting', action: 'delete' })
   deleteMeeting(id: string) {
     return this.appService.deleteMeeting(id);
