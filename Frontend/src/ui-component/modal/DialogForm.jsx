@@ -6,29 +6,27 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from '@mui/system';
-export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {},isSubmitting =false, children }) {
-  const handleSubmit = () => {
-    onSubmit();
-    // setIsOpen(false);
+export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, onCancel = () => {}, isSubmitting = false, children }) {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form refresh
+    if (onSubmit) {
+      onSubmit();
+    }
   };
   const handleCancel = () => {
     setIsOpen(false);
     onCancel();
   };
+
   return (
-    <Box
-      component="form"
-      onSubmit={(e) => {
-        onSubmit ? onSubmit() : e.preventDefault();
-      }}
-    >
+    <Box component="form" onSubmit={handleSubmit}>
       <Dialog
         open={isOpen}
         onClose={() => {
           setIsOpen(false);
         }}
         fullWidth={true}
-        maxWidth="md"
+        maxWidth="sm" // Réduire la largeur de la boîte de dialogue
       >
         <DialogTitle align="center" sx={{ fontSize: '1.4em', fontWeight: 500 }}>
           {title}
@@ -43,18 +41,27 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
               flexDirection: 'column',
               m: 'auto',
               width: 'fit-content',
-              '& .MuiTextField-root': { my: 2, mx: 4, width: '18ch' },
-              '& .MuiSelectField-root': { my: 2, mx: 4, width: '18ch' }
+              '& .MuiTextField-root': { my: 2 }, 
+              '& .MuiSelectField-root': { my: 2 } 
             }}
           >
             {children}
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSubmit} size="large" type="submit" variant="contained" color="secondary">
+        <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
+          <Button
+            onClick={handleSubmit}
+            size="large"
+            type="submit"
+            variant="contained"
+            color="secondary"
+            sx={{ width: '150px' }}
+          >
             Valider
           </Button>
-          <Button onClick={handleCancel} disabled={isSubmitting}>Annuler</Button>
+          <Button onClick={handleCancel} disabled={isSubmitting}>
+            Annuler
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

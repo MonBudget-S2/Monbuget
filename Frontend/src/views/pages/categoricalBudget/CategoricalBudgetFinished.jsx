@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { styled, useTheme } from '@mui/material/styles';
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Menu, MenuItem, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
@@ -79,6 +79,7 @@ const CategoricalBudgetFinished = ({ isLoading, title, nbCategoricalBudgetFinish
                 <CardWrapper border={false} content={false}>
                     <BeenhereIconWrapper />
                     <Box sx={{ p: 2.25 }}>
+                    <Fade in={true} timeout={600}>
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container justifyContent="space-between">
@@ -163,6 +164,7 @@ const CategoricalBudgetFinished = ({ isLoading, title, nbCategoricalBudgetFinish
                                 </Typography>
                             </Grid>
                         </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}

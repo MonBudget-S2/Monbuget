@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 
 import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, lastValueFrom } from "rxjs";
 import { Role } from "src/authentication/authentication.enum";
 import {
   CreateEventBudgetDto,
@@ -13,7 +13,8 @@ import { InvitationStatus } from "./event-invitation.enum";
 export class EventService {
   constructor(
     @Inject("EVENT_SERVICE") private readonly eventService: ClientProxy,
-    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy
+    @Inject("EXPENSE_SERVICE") private readonly expenseService: ClientProxy,
+    @Inject("USER_SERVICE") private readonly userService: ClientProxy
   ) {}
 
   async createEvent(createEventBudgetDto: CreateEventBudgetDto) {
@@ -55,6 +56,21 @@ export class EventService {
         HttpStatus.FORBIDDEN
       );
     }
+    if(event?.eventParticipants?.length > 0){
+
+      const userPromises = event.eventParticipants.map(async (participant) => {
+        const user = await lastValueFrom(
+          this.userService.send(
+            { service: "user", cmd: "getUserById" },
+            participant.userId
+          )
+        );
+        return { ...participant, user };
+      });
+      event.eventParticipants = await Promise.all(userPromises);
+      console.log("event.participants", event.eventParticipants);
+    }
+    console.log("event **************", event);
     return event;
   }
 
@@ -66,18 +82,22 @@ export class EventService {
         { eventId: id, userId: user.id }
       )
     );
+    console.log("eventParticipants", eventParticipants);
     if (!eventParticipants) {
       throw new HttpException(
         "You are not part of this event",
         HttpStatus.FORBIDDEN
       );
     }
-    return await firstValueFrom(
+
+    const allExpenses = await firstValueFrom(
       this.expenseService.send(
         { service: "expense", action: "getAllByEvent" },
         id
       )
     );
+
+    return allExpenses;
   }
 
   async getParticipantExpenses(user) {
@@ -89,15 +109,26 @@ export class EventService {
       )
     );
 
-    console.log("eventParticipants", eventParticipants);
-
     if (!eventParticipants) {
       throw new HttpException(
         "You are not part of this event",
         HttpStatus.FORBIDDEN
       );
     }
-    return eventParticipants;
+
+    const userPromises = eventParticipants.map(async (participant) => {
+      const user = await lastValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          participant.userId
+        )
+      );
+      return { ...participant, user };
+    });
+
+    const participantsWithUsers = await Promise.all(userPromises);
+    // return eventParticipants;
+    return participantsWithUsers;
   }
 
   async updateEvent(
@@ -123,14 +154,52 @@ export class EventService {
     );
   }
 
-  async inviteUserToEvent(id: string, inviteeId: string, user) {
+  async inviteUserToEvent(id: string, inviteUsername: string, user) {
+  
+    const invitee = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserByUsername" },
+        inviteUsername
+      )
+    );
+
+    const invitations = await firstValueFrom(
+      this.eventService.send(
+        { service: "eventInvitation", action: "getByEventId" },
+        id
+      )
+    );
+        console.log("invitations ************", invitations);
+        console.log("invitee **************", invitee);
+    if (invitations.find((i) => i.userId === invitee.id)) {
+      if (
+        invitations.find(
+          (i) =>
+            i.userId === invitee.id && i.status === InvitationStatus.ACCEPTED
+        )
+      ) {
+        throw new HttpException(
+          "User already accepted invitation",
+          HttpStatus.BAD_REQUEST
+        );
+      }
+      throw new HttpException("User already invited", HttpStatus.BAD_REQUEST);
+    }
+
+    if (!invitee) {
+      throw new HttpException(
+        "Invitee username not found ",
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     const event = await this.getEventById(id, user);
-    console.log("inviteUserToEvent", id, inviteeId, user);
+    console.log("inviteUserToEvent", id, inviteUsername, user);
 
     return await firstValueFrom(
       this.eventService.send(
         { service: "eventBudget", action: "createInvitation" },
-        { userId: inviteeId, eventId: id }
+        { eventId: id, userId: invitee.id }
       )
     );
   }
@@ -162,12 +231,32 @@ export class EventService {
   }
 
   async getInvitations(user) {
-    return await firstValueFrom(
+    console.log("calling microservice eventInvitation");
+    const invitations = await firstValueFrom(
       this.eventService.send(
         { service: "eventInvitation", action: "getAllByUser" },
         user.id
       )
     );
+
+    const eventPromises = invitations.map(async (invitation) => {
+      const event = await lastValueFrom(
+        this.eventService.send(
+          { service: "eventBudget", action: "getById" },
+          invitation.eventId
+        )
+      );
+      const owner = await lastValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          event.userId
+        )
+      );
+      return { ...invitation, event, owner };
+    });
+    const invitationsWithEventsAndUsers = await Promise.all(eventPromises);
+
+    return invitationsWithEventsAndUsers;
   }
 
   async markEventAsFinished(id: string, user) {

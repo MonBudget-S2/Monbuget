@@ -28,6 +28,7 @@ export class UserService {
       )
     );
   }
+
   async getAllUsers() {
     return await firstValueFrom(
       this.userService.send({ service: "user", cmd: "getUsers" }, {})
@@ -62,6 +63,22 @@ export class UserService {
     );
   }
 
+  async uploadUserAvatar(id: string, avatarUrl:string, user: any){
+    if (user.id !== id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+          "You are not authorized to access this resource",
+          HttpStatus.FORBIDDEN
+      );
+    }
+
+    return await firstValueFrom(
+        this.userService.send(
+            { service: "user", cmd: "uploadAvatar" },
+            { id, avatarUrl }
+        )
+    );
+  }
+
   async deleteUser(id: string, user: any) {
     if (user.id !== id && user.role !== Role.ADMIN) {
       throw new HttpException(
@@ -75,17 +92,25 @@ export class UserService {
   }
 
   async updatePassword(
-    id: string,
     oldPassword: string,
     newPassword: string,
     user: any
   ) {
-    if (user.id !== id && user.role !== Role.ADMIN) {
+    const userData = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        user.id
+      )
+    );
+
+
+    if (user.id !== userData.id && user.role !== Role.ADMIN) {
       throw new HttpException(
         "You are not authorized to access this resource",
         HttpStatus.FORBIDDEN
       );
     }
+    const id = user.id;
     return await firstValueFrom(
       this.userService.send(
         { service: "user", cmd: "updatePassword" },

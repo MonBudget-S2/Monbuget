@@ -42,6 +42,12 @@ export class EventController {
     return this.eventService.getAllEvents(user);
   }
 
+  @Get("/invitations")
+  getInvitations(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getInvitations(user);
+  }
+
   @Get(":id")
   getEventById(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
@@ -79,12 +85,12 @@ export class EventController {
   @Post(":id/invite")
   inviteUserToEvent(
     @Param("id") id: string,
-    @Body("userId") userId: string,
+    @Body("username") username: string,
     @Req() request: CustomRequest
   ) {
-    const inviteeId = userId;
+    const inviteUsername = username;
     const user = request.user;
-    return this.eventService.inviteUserToEvent(id, inviteeId, user);
+    return this.eventService.inviteUserToEvent(id, inviteUsername, user);
   }
 
   @Patch("participant/invitations/:invitationId/accept")
@@ -113,12 +119,7 @@ export class EventController {
     );
   }
 
-  @Get("/invitations")
-  getInvitations(@Req() request: CustomRequest) {
-    const user = request.user;
-    return this.eventService.getInvitations(user);
-  }
-  @Post(":id/finished")
+  @Post(":id/finish")
   markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.markEventAsFinished(id, user);

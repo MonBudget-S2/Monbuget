@@ -34,7 +34,12 @@ export class EventInvitationService {
   }
 
   async getAllByUser(userId: string): Promise<EventInvitation[]> {
-    return this.eventInvitationRepository.findBy({ userId });
+    console.log('userId', userId);
+    const eventInvitations = await this.eventInvitationRepository.find({
+      where: { userId },
+    });
+    console.log('eventInvitations--------', eventInvitations);
+    return eventInvitations;
   }
 
   async update(
