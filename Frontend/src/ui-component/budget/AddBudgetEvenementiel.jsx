@@ -129,10 +129,10 @@ const AddBudgetEvenementiel = ({ ...others }) =>{
             submit: null
           }}
           validationSchema={Yup.object().shape({
-            name : Yup.string().max(255).required('Budget Name is required'),
-            dateStart : Yup.date().required('Budget date Start is required'),
-            dateEnd : Yup.date().required('Budget date End is required'),
-            amount : Yup.number().min(0).required('Budget Amount is required'),
+            name : Yup.string().max(255).required('Nom du budget evenementiel est requis'),
+            dateStart : Yup.date().required('La date de debut est requise'),
+            dateEnd : Yup.date().required('La date de fin est requise'),
+            amount : Yup.number().min(0).required('Le montant est requis'),
           })}
           onSubmit={handleAddBudget}
         >

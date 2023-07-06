@@ -14,6 +14,8 @@ import ListExpense from './ListExpense';
 import AddExpense from './AddExpense';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import expenseService from 'service/expenseService';
+import AddCategory from './AddCategory';
+
 
 const Expense = () => {
   const [totalExpense, setTotalExpense] = useState(0);
@@ -22,6 +24,10 @@ const Expense = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isExpenseChanged, setIsExpenseChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
+  const [isCategoryChanged, setIsCategoryChanged] = useState(false);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +50,20 @@ const Expense = () => {
   const handleClickOpen = () => {
     setIsAddFormOpen(true);
   };
+
+  const handleAddCategoryOpen = () => {
+    setIsAddCategoryOpen(true);
+  };
+
+  const handleCloseCategory = () => {
+    setIsAddCategoryOpen(false);
+  };
+
+  useEffect(() => {
+    console.log('isCategoryChanged', isCategoryChanged);
+
+  }, [isCategoryChanged]);  
+  
 
   useEffect(() => {
     console.log('isExpenseChanged', isExpenseChanged);
@@ -70,17 +90,32 @@ const Expense = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={handleClickOpen}>
-          <Typography style={{ color: 'white' }} variant="subtitle1">
-            Ajouter une dépense
-          </Typography>
-        </Button>
-        <AddExpense
-          setAlertMessage={setAlertMessage}
-          setIsExpenseChanged={setIsExpenseChanged}
-          isAddFormOpen={isAddFormOpen}
-          setIsAddFormOpen={setIsAddFormOpen}
-        />
+        <Grid container spacing={2} alignItems="center">
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            <Typography style={{ color: 'white' }} variant="subtitle1">
+              Ajouter une dépense
+            </Typography>
+          </Button>
+          <AddExpense
+            setAlertMessage={setAlertMessage}
+            setIsExpenseChanged={setIsExpenseChanged}
+            isAddFormOpen={isAddFormOpen}
+            setIsAddFormOpen={setIsAddFormOpen}
+            key={isCategoryChanged}
+          />
+          <Button variant="contained" color="primary" onClick={handleAddCategoryOpen} style={{ marginLeft: '10px' }}>
+            <Typography style={{ color: 'white' }} variant="subtitle1">
+              Ajouter une catégorie
+            </Typography>
+          </Button>
+          <AddCategory
+            isOpen={isAddCategoryOpen}
+            onClose={handleCloseCategory}
+            setAlertMessage={setAlertMessage}
+            setIsCategoryChanged={setIsCategoryChanged}
+
+          />
+        </Grid>
       </Grid>
       <Grid item xs={12} md={6}>
         <MostExpensive />

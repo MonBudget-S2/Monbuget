@@ -10,7 +10,7 @@ import Expense from 'views/pages/expense/Expense';
 // import AddExpense from 'views/pages/expense/AddExpense';
 import CategoricalBudget from 'views/pages/categoricalBudget/CategoricalBudget';
 import BudgetAllocation from 'views/pages/categoricalBudget/AddCategoricalBudget';
-import Settings from 'views/pages/notifications_settings/Settings';
+// import Settings from 'views/pages/notifications_settings/Settings';
 import NewBudgetEvenementiel from 'views/dashboard/BudgetEvent/BudgetEventCreate';
 // import ListExpense from 'views/pages/expense/ListExpense';
 // import DetailCategoricalBudget from 'views/pages/categoricalBudget/DetailCategoricalBudget';
@@ -139,10 +139,10 @@ const MainRoutes = {
       path: 'clientCalendar',
       element: <ClientCalendar />
     },
-    {
-      path: 'settings',
-      element: <Settings />
-    },
+    // {
+    //   path: 'settings',
+    //   element: <Settings />
+    // },
     {
       path: 'meeting/:meetingId',
       element: <MeetingPage />

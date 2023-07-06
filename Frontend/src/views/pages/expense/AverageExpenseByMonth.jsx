@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useTheme, styled } from '@mui/material/styles';
+import {styled } from '@mui/material/styles';
 import { Box, Button, Grid, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
@@ -49,8 +49,6 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const TotalExpenseByMonth = ({ isLoading, expenses }) => {
-  const theme = useTheme();
-
   const [averageExpenseByMonth, setAverageExpenseByMonth] = useState(0);
   const [totalExpenseByYear, setTotalExpenseByYear] = useState(0);
 
@@ -87,58 +85,58 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
       ) : (
         <CardWrapper border={false} content={false}>
           <Box sx={{ p: 2.25 }}>
-          <Fade in={true} timeout={600}>
-            <Grid container direction="column">
-              <Grid item>
-                <Grid container justifyContent="space-between">
-                  <Grid item>
-                    <Button
-                      disableElevation
-                      variant={timeValue ? 'contained' : 'text'}
-                      size="small"
-                      sx={{ color: 'inherit' }}
-                      onClick={(e) => handleChangeTime(e, true)}
-                    >
-                      Mois
-                    </Button>
-                    <Button
-                      disableElevation
-                      variant={!timeValue ? 'contained' : 'text'}
-                      size="small"
-                      sx={{ color: 'inherit' }}
-                      onClick={(e) => handleChangeTime(e, false)}
-                    >
-                      Année
-                    </Button>
+            <Fade in={true} timeout={600}>
+              <Grid container direction="column">
+                <Grid item>
+                  <Grid container justifyContent="space-between">
+                    <Grid item>
+                      <Button
+                        disableElevation
+                        variant={timeValue ? 'contained' : 'text'}
+                        size="small"
+                        sx={{ color: 'inherit' }}
+                        onClick={(e) => handleChangeTime(e, true)}
+                      >
+                        Mois
+                      </Button>
+                      <Button
+                        disableElevation
+                        variant={!timeValue ? 'contained' : 'text'}
+                        size="small"
+                        sx={{ color: 'inherit' }}
+                        onClick={(e) => handleChangeTime(e, false)}
+                      >
+                        Année
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item sx={{ mb: 0.75 }}>
-                <Grid container alignItems="center">
-                  <Grid item xs={6}>
-                    <Grid container alignItems="center">
-                      <Grid item>
-                        <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                          {timeValue ? `${averageExpenseByMonth} €` : `${totalExpenseByYear} €`}
-                        </Typography>
-                      </Grid>
-                      
-                      <Grid item xs={12}>
-                        <Typography
-                          sx={{
-                            fontSize: '1rem',
-                            fontWeight: 500,
-                            color: "#fff"
-                          }}
-                        >
-                          {timeValue ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}
-                        </Typography>
+                <Grid item sx={{ mb: 0.75 }}>
+                  <Grid container alignItems="center">
+                    <Grid item xs={6}>
+                      <Grid container alignItems="center">
+                        <Grid item>
+                          <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                            {timeValue ? `${averageExpenseByMonth} €` : `${totalExpenseByYear} €`}
+                          </Typography>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <Typography
+                            sx={{
+                              fontSize: '1rem',
+                              fontWeight: 500,
+                              color: '#fff'
+                            }}
+                          >
+                            {timeValue ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}
+                          </Typography>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             </Fade>
           </Box>
         </CardWrapper>

@@ -44,7 +44,7 @@ const AddExpense = ({ setAlertMessage, setIsExpenseChanged, isAddFormOpen, setIs
     }
 
     if (expenseEventBudget && !isWithinEventRange(dateSpent)) {
-      errors.dateSpent = `Date devrait être dans la plage d'événements sélectionnée: ${getMinDate()} et ${getMaxDate()}`;
+      errors.dateSpent = `La date devrait être dans la plage d'événement sélectionnée: ${getMinDate()} et ${getMaxDate()}`;
     }
 
     if (Object.keys(errors).length > 0) {
