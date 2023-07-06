@@ -75,7 +75,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3006
-
+  type: ClusterIP
 
 ---
 apiVersion: apps/v1
@@ -133,7 +133,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3005
-
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -194,6 +194,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3008
+  type: ClusterIP
 
 ---
 apiVersion: apps/v1
@@ -255,7 +256,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3009
-
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -316,7 +317,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3004
-
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -377,7 +378,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3010
-
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -495,6 +496,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3007
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -552,6 +554,7 @@ spec:
   ports:
     - protocol: TCP
       port: 3011
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
