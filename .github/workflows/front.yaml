@@ -26,8 +26,8 @@ jobs:
         with:
           host: ${{ secrets.HOST_FRONT }}
           username: ${{ secrets.USERNAME_FRONT }}
-          password: ${{ secrets.PASSWORD_FRONT }}
-          port: ${{ secrets.PORT_FRONT }}
+          password: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.PORT_FRONT }}
           script: |
             unzip -o /root/frontend.zip -d /root
             rm -rf /root/frontend.zip
