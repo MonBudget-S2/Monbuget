@@ -7,7 +7,7 @@ import { meetingService } from 'service/meetingService';
 //   new Date('2023-07-06T11:00:00.000Z')
 //   // ...
 // ];
-export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage }) {
+export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage, setIsMeetingChanged }) {
   const [isLoading, setIsLoading] = useState(false);
   const [availability, setAvailability] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -62,6 +62,7 @@ export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage
       if (res.status === 201) {
         console.log('res.data', res.data);
         handleClose();
+        setIsMeetingChanged(true);
         setAlertMessage({ open: true, type: 'success', message: 'Votre demande de rendez-vous a été envoyée avec succès.' });
       } else {
         setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la demande de rendez-vous.' });

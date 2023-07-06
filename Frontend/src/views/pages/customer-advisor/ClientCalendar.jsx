@@ -19,6 +19,7 @@ const PlanningCalendar = () => {
   const [meetings, setMeetings] = useState([]);
   const [selectedMeeting, setSelectedMeeting] = useState(null); // Added state to track the selected meeting
   const [isOpenMeetingInfo, setIsOpenMeetingInfo] = useState(false);
+  const [isMeetingChanged, setIsMeetingChanged] = useState(false);
   const handleDialogOpen = () => {
     setOpenDialog(true);
   };
@@ -74,14 +75,6 @@ const PlanningCalendar = () => {
   };
 
   useEffect(() => {
-    // Simulated API call to fetch schedule data
-    const fetchScheduleData = async () => {
-      const res = await meetingService.getSchedules();
-      if (res.status === 200) {
-        setSchedules(res.data);
-      }
-    };
-
     const fetchMeetingData = async () => {
       const response = await meetingService.getMeetings();
       if (response.status === 200) {
@@ -90,10 +83,9 @@ const PlanningCalendar = () => {
       }
     };
 
-    fetchScheduleData();
     fetchMeetingData();
     setIsLoading(false);
-  }, []);
+  }, [isMeetingChanged]);
 
   return (
     <Grid container spacing={2}>
@@ -134,6 +126,7 @@ const PlanningCalendar = () => {
         handleClose={handleDialogClose}
         meetingDetails={selectedMeeting}
         setAlertMessage={setAlertMessage}
+        setIsMeetingChanged={setIsMeetingChanged}
         isLoading={isLoading}
       />
       {selectedMeeting !== null && isOpenMeetingInfo && (

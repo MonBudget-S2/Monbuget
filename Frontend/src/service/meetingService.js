@@ -73,6 +73,11 @@ const getAdvisors = async () => {
   return res;
 };
 
+const acceptMeetingRequest = async (meetingId) => {
+  const res = await axiosInstance.patch(`/meetings/${meetingId}/approve`);
+  return res;
+};
+
 export const meetingService = {
   createMeeting,
   getSchedules,
@@ -81,5 +86,6 @@ export const meetingService = {
   getAvailableSlotsForAppointment,
   requestMeeting,
   getMeetingDetails,
-  getAdvisors
+  getAdvisors,
+  acceptMeetingRequest
 };
