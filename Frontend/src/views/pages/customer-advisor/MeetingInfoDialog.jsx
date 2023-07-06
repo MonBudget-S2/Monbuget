@@ -11,7 +11,7 @@ const MeetingInfoDialog = ({ isOpen, handleClose, meetingDetails }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
-        return 'primary';
+        return 'warning';
       case 'accepted':
         return 'success';
       case 'rejected':
