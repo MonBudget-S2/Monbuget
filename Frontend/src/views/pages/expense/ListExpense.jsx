@@ -8,6 +8,7 @@ import expenseService from 'service/expenseService';
 import { Box } from '@mui/system';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DownloadIcon from '@mui/icons-material/Download';
 import AddExpense from './AddExpense';
 import { useState } from 'react';
 import { format, parseISO } from 'date-fns';
@@ -20,6 +21,7 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
       field: 'actions',
       sortable: false,
       headerName: 'Actions',
+      width:150,
       renderCell: (params) => (
         <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
           <IconButton color="info" aria-label="Modifier" onClick={() => onEdit(params.row.id)}>
@@ -28,6 +30,12 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
           <IconButton color="error" aria-label="Supprimer" onClick={() => onDelete(params.row.id)}>
             <DeleteIcon />
           </IconButton>
+          {params.row.receiptImage && (
+              <IconButton color="info" aria-label="Download Facture" onClick={() => onDownload(params.row.receiptImage)}>
+                <DownloadIcon />
+              </IconButton>
+          )}
+
         </Box>
       )
     },
@@ -66,6 +74,18 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
       setAlertMessage({ open: true, message: 'Erreur lors de la suppression de la dépense', type: 'error' });
     }
   };
+
+  const onDownload = async (id) =>{
+    const res = await expenseService.downloadFile(id);
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', id); // Remplacez 'file.png' par le nom de fichier souhaité
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   return (
     <>

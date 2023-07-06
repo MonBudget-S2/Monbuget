@@ -25,6 +25,9 @@ export class User {
   @Column({ default: false })
   isVerified: boolean;
 
+  @Column({ nullable: true })
+  avatarUrl:string;
+
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   balance: number;
 

@@ -63,6 +63,22 @@ export class UserService {
     );
   }
 
+  async uploadUserAvatar(id: string, avatarUrl:string, user: any){
+    if (user.id !== id && user.role !== Role.ADMIN) {
+      throw new HttpException(
+          "You are not authorized to access this resource",
+          HttpStatus.FORBIDDEN
+      );
+    }
+
+    return await firstValueFrom(
+        this.userService.send(
+            { service: "user", cmd: "uploadAvatar" },
+            { id, avatarUrl }
+        )
+    );
+  }
+
   async deleteUser(id: string, user: any) {
     if (user.id !== id && user.role !== Role.ADMIN) {
       throw new HttpException(

@@ -50,6 +50,14 @@ export class UsersController {
     return this.usersService.deleteUser(id);
   }
 
+  @MessagePattern({service:'user', cmd:'uploadAvatar'})
+  uploadUserAvatar(@Payload() payload: {id: string; avatarUrl:string}) {
+    console.log('uploadImage', payload);
+    const {id, avatarUrl} = payload;
+    return this.usersService.uploadUserAvatar(id, avatarUrl);
+  }
+
+
   @MessagePattern({ service: 'user', cmd: 'updatePassword' })
   updatePassword(
     @Param('id') id: string,
