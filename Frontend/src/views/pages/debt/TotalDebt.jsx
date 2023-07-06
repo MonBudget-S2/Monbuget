@@ -50,9 +50,10 @@ const TotalDebt = ({ isLoading, debts }) => {
   const [totalDebt, setTotalDebt] = useState(0);
 
   useEffect(() => {
-    const updatedTotalDebt = debts.reduce((sum, item) => sum + item.remainingAmount, 0);
+    const updatedTotalDebt = debts.reduce((sum, item) => sum + parseFloat(item.remainingAmount), 0);
     setTotalDebt(updatedTotalDebt);
   }, [debts]);
+  
 
   return (
     <>
