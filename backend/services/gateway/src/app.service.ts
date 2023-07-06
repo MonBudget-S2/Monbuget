@@ -6,6 +6,8 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
+import {MailService} from "./mail/mail.service";
+import {JwtService} from "@nestjs/jwt";
 
 @Injectable()
 export class AppService {
@@ -24,9 +26,15 @@ export class AppService {
   constructor(
     @Inject("USER_SERVICE") private readonly authService: ClientProxy,
     @Inject("USER_SERVICE") private readonly userService: ClientProxy,
+    private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
   ) // @Inject("BUDGET_SERVICE") private readonly budgetService: ClientProxy
 
   {}
+
+  private createToken(payload){
+      return this.jwtService.sign(payload);
+  }
 
   async login(data: { username: string; password: string }) {
     Logger.log("Login request", "***********AppService***********");
@@ -44,9 +52,19 @@ export class AppService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    return await firstValueFrom(
+    const res =  await firstValueFrom(
       this.userService.send({ service: "auth", cmd: "register" }, createUserDto)
     );
+    if (res.message =="User registered successfully")
+    {
+        const payload = {
+          username: createUserDto.username
+        };
+        const token = this.createToken(payload);
+
+        await this.mailService.sendUserConfirmation(createUserDto.username,createUserDto.email,token);
+    }
+    return res;
   }
 
   // Other API Gateway methods...
