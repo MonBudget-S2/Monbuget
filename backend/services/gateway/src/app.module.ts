@@ -24,11 +24,11 @@ import { DebtModule } from "./debts/debt.module";
         },
       },
       {
-        name: "DEBT_SERVICE",
+        name: "MEETING_SERVICE",
         transport: Transport.TCP,
         options: {
-          host: "challenge-debts-service",
-          port: 3008,
+          host: "challenge-meetings-service",
+          port: 3011,
         },
       },
     ]),

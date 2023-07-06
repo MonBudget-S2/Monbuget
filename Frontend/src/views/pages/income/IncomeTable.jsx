@@ -59,8 +59,7 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
     const income = incomes.find((income) => income.id === id);
     income.date = format(parseISO(income.date), 'yyyy-MM-dd');
     setEditingIncome(income); // Set the editing income data
-    setIsIncomeChanged(true);
-
+    // setIsIncomeChanged(true);
     setIsAddFormOpen(true); // Open the form
   };
 

@@ -5,18 +5,14 @@ import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 import DataTable from 'ui-component/table/DataTable';
-import BudgetParicipantExpenseDate from "./BudgetParicipantExpenseDate";
 
-const ListeBudgetExpenseCard = ({ isLoading }) => {
-
-
+const ListeBudgetExpenseCard = ({ isLoading, expenses }) => {
     const columns = [
-        { field: 'userName', headerName: 'Participant', width: 200 },
-        { field: 'amount', headerName: 'Montant Dépensé', width: 130 },
-        { field: 'description', headerName: 'description', width: 280  },
-        { field: 'paymentMethod', headerName: 'Méthode de Paiement', width: 180 },
-        { field: 'date', headerName: 'Date', width: 180  },
+        { field: 'userId', headerName: 'Participant ID', width: 200 },
+        { field: 'amountPaid', headerName: 'Montant Dépensé', width: 130 },
+        
     ];
+
 
     return (
         <>
@@ -27,7 +23,7 @@ const ListeBudgetExpenseCard = ({ isLoading }) => {
                     <CardContent>
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}>
-                                <DataTable rows={BudgetParicipantExpenseDate} columns={columns}  />
+                                <DataTable rows={expenses} columns={columns}  />
                             </Grid>
                         </Grid>
                     </CardContent>
@@ -39,6 +35,9 @@ const ListeBudgetExpenseCard = ({ isLoading }) => {
 
 ListeBudgetExpenseCard.propTypes = {
     isLoading: PropTypes.bool,
+    expenses: PropTypes.array.isRequired,
 };
 
 export default ListeBudgetExpenseCard;
+
+

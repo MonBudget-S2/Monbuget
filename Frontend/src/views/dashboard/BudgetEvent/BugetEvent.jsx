@@ -9,6 +9,7 @@ import CustomAlert from 'ui-component/alert/CustomAlert';
 import eventService from 'service/eventService';
 import { format } from 'date-fns';
 import EventInvitation from './EventInvitation';
+import { useNavigate } from 'react-router';
 const BugetEvent = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isBudgetEventChanged, setIsBudgetEventChanged] = useState(false);
@@ -16,10 +17,10 @@ const BugetEvent = () => {
   const [isLoading, setLoading] = useState(true);
   const [events, setEvents] = useState([]);
   const [expenses, setExpenses] = useState([]);
+  const navigate = useNavigate();
 
-  console.log(isBudgetEventChanged);
   const redirecter = (id) => {
-    console.log(id);
+    navigate('/dashboard/budgetEvent/' + id);
   };
 
   const handleClickOpen = () => {
@@ -47,7 +48,7 @@ const BugetEvent = () => {
     getEvents();
     getExpenses();
     setLoading(false);
-  }, []);
+  }, [isBudgetEventChanged]);
 
   return (
     <Grid container alignItems="flex-start" spacing={3}>
@@ -136,11 +137,6 @@ const BugetEvent = () => {
                     <TableRow key={row.id} sx={{ '&:last-child td': { borderBottom: 0 } }}>
                       <TableCell>{row.eventBudget?.name}</TableCell>
                       <TableCell align="center">{row.amountPaid}€</TableCell>
-                      <TableCell align="center">
-                        <Button variant="outlined" color="primary" onClick={() => redirecter(row.id)} sx={{ marginRight: '8px' }}>
-                          Voir
-                        </Button>
-                      </TableCell>
                     </TableRow>
                   ))}
               </TableBody>

@@ -63,10 +63,7 @@ const MainLayout = () => {
     dispatch({ type: SET_MENU, opened: !leftDrawerOpened });
   };
 
-  
-
   return (
-
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       {/* header */}

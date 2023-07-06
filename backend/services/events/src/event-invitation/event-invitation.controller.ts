@@ -22,6 +22,7 @@ export class EventInvitationController {
 
   @MessagePattern({ service: 'eventInvitation', action: 'getAllByUser' })
   getAllEventInvitationsByUser(userId: string) {
+    console.log('getAllEventInvitationsByUser', userId);
     return this.eventInvitationService.getAllByUser(userId);
   }
 

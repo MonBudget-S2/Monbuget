@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto, UpdateUserDto } from './user.request';
+import { Role } from 'src/authentication/authentication.enum';
 
 @Injectable()
 export class UsersService {
@@ -13,14 +14,22 @@ export class UsersService {
   ) {}
 
   async register(createUserDto: CreateUserDto) {
-    // const newUser = this.userRepository.create(createUserDto);
-    // await this.userRepository.save(newUser);
-
     const newUser = this.userRepository.create(createUserDto);
     newUser.password = await bcrypt.hash(createUserDto.password, 10);
     await this.userRepository.save(newUser);
 
     return { message: 'User registered successfully' };
+  }
+  async createAdvisor(createUserDto: CreateUserDto) {
+    console.log('createAdvisor request', createUserDto);
+    const newUser = this.userRepository.create(createUserDto);
+    console.log('newUser', newUser.password);
+    const hashedPassword = await bcrypt.hash(newUser.password, 10);
+    newUser.password = hashedPassword;
+    newUser.role = Role.ADVISOR;
+    await this.userRepository.save(newUser);
+
+    return newUser;
   }
 
   // async findByEmail(email: string): Promise<User | undefined> {
@@ -41,6 +50,10 @@ export class UsersService {
 
   public getUserById(id: string) {
     return this.userRepository.findOneBy({ id });
+  }
+
+  public getUsersByRole(role: Role) {
+    return this.userRepository.find({ where: { role } });
   }
 
   public deleteUser(id: string) {
