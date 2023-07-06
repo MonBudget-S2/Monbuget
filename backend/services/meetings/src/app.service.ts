@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Meeting } from './meeting.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { RpcException } from '@nestjs/microservices';
 import {
   CreateMeetingDto,
@@ -10,7 +10,29 @@ import {
   UpdateScheduleDto,
 } from './meeting.request';
 import { Schedule } from './schedule.entity';
-import { DayOfWeek } from './meeting.enum';
+import { DayOfWeek, MeetingRequestStatus } from './meeting.enum';
+import {
+  addDays,
+  addHours,
+  addWeeks,
+  eachDayOfInterval,
+  endOfDay,
+  endOfWeek,
+  format,
+  getHours,
+  getMinutes,
+  getSeconds,
+  isAfter,
+  isBefore,
+  isSameDay,
+  isSameHour,
+  isWithinInterval,
+  parse,
+  set,
+  startOfDay,
+  startOfWeek,
+} from 'date-fns';
+import { enUS } from 'date-fns/locale';
 
 @Injectable()
 export class AppService {
@@ -147,5 +169,91 @@ export class AppService {
     }
     return { message: 'Schedules updated successfully' };
     // ...
+  }
+
+  async getAvailabilityForAppointment(advisorId: string): Promise<Date[]> {
+    const schedules = await this.scheduleRepository.find({
+      where: { advisorId },
+    });
+
+    const startDate = startOfWeek(new Date());
+    const endDate = endOfWeek(addWeeks(startDate, 2));
+
+    const availability: Date[] = [];
+
+    const currentDate = startDate;
+    const bookedMeetings = await this.meetingRepository.find({
+      where: {
+        advisorId,
+        status: MeetingRequestStatus.ACCEPTED,
+        startTime: Between(startOfDay(startDate), endOfDay(endDate)),
+      },
+    });
+
+    console.log('bookedMeetings', bookedMeetings);
+
+    while (currentDate <= endDate) {
+      const currentDayOfWeek = format(currentDate, 'EEEE', {
+        locale: enUS,
+      });
+
+      const currentSchedule = schedules.find(
+        (schedule) => schedule.dayOfWeek === currentDayOfWeek,
+      );
+
+      if (currentSchedule) {
+        const startTime = parse(
+          currentSchedule.startTime,
+          'HH:mm:ss',
+          new Date(),
+        );
+        const endTime = parse(currentSchedule.endTime, 'HH:mm:ss', new Date());
+
+        const slots: Date[] = [];
+        let currentTime = set(currentDate, {
+          hours: getHours(startTime),
+          minutes: getMinutes(startTime),
+          seconds: getSeconds(startTime),
+        });
+
+        while (
+          isBefore(
+            currentTime,
+            set(currentDate, {
+              hours: getHours(endTime),
+              minutes: getMinutes(endTime),
+              seconds: getSeconds(endTime),
+            }),
+          )
+        ) {
+          if (isAfter(currentTime, new Date())) {
+            // Exclude past date and time slots
+            slots.push(currentTime);
+          }
+          currentTime = addHours(currentTime, 1);
+        }
+
+        const currentDateMeetings = bookedMeetings.filter((meeting) =>
+          isSameDay(new Date(meeting.startTime), currentDate),
+        );
+
+        const availableSlots = slots.filter((slot) => {
+          return !currentDateMeetings.some((meeting) => {
+            const meetingStartTime = new Date(meeting.startTime);
+            const meetingEndTime = new Date(meeting.endTime);
+            return isWithinInterval(slot, {
+              start: meetingStartTime,
+              end: meetingEndTime,
+            });
+          });
+        });
+
+        availability.push(...availableSlots);
+      }
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return availability;
   }
 }

@@ -52,6 +52,13 @@ export class AppController {
     return this.appService.deleteMeeting(id);
   }
 
+  @MessagePattern({
+    service: 'meeting',
+    action: 'getAvailabilityForAppointment',
+  })
+  getAvailablityForAppointment(advisorId: string) {
+    return this.appService.getAvailabilityForAppointment(advisorId);
+  }
   /**** Schedules  ****/
 
   @MessagePattern({ service: 'meeting', action: 'createSchedule' })

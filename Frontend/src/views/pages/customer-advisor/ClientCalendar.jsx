@@ -5,7 +5,6 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import moment from 'moment';
 import 'moment/locale/fr';
-import ScheduleDialog from './ScheduleDialog';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import { useEffect } from 'react';
@@ -17,6 +16,8 @@ const PlanningCalendar = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isLoading, setIsLoading] = useState(true);
   const [meetings, setMeetings] = useState([]);
+
+  console.log(isLoading);
 
   const handleDialogOpen = () => {
     setOpenDialog(true);

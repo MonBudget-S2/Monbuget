@@ -151,6 +151,15 @@ export class AppService {
     );
   }
 
+  async getAvailabilityForAppointment(advisorId: string) {
+    return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "getAvailabilityForAppointment" },
+        advisorId
+      )
+    );
+  }
+
   async getAdvisorSchedule(advisorId: string) {
     return await firstValueFrom(
       this.meetingService.send(

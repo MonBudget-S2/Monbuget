@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogActions } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, DialogTitle, Button } from '@mui/material';
 import React from 'react';
 
 export default function AppointementDialog({ isOpen, handleClose, setAlertMessage, isLoading }) {

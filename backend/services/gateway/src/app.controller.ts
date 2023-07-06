@@ -1,4 +1,12 @@
-import { Controller, Get, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { AppService } from "./app.service";
 import {
@@ -78,6 +86,15 @@ export class AppController {
   @HasRole(Role.ADVISOR)
   approveMeeting(@Payload() data: { id: string }) {
     return this.appService.approveMeeting(data.id);
+  }
+
+  @Get("advisors/:id/availability-for-appointment")
+  @AuthenticationRequired()
+  getAvailabilityForAppointment(
+    @Param("id") id: string,
+    @Req() request: CustomRequest
+  ) {
+    return this.appService.getAvailabilityForAppointment(id);
   }
 
   @Get("advisors/schedules")
