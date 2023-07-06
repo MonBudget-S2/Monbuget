@@ -56,11 +56,11 @@ const PlanningCalendar = () => {
       const startTime = moment(meeting.startTime).toDate();
       const endTime = moment(meeting.endTime).toDate();
       events.push({
-        title: `Meeting with ${meeting.advisor?.username}`,
+        title: meeting.status === 'pending' ? `Rdv en attente ` : `Rdv avec ${meeting.client?.username}`,
         start: startTime,
         end: endTime,
         allDay: false,
-        backgroundColor: 'red', // Different color for meetings
+        backgroundColor: meeting.status === 'pending' ? '#FFC107' : '#4CAF50',
         extendedProps: {
           meetingId: meeting.id,
           advisorId: meeting.advisorId,
