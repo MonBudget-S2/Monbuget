@@ -78,6 +78,8 @@ export class AppController {
       data.clientId = request.user.id;
     }
 
+    console.log("data", data);
+
     return this.appService.createMeeting(
       data.startTime,
       data.advisorId,
@@ -88,6 +90,8 @@ export class AppController {
   @Get("meetings/:id")
   @AuthenticationRequired()
   getMeeting(@Param("id") id: string, @Req() request: CustomRequest) {
+    console.log("id", id);
+    console.log("**************", request.user);
     return this.appService.getMeetingById(id, request.user);
   }
 

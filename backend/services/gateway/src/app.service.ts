@@ -152,7 +152,7 @@ export class AppService {
     const meeting = await firstValueFrom(
       this.meetingService.send(
         { service: "meeting", action: "getMeetingById" },
-        { meetingId, advisorId: user.id }
+        meetingId
       )
     );
     if (!meeting) {
@@ -165,6 +165,7 @@ export class AppService {
         HttpStatus.UNAUTHORIZED
       );
     }
+    return meeting;
   }
 
   async approveMeeting(meetingId: string) {
