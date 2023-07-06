@@ -27,6 +27,12 @@ export class DebtController {
     return this.debtService.getAllDebts(user);
   }
 
+  @Get("received")
+  async getAllReceivedDebts(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.debtService.getAllReceivedDebts(user);
+  }
+
   @Get(":id")
   async getDebtById(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;

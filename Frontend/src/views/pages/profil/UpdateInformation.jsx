@@ -64,19 +64,23 @@ const UpdateInformation = () => {
     };
     const handleSaveClick = async () => {
         try {
-            const response = await userService.update(user?.id, {
+            const res = await userService.update(user?.id, {
                 firstname: editedUser.firstname,
-                lastName: editedUser.lastName,
+                lastname: editedUser.lastName,
                 username: editedUser.username,
                 email: editedUser.email,
             });
-
+            console.log("zad",res);
            // Ignorer la réponse en utilisant une variable `_`
-            _= response;
+
 
         setAlertMessage({ open: true, type: 'success', message: 'Modification prise en compte' });
         } catch (error) {
-            setAlertMessage({ open: true, type: 'error', message: error.response.data.message });
+            if (error.response && error.response.data) {
+                setAlertMessage({ open: true, type: 'error', message: error.response.data.message });
+            } else {
+                setAlertMessage({ open: true, type: 'error', message: "Une erreur s'est produite lors de la modification" });
+                }
         }
     };
 

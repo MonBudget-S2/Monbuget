@@ -15,8 +15,8 @@ import {
   AuthenticationRequired,
   CurrentUser,
   HasRole,
-} from "src/authentication/authentication.decorator";
-import { Role } from "src/authentication/authentication.enum";
+} from "../authentication/authentication.decorator";
+import { Role } from "../authentication/authentication.enum";
 import {FileInterceptor} from "@nestjs/platform-express";
 import { Express } from 'express';
 import { extname } from 'path';

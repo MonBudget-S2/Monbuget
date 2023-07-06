@@ -33,7 +33,7 @@ export class AppController {
     return this.appService.getAllMeetingsByClient(clientId);
   }
 
-  @MessagePattern({ service: 'meeting', action: 'getById' })
+  @MessagePattern({ service: 'meeting', action: 'getMeetingById' })
   getMeetingById(id: string) {
     return this.appService.getMeetingById(id);
   }
@@ -45,6 +45,12 @@ export class AppController {
     const { id, updateMeetingDto } = payload;
     console.log('updateMeetingDto', updateMeetingDto);
     return this.appService.updateMeeting(id, updateMeetingDto);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'createRoom' })
+  createRoom(meetingId: string) {
+    console.log('createRoom', meetingId);
+    return this.appService.createRoom(meetingId);
   }
 
   @MessagePattern({ service: 'meeting', action: 'delete' })
@@ -59,6 +65,19 @@ export class AppController {
   getAvailablityForAppointment(advisorId: string) {
     return this.appService.getAvailabilityForAppointment(advisorId);
   }
+
+  /****  video ***/
+  @MessagePattern({ service: 'meeting', action: 'generateMeetingToken' })
+  generateVideoToken(meetingId: string) {
+    return this.appService.generateVideoToken(meetingId);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'validateMeetingToken' })
+  validateMeeting(@Payload() payload: { meetingId: string; token: string }) {
+    const { meetingId, token } = payload;
+    return this.appService.validateMeeting(meetingId, token);
+  }
+
   /**** Schedules  ****/
 
   @MessagePattern({ service: 'meeting', action: 'createSchedule' })

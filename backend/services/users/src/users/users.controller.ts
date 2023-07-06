@@ -67,4 +67,10 @@ export class UsersController {
     const { oldPassword, newPassword } = body;
     return this.usersService.updatePassword(id, oldPassword, newPassword);
   }
+
+  @MessagePattern({ service:'user', cmd:'verifyUser'})
+  verifyUser(id){
+    console.log("partne",id);
+    return this.usersService.verifyUser(id);
+  }
 }

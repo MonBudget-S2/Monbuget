@@ -94,9 +94,24 @@ const ListCategoricalBudget = ({
 
   const columns = [
     { field: 'name', headerName: 'Nom du budget', width: 200 },
-    { field: 'amount', headerName: 'Montant alloué', width: 130 },
-    { field: 'startDate', headerName: 'Débute le', width: 180 },
-    { field: 'endDate', headerName: 'Se termine le', width: 180 },
+    {
+      field: 'amount',
+      headerName: 'Montant',
+      flex: 1,
+      valueFormatter: (params) => `${params.value}€`
+    },
+    {
+      field: 'startDate',
+      headerName: 'Débuté le',
+      flex: 1,
+      valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
+    },
+    {
+      field: 'endDate',
+      headerName: 'Se termine',
+      flex: 1,
+      valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
+    },
     {
       field: 'category',
       headerName: 'Catégorie',

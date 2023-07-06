@@ -1,4 +1,11 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger, NotFoundException, UnauthorizedException,
+} from "@nestjs/common";
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -6,6 +13,9 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom, lastValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
+import {MailService} from "./mail/mail.service";
+import {JwtService} from "@nestjs/jwt";
+import {UserService as userServ} from "./users/user.service";
 import { Role } from "./authentication/authentication.enum";
 import { DayOfWeek, MeetingRequestStatus } from "./meeting.enum";
 import { UpdateScheduleDto } from "./meeting.request";
@@ -15,8 +25,18 @@ export class AppService {
   constructor(
     @Inject("USER_SERVICE") private readonly authService: ClientProxy,
     @Inject("USER_SERVICE") private readonly userService: ClientProxy,
-    @Inject("MEETING_SERVICE") private readonly meetingService: ClientProxy
-  ) {}
+    @Inject("MEETING_SERVICE") private readonly meetingService: ClientProxy,
+    private readonly mailService: MailService,
+    private readonly jwtService: JwtService,
+    private readonly userServ: userServ,
+  ) // @Inject("BUDGET_SERVICE") private readonly budgetService: ClientProxy
+
+  {}
+
+
+  private createToken(payload){
+      return this.jwtService.sign(payload);
+  }
 
   async login(data: { username: string; password: string }) {
     Logger.log("Login request", "***********AppService***********");
@@ -34,9 +54,43 @@ export class AppService {
   }
 
   async register(createUserDto: CreateUserDto) {
-    return await firstValueFrom(
+    const res =  await firstValueFrom(
       this.userService.send({ service: "auth", cmd: "register" }, createUserDto)
     );
+    if (res.message =="User registered successfully")
+    {
+        const payload = {
+          username: createUserDto.username
+        };
+        const token = this.createToken(payload);
+
+        await this.mailService.sendUserConfirmation(createUserDto.username,createUserDto.email,token);
+    }
+    return res;
+  }
+
+  async confirmEmailAddress(token:string){
+    try {
+      const result = await this.jwtService.verify(token);
+      if (typeof result !== "object" || !result.username || typeof result.username !== "string")
+      {
+        throw new UnauthorizedException('invalid token')
+      }
+      const user = await this.userServ.getUserByUsername(result.username);
+      if (user){
+        return this.userServ.verifyUser(user.id);
+      }
+      else {
+        throw new UnauthorizedException('invalid token')
+      }
+
+    }
+    catch (e)
+    {
+      throw new NotFoundException('Erreur de url');
+    }
+
+
   }
 
   // Other API Gateway methods...
@@ -111,36 +165,138 @@ export class AppService {
   }
 
   async getAllMeetingsByUser(user) {
+    let meetings = [];
     if (user.role === Role.ADVISOR) {
-      return await firstValueFrom(
+      meetings = await firstValueFrom(
         this.meetingService.send(
           { service: "meeting", action: "getAllMeetingsByAdvisor" },
           user.id
         )
       );
     } else {
-      return await firstValueFrom(
+      meetings = await firstValueFrom(
         this.meetingService.send(
           { service: "meeting", action: "getAllMeetingsByClient" },
           user.id
         )
       );
     }
+    const meetingPromises = meetings.map(async (meeting) => {
+      const advisor = await firstValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          meeting.advisorId
+        )
+      );
+      const client = await firstValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          meeting.clientId
+        )
+      );
+      meeting.advisor = advisor;
+      meeting.client = client;
+      return meeting;
+    });
+    return await Promise.all(meetingPromises);
   }
 
-  async createMeeting(data: {
-    startTime: Date;
-    endTime: Date;
-    advisorId: string;
-    clientId: string;
-  }) {
+  async createMeeting(startTime: Date, advisorId: string, clientId: string) {
+    const data: any = {
+      startTime,
+      advisorId,
+      clientId,
+    };
+    const endTime = new Date(data.startTime);
+    endTime.setHours(endTime.getHours() + 1);
+    data.endTime = endTime;
     return await firstValueFrom(
       this.meetingService.send({ service: "meeting", action: "create" }, data)
     );
   }
 
-  async approveMeeting(meetingId: string) {
+  async getMeetingById(meetingId: string, user) {
+    const meeting = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "getMeetingById" },
+        meetingId
+      )
+    );
+    if (!meeting) {
+      throw new HttpException("Meeting not found", HttpStatus.NOT_FOUND);
+    }
+
+    if (meeting.clientId !== user.id && meeting.advisorId !== user.id) {
+      throw new HttpException(
+        "You are not authorized to view this meeting",
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+
+    const advisor = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        meeting.advisorId
+      )
+    );
+
+    const client = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        meeting.clientId
+      )
+    );
+
+    meeting.advisor = advisor;
+    meeting.client = client;
+
+    return meeting;
+  }
+
+  getMeetingToken = async (meetingId: string, user) => {
+    const meeting = await this.getMeetingById(meetingId, user);
+    if (meeting.status !== MeetingRequestStatus.ACCEPTED) {
+      throw new HttpException(
+        "Meeting is not approved yet",
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+    //check meetig starttime is less than current time - 15 min
+    // const startTime = new Date(meeting.startTime);
+    // const currentTime = new Date();
+    // const diff = (startTime.getTime() - currentTime.getTime()) / 1000;
+    // const diffInMinutes = Math.abs(Math.round(diff / 60));
+    // if (diffInMinutes > 15) {
+    //   throw new HttpException(
+    //     "Meeting is not started yet",
+    //     HttpStatus.UNAUTHORIZED
+    //   );
+    // }
+
+    const token = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "generateMeetingToken" },
+        meetingId
+      )
+    );
+    return token;
+  };
+
+  async validateMeetingToken(meetingId: string, token: string, user) {
+    const meeting = await this.getMeetingById(meetingId, user);
     return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "validateMeetingToken" },
+        { meetingId, token }
+      )
+    );
+  }
+
+  async approveMeeting(meetingId: string, user) {
+    console.log(meetingId);
+    const meeting = await this.getMeetingById(meetingId, user);
+    console.log("************************************");
+    const approved = await firstValueFrom(
       this.meetingService.send(
         { service: "meeting", action: "update" },
         {
@@ -149,6 +305,17 @@ export class AppService {
         }
       )
     );
+
+    const room = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "createRoom" },
+        meetingId
+      )
+    );
+    console.log("ROOM", room);
+    console.log("test******************", approved);
+
+    return approved;
   }
 
   async getAvailabilityForAppointment(advisorId: string) {

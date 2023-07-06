@@ -35,8 +35,18 @@ const IncomeTable = ({ setAlertMessage, setIsIncomeChanged, isAddFormOpen, setIs
 
   const columns = [
     { field: 'type', headerName: 'Type de revenus', flex: 1 },
-    { field: 'amount', headerName: 'Montant', flex: 1 },
-    { field: 'date', headerName: 'Date', flex: 1 },
+    {
+      field: 'amount',
+      headerName: 'Montant du revenu',
+      flex: 1,
+      valueFormatter: (params) => `${params.value}€`
+    },
+    {
+      field: 'date',
+      headerName: 'Date de réception',
+      flex: 1,
+      valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
+    },
     {
       field: 'actions',
       sortable: false,

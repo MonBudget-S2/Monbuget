@@ -25,6 +25,7 @@ import ClientCalendar from 'views/pages/customer-advisor/ClientCalendar';
 import BudgetEvent from 'views/dashboard/BudgetEvent/BugetEvent';
 import BugetEventPartage from 'views/dashboard/BudgetEvent/BudgetEventPartage';
 import MeetingPage from 'views/pages/video/MeetingPage';
+import MeetingVideo from 'views/pages/customer-advisor/MeetingVideo';
 /*
 import BudgetEventShow from 'views/dashboard/BudgetEvent/BudgetEventShow'
 */
@@ -130,7 +131,7 @@ const MainRoutes = {
       element: <Profil />
     },
     {
-      path: 'planning',
+      path: 'advisor/planning',
       element: <PlanningCalendar />
     },
 
@@ -145,6 +146,14 @@ const MainRoutes = {
     {
       path: 'meeting/:meetingId',
       element: <MeetingPage />
+    },
+    {
+      path: 'meeting/video/:meetingId',
+      element: <MeetingVideo />
+    },
+    {
+      path: 'advisor/meeting/video/:meetingId',
+      element: <MeetingVideo />
     }
 
     // {

@@ -7,16 +7,30 @@ import { meetingService } from 'service/meetingService';
 //   new Date('2023-07-06T11:00:00.000Z')
 //   // ...
 // ];
-export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage }) {
+export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage, setIsMeetingChanged }) {
   const [isLoading, setIsLoading] = useState(false);
   const [availability, setAvailability] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [advisors, setAdvisors] = useState([]);
+
+  useEffect(() => {
+    const fetchAdvisors = async () => {
+      const res = await meetingService.getAdvisors();
+      if (res.status === 200) {
+        setAdvisors(res.data);
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la récupération des conseillers.' });
+      }
+    };
+    fetchAdvisors();
+  }, []);
 
   useEffect(() => {
     // Simulating API call to fetch availability
     const fetchAvailability = async () => {
       setIsLoading(true);
-      const advisorId = 'eea473e1-f0d6-4d46-8306-7e8bee1dea86';
+      // const advisorId = 'eea473e1-f0d6-4d46-8306-7e8bee1dea86';
+      const advisorId = advisors[0].id;
       const res = await meetingService.getAvailableSlotsForAppointment(advisorId);
       if (res.status === 200) {
         setAvailability(res.data);
@@ -36,10 +50,23 @@ export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage
     setSelectedSlot(slot);
   };
 
-  const handleRequestAppointment = () => {
+  const handleRequestAppointment = async () => {
     if (selectedSlot) {
       // Perform appointment booking logic here
       console.log('Selected slot:', selectedSlot);
+      const dataToSend = {
+        advisorId: 'eea473e1-f0d6-4d46-8306-7e8bee1dea86',
+        startTime: selectedSlot
+      };
+      const res = await meetingService.requestMeeting(dataToSend);
+      if (res.status === 201) {
+        console.log('res.data', res.data);
+        handleClose();
+        setIsMeetingChanged(true);
+        setAlertMessage({ open: true, type: 'success', message: 'Votre demande de rendez-vous a été envoyée avec succès.' });
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la demande de rendez-vous.' });
+      }
       // ...
     } else {
       setAlertMessage('Please select a slot');

@@ -70,10 +70,13 @@ export class UsersService {
     updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
     const user = await this.userRepository.findOneByOrFail({ id });
+    console.log("user",user);
+    console.log("dto",updateUserDto);
     const updatedUser = await this.userRepository.save({
       ...user,
       ...updateUserDto,
     });
+    console.log("res",updatedUser)
 
     return updatedUser;
   }
@@ -101,5 +104,14 @@ export class UsersService {
     });
 
     return updatedUser;
+  }
+
+  async verifyUser(id:string){
+    const user = await this.userRepository.findOneByOrFail({id});
+    user.isVerified = true;
+    console.log(user);
+    console.log("id",id);
+    const upadte = await this.userRepository.save(user);
+    return upadte;
   }
 }

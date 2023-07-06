@@ -15,17 +15,16 @@ const createMeeting = async (token) => {
   return roomId;
 };
 
-// const API_BASE_URL = process.env.REACT_APP_SERVER_URL;
-
 // // API call to generate authentication token
-// export const getToken = async () => {
-//   const res = await fetch(`${API_BASE_URL}/get-token`, {
-//     method: "GET",
-//   });
+export const getToken = async (meetingId) => {
+  const res = await axiosInstance.get(`/meetings/${meetingId}/token`);
+  return res;
+};
 
-//   const { token } = await res.json();
-//   return token;
-// };
+const validateToken = async (meetingId, data) => {
+  const res = await axiosInstance.post(`/meetings/${meetingId}/validateMeetingToken`, data);
+  return res;
+};
 
 // // API call to create meeting
 // export const createMeeting = async ({ token }) => {
@@ -59,8 +58,22 @@ const getMeetings = async () => {
   return res;
 };
 
+const getMeetingDetails = async (meetingId) => {
+  const res = await axiosInstance.get(`/meetings/${meetingId}`);
+  return res;
+};
 const requestMeeting = async (data) => {
   const res = await axiosInstance.post('/meetings', data);
+  return res;
+};
+
+const getAdvisors = async () => {
+  const res = await axiosInstance.get('/advisors');
+  return res;
+};
+
+const acceptMeetingRequest = async (meetingId) => {
+  const res = await axiosInstance.patch(`/meetings/${meetingId}/approve`);
   return res;
 };
 
@@ -70,5 +83,10 @@ export const meetingService = {
   updateSchedule,
   getMeetings,
   getAvailableSlotsForAppointment,
-  requestMeeting
+  requestMeeting,
+  getMeetingDetails,
+  getAdvisors,
+  acceptMeetingRequest,
+  getToken,
+  validateToken
 };

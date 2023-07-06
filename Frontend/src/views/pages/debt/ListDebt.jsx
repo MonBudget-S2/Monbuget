@@ -47,8 +47,7 @@ const ListDebt = ({ isLoading, debts, setAlertMessage, setIsDebtChanged }) => {
   };
 
   const columns = [
-    { field: 'debtType', headerName: 'Type de dette', width: 200, flex: 1 },
-    { field: 'motif', headerName: 'Motif', width: 200, flex: 1 },
+    
     { field: 'amount', headerName: 'Montant', width: 200, flex: 1 },
     { field: 'remainingAmount', headerName: 'Montant restant', width: 180, flex: 1 },
     { field: 'dueDate', headerName: "Date d'échéance", width: 180, flex: 1 },

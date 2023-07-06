@@ -39,7 +39,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
           }}
         >
           {user && user.role === 'ADVISOR' ? (
-            <Button component={Link} to="/dashboard/planning" variant="contained" color="primary">
+            <Button component={Link} to="/dashboard/advisor/planning" variant="contained" color="primary">
               Planning
             </Button>
           ) : (

@@ -12,7 +12,7 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
-import { Role } from "src/authentication/authentication.enum";
+import { Role } from "../authentication/authentication.enum";
 
 @Injectable()
 export class UserService {
@@ -45,6 +45,15 @@ export class UserService {
     return await firstValueFrom(
       this.userService.send({ service: "user", cmd: "getUserById" }, id)
     );
+  }
+
+  async getUserByUsername(username:string){
+    return await firstValueFrom(this.userService.send({ service:"user",cmd:"getUserByUsername"},username))
+  }
+
+  async verifyUser(id){
+    console.log('did',id);
+    return await firstValueFrom(this.userService.send({ service:"user", cmd:"verifyUser"},id));
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto, user: any) {

@@ -119,7 +119,7 @@ export class EventController {
     );
   }
 
-  @Post(":id/finish")
+  @Patch(":id/finish")
   markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.markEventAsFinished(id, user);

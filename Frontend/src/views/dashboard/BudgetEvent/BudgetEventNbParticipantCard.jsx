@@ -70,7 +70,7 @@ const BudgetEventNbParticipantCard = ({ isLoading,NbParticipant }) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={<Typography variant="h4">Nombre Participant</Typography>}
+                                    primary={<Typography variant="h4">Total des participants</Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"

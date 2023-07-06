@@ -1,3 +1,4 @@
+
 import {
   Controller,
   Get,
@@ -39,6 +40,11 @@ export class AppController {
     return this.appService.register(createUserDto);
   }
 
+  @Post('users/confirm/:token')
+  confirmEmailAddress(@Param('token') token:string){
+    return this.appService.confirmEmailAddress(token);
+  }
+
   // Other API Gateway methods...
 
   @Post("/advisors")
@@ -67,9 +73,8 @@ export class AppController {
     @Payload()
     data: {
       startTime: Date;
-      endTime: Date;
-      advisorId: string;
-      clientId: string;
+      advisorId?: string;
+      clientId?: string;
     },
     @Req() request: CustomRequest
   ): Promise<any> {
@@ -78,14 +83,45 @@ export class AppController {
     } else if (request.user.role == Role.USER) {
       data.clientId = request.user.id;
     }
-    return this.appService.createMeeting(data);
+
+    console.log("data", data);
+
+    return this.appService.createMeeting(
+      data.startTime,
+      data.advisorId,
+      data.clientId
+    );
+  }
+
+  @Get("meetings/:id")
+  @AuthenticationRequired()
+  getMeeting(@Param("id") id: string, @Req() request: CustomRequest) {
+    console.log("id", id);
+    console.log("**************", request.user);
+    return this.appService.getMeetingById(id, request.user);
+  }
+
+  @Get("meetings/:id/token")
+  @AuthenticationRequired()
+  getMeetingToken(@Param("id") id: string, @Req() request: CustomRequest) {
+    return this.appService.getMeetingToken(id, request.user);
+  }
+
+  @Post("meetings/:id/validateMeetingToken")
+  @AuthenticationRequired()
+  validateMeetingToken(
+    @Param("id") id: string,
+    @Payload() data: { token: string },
+    @Req() request: CustomRequest
+  ) {
+    return this.appService.validateMeetingToken(id, data.token, request.user);
   }
 
   @Patch("meetings/:id/approve")
   @AuthenticationRequired()
   @HasRole(Role.ADVISOR)
-  approveMeeting(@Payload() data: { id: string }) {
-    return this.appService.approveMeeting(data.id);
+  approveMeeting(@Param("id") id: string, @Req() request: CustomRequest) {
+    return this.appService.approveMeeting(id, request.user);
   }
 
   @Get("advisors/:id/availability-for-appointment")
