@@ -57,10 +57,13 @@ export class UsersService {
     updateUserDto: UpdateUserDto,
   ): Promise<User | null> {
     const user = await this.userRepository.findOneByOrFail({ id });
+    console.log("user",user);
+    console.log("dto",updateUserDto);
     const updatedUser = await this.userRepository.save({
       ...user,
       ...updateUserDto,
     });
+    console.log("res",updatedUser)
 
     return updatedUser;
   }

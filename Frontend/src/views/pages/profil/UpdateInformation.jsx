@@ -64,19 +64,18 @@ const UpdateInformation = () => {
     };
     const handleSaveClick = async () => {
         try {
-             await userService.update(user?.id, {
+            const res = await userService.update(user?.id, {
                 firstname: editedUser.firstname,
                 lastName: editedUser.lastName,
                 username: editedUser.username,
                 email: editedUser.email,
             });
-
+            console.log("zad",res);
            // Ignorer la réponse en utilisant une variable `_`
 
 
         setAlertMessage({ open: true, type: 'success', message: 'Modification prise en compte' });
         } catch (error) {
-            console.log(error);
             if (error.response && error.response.data) {
                 setAlertMessage({ open: true, type: 'error', message: error.response.data.message });
             } else {
