@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -8,9 +8,9 @@ import 'moment/locale/fr';
 import ScheduleDialog from './ScheduleDialog';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import { useEffect } from 'react';
 import { meetingService } from 'service/meetingService';
-
+import PendingRequestsDialog from './PendingRequestDialog';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 const PlanningCalendar = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [schedules, setSchedules] = useState([]);
@@ -18,6 +18,7 @@ const PlanningCalendar = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isScheduleChanged, setIsScheduleChanged] = useState(false);
   const [meetings, setMeetings] = useState([]);
+  const [isPendingRequestsOpen, setIsPendingRequestsOpen] = useState(false);
 
   const handleDialogOpen = () => {
     setOpenDialog(true);
@@ -27,24 +28,34 @@ const PlanningCalendar = () => {
     setOpenDialog(false);
   };
 
+  const handleClosePendingRequests = () => {
+    setIsPendingRequestsOpen(false);
+  };
+
+  const handleOpenPendingRequests = () => {
+    setIsPendingRequestsOpen(true);
+  };
+
   const getCalendarEvents = () => {
     const events = [];
 
     for (let i = 0; i < meetings.length; i++) {
       const meeting = meetings[i];
-      const startTime = moment(meeting.date).toDate();
-      const endTime = moment(meeting.date).add(1, 'hour').toDate();
+      const startTime = moment(meeting.startTime).toDate();
+      const endTime = moment(meeting.endTime).toDate();
 
       events.push({
-        title: `Meeting with ${meeting.clientId}`,
+        title: `Meeting with ${meeting.client?.username}`,
         start: startTime,
         end: endTime,
         allDay: false,
         backgroundColor: 'red', // Different color for meetings
         extendedProps: {
-          meetingId: meeting.meetingId,
+          meetingId: meeting.id,
           advisorId: meeting.advisorId,
-          clientId: meeting.clientId
+          clientId: meeting.clientId,
+          client: meeting.client,
+          advisor: meeting.advisor
         }
       });
     }
@@ -66,6 +77,10 @@ const PlanningCalendar = () => {
       if (response.status === 200) {
         const meetingsData = response.data;
         setMeetings(meetingsData);
+
+        // Filter pending requests
+        const pendingRequestsData = meetingsData.filter((meeting) => meeting.status === 'pending');
+        setPendingRequests(pendingRequestsData);
       }
     };
 
@@ -73,6 +88,7 @@ const PlanningCalendar = () => {
     fetchMeetingData();
     setIsLoading(false);
   }, [isScheduleChanged]);
+
   return (
     <Grid container spacing={2}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
@@ -80,6 +96,9 @@ const PlanningCalendar = () => {
       <Grid item xs={12}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
           <h1>Mon Agenda</h1>
+          <Button variant="contained" color="secondary" startIcon={<HourglassBottomIcon />} onClick={handleOpenPendingRequests}>
+            Voir les demandes en attente
+          </Button>
           <Button variant="contained" startIcon={<AccessTimeFilledIcon />} onClick={handleDialogOpen}>
             Voir mon planning
           </Button>
@@ -114,6 +133,9 @@ const PlanningCalendar = () => {
         setIsScheduleChanged={setIsScheduleChanged}
         isLoading={isLoading}
       />
+      {isPendingRequestsOpen && (
+        <PendingRequestsDialog isOpen={isPendingRequestsOpen} handleClose={handleClosePendingRequests} meetings={meetings} />
+      )}
     </Grid>
   );
 };

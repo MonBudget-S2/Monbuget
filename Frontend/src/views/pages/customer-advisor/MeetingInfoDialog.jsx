@@ -3,16 +3,31 @@ import { Dialog, DialogContent, DialogActions, DialogTitle, Button, Typography, 
 import { format } from 'date-fns';
 
 const MeetingInfoDialog = ({ isOpen, handleClose, meetingDetails }) => {
-  const { startTime, endTime, advisor, client } = meetingDetails;
+  const { startTime, endTime, advisor, client, status } = meetingDetails;
 
   const formatDateTime = (dateTime) => {
     return format(new Date(dateTime), 'yyyy-MM-dd HH:mm:ss');
   };
-
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'pending':
+        return 'primary';
+      case 'accepted':
+        return 'success';
+      case 'rejected':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
   return (
     <Dialog open={isOpen} onClose={handleClose}>
       <DialogTitle>Meeting Details</DialogTitle>
       <DialogContent>
+        <Button variant="contained" color={getStatusColor(status)}>
+          {status}
+        </Button>
+
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Typography variant="subtitle1">Start Time:</Typography>

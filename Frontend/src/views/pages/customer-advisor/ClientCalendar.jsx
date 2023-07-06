@@ -52,9 +52,8 @@ const PlanningCalendar = () => {
 
     for (let i = 0; i < meetings.length; i++) {
       const meeting = meetings[i];
-      const startTime = moment(meeting.date).toDate();
-      const endTime = moment(meeting.date).add(1, 'hour').toDate();
-
+      const startTime = moment(meeting.startTime).toDate();
+      const endTime = moment(meeting.endTime).toDate();
       events.push({
         title: `Meeting with ${meeting.advisor?.username}`,
         start: startTime,
