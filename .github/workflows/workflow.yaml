@@ -17,38 +17,6 @@ env:
   PRODUCT_REPO_INCOMES: ${{secrets.PRODUCT_REPO_INCOMES}}
   PRODUCT_REPO_MEETINGS: ${{secrets.PRODUCT_REPO_MEETINGS}}
 jobs:
-  deploy-front:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Zip Folder
-        run: |
-          zip -r frontend.zip . -x ".git/*" ".github/*"  "backend/*"
-      - name: Copy repository contents via scp
-        uses: appleboy/scp-action@master
-        env:
-          HOST: ${{ secrets.HOST_FRONT }}
-          USERNAME: ${{ secrets.USERNAME_FRONT }}
-          PORT: ${{ secrets.PORT_FRONT }}
-          key : ${{ secrets.SSH_KEY }}
-        with:
-          source: "frontend.zip"
-          target: "/root"
-      - name: Unzip Folder
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_FRONT }}
-          username: ${{ secrets.USERNAME_FRONT }}
-          password: ${{ secrets.PASSWORD_FRONT }}
-          port: ${{ secrets.PORT_FRONT }}
-          script: |
-            unzip -o /root/frontend.zip -d /root
-            rm -rf /root/frontend.zip
-            cd /root/frontend/frontend
-            npm install
-            npm run build
-            docker build -t front .
-            docker run -d -p 80:80 front
   create-image-users:
     runs-on: ubuntu-latest
     steps:
