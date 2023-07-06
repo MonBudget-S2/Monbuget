@@ -7,7 +7,6 @@ import SeeAllButton from 'ui-component/buttons/SeeAllButton';
 import { gridSpacing } from 'store/constant';
 import { useEffect } from 'react';
 import debtService from 'service/debtService';
-import { incomeHistoryData } from './income-history-data';
 import { useState } from 'react';
 
 const IncomeHistory = ({ isLoading }) => {
@@ -24,6 +23,7 @@ const IncomeHistory = ({ isLoading }) => {
     };
     fetchData();
   }, []);
+
   return (
     <>
       {isLoading ? (
@@ -35,40 +35,39 @@ const IncomeHistory = ({ isLoading }) => {
               <Grid item xs={12}>
                 <Grid container alignItems="center" justifyContent="space-between">
                   <Grid item>
-                    <Typography variant="h4">Les remboursements reçus des participants </Typography>
+                    <Typography variant="h4">Les remboursements à venir </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12}>
-                {incomeHistoryData.slice(-5).map((income, index) => (
-                  <Grid container direction="column" key={index} sx={{ my: 1 }}>
-                    <Grid item>
-                      <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                          <Typography variant="subtitle1" color="textPrimary" fontWeight="bold">
-                            {income.name}
-                          </Typography>
-                          <Typography variant="body2" color="textSecondary">
-                            {income.category}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="subtitle1" color="success.dark" fontWeight="bold">
-                            {income.amount.toFixed(2)}€
-                          </Typography>
-                          <Typography variant="body2" color="textSecondary">
-                            {new Date(income.date).toLocaleDateString()}
-                          </Typography>
+                {incomeHistory &&
+                  incomeHistory?.length > 0 &&
+                  incomeHistory.slice(-5).map((income, index) => (
+                    <Grid container direction="column" key={index} sx={{ my: 1 }}>
+                      <Grid item>
+                        <Grid container alignItems="center" justifyContent="space-between">
+                          <Grid item>
+                            <Typography variant="subtitle1" color="textPrimary" fontWeight="bold">
+                              {income.debtor.username}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography variant="subtitle1" color="success.dark" fontWeight="bold">
+                              {income.amount}€
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              {new Date(income.dueDate).toLocaleDateString()}
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
+                      {index !== 4 && <Divider sx={{ my: 1.5 }} />}
                     </Grid>
-                    {index !== 4 && <Divider sx={{ my: 1.5 }} />}
-                  </Grid>
-                ))}
+                  ))}
               </Grid>
             </Grid>
           </CardContent>
-          <Grid item>{incomeHistoryData.length > 5 && <SeeAllButton to="/listincomehistory" title="Tout afficher" />}</Grid>
+          <Grid item>{incomeHistory.length > 5 && <SeeAllButton to="/listincomehistory" title="Tout afficher" />}</Grid>
         </MainCard>
       )}
     </>

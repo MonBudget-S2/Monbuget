@@ -7,7 +7,8 @@ import { Role } from "src/authentication/authentication.enum";
 @Injectable()
 export class DebtService {
   constructor(
-    @Inject("DEBT_SERVICE") private readonly debtService: ClientProxy
+    @Inject("DEBT_SERVICE") private readonly debtService: ClientProxy,
+    @Inject("USER_SERVICE") private readonly userService: ClientProxy
   ) {}
 
   async getAllDebts(user) {
@@ -28,18 +29,32 @@ export class DebtService {
 
   async getAllReceivedDebts(user) {
     const isAdmin = user.role === Role.ADMIN;
+    let receivableDebt = [];
     if (isAdmin) {
-      return await firstValueFrom(
+      receivableDebt = await firstValueFrom(
         this.debtService.send({ service: "debt", action: "getAll" }, {})
       );
     } else {
-      return await firstValueFrom(
+      receivableDebt = await firstValueFrom(
         this.debtService.send(
           { service: "debt", action: "getAllByCreditor" },
           user.id
         )
       );
     }
+    //get user details of debtor for each debt
+    const receivableDebtWithUserDetails = await Promise.all(
+      receivableDebt.map(async (debt) => {
+        const debtor = await firstValueFrom(
+          this.userService.send(
+            { service: "user", cmd: "getUserById" },
+            debt.debtorId
+          )
+        );
+        return { ...debt, debtor };
+      })
+    );
+    return receivableDebtWithUserDetails;
   }
 
   async getDebtById(id: string, user) {

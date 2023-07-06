@@ -12,6 +12,7 @@ import IncomeTable from './IncomeTable';
 import AddIncome from './AddIncome';
 import CustomAlert from 'ui-component/alert/CustomAlert';
 import IncomeCard from './IncomeCard';
+import incomeService from 'service/incomeService';
 // import CreateButton from 'ui-component/buttons/CreateButton';
 
 // ==============================|| INCOME PAGE ||============================== //
@@ -23,10 +24,7 @@ const Income = () => {
   const [incomes, setIncomes] = useState([]);
   const [totalIncome, setTotalIncome] = useState(0);
   console.log('incomes', incomes);
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
