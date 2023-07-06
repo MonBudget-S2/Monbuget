@@ -94,8 +94,8 @@ const AuthLogin = ({ ...others }) => {
     <>
       <Formik
         initialValues={{
-          email: 'user1',
-          password: 'user',
+          email: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({

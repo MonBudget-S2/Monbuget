@@ -25,7 +25,6 @@ import { authenticateUser } from 'store/authSlice';
 const App = () => {
   const customization = useSelector((state) => state.customization);
   const [isCheckingToken, setIsCheckingToken] = useState(true);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
