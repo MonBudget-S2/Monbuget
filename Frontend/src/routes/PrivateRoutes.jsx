@@ -24,13 +24,13 @@ const PrivateRoutes = () => {
       return <AdminMainLayout />;
     } else if (user?.role === 'ADVISOR') {
       if (location.pathname === '/dashboard/clientCalendar') {
-        return <Navigate to="/dashboard/planning" />;
+        return <Navigate to="/dashboard/advisor/planning" />;
       }
       return <AdminMainLayout />;
     } else {
       console.log('location', location.pathname);
-      console.log(location.pathname === '/dashboard/planning');
-      if (location.pathname === '/dashboard/planning') {
+      console.log(location.pathname === '/dashboard/advisor/planning');
+      if (location.pathname === '/dashboard/advisor/planning') {
         console.log('planning');
         return <Navigate to="/dashboard/clientCalendar" />;
       }

@@ -130,7 +130,7 @@ const MainRoutes = {
       element: <Profil />
     },
     {
-      path: 'planning',
+      path: 'advisor/planning',
       element: <PlanningCalendar />
     },
 

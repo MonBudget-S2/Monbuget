@@ -170,7 +170,7 @@ const PlanningCalendar = () => {
         />
       )}
       {selectedMeeting !== null && isOpenMeetingInfo && (
-        <MeetingInfoDialog isOpen={isOpenMeetingInfo} handleClose={handleCloseMeetingInfo} meetings={meetings} />
+        <MeetingInfoDialog isOpen={isOpenMeetingInfo} handleClose={handleCloseMeetingInfo} meetingDetails={selectedMeeting} />
       )}
     </Grid>
   );
