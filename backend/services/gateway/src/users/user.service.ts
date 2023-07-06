@@ -12,7 +12,7 @@ import {
 } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { CreateUserDto, UpdateUserDto } from "./user.request";
-import { Role } from "src/authentication/authentication.enum";
+import { Role } from "../authentication/authentication.enum";
 
 @Injectable()
 export class UserService {
