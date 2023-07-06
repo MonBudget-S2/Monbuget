@@ -125,7 +125,8 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                             ...theme.typography.smallAvatar,
                             cursor: 'pointer',
                             backgroundColor: theme.palette.primary[200],
-                            color: theme.palette.primary.dark
+                            color: "#fff"
+
                           }}
                         >
                           <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
@@ -136,7 +137,8 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                           sx={{
                             fontSize: '1rem',
                             fontWeight: 500,
-                            color: theme.palette.primary[200]
+                            color: "#fff"
+
                           }}
                         >
                           Nombre de dépenses {timeValue ? 'mois' : 'année'}

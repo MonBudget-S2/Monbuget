@@ -30,7 +30,7 @@ const getAllExpensesByEventId = async (id) => {
 };
 
 const getAllInvitations = async () => {
-  return await axiosInstance.get(`/events/participant/invitations`);
+  return await axiosInstance.get(`/events/invitations`);
 };
 
 const sendInvitation = async (id, username) => {

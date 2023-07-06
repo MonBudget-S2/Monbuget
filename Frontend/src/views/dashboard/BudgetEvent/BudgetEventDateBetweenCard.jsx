@@ -74,12 +74,12 @@ const BudgetEventDateBetweenCard = ({ isLoading,dateStart,dateEnd }) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            Start Date : { dateStart }
+                                            Début : { dateStart }
                                         </Typography>
                                     }
                                     secondary={
                                         <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            End : { dateEnd}
+                                            Fin : { dateEnd}
                                         </Typography>
                                     }
                                 />

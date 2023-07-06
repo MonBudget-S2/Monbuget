@@ -42,6 +42,12 @@ export class EventController {
     return this.eventService.getAllEvents(user);
   }
 
+  @Get("/invitations")
+  getInvitations(@Req() request: CustomRequest) {
+    const user = request.user;
+    return this.eventService.getInvitations(user);
+  }
+
   @Get(":id")
   getEventById(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
@@ -113,12 +119,7 @@ export class EventController {
     );
   }
 
-  @Get("/invitations")
-  getInvitations(@Req() request: CustomRequest) {
-    const user = request.user;
-    return this.eventService.getInvitations(user);
-  }
-  @Post(":id/finish")
+  @Patch(":id/finish")
   markEventAsFinished(@Param("id") id: string, @Req() request: CustomRequest) {
     const user = request.user;
     return this.eventService.markEventAsFinished(id, user);

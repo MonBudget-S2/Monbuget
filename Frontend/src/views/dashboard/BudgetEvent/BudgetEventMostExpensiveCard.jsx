@@ -33,7 +33,7 @@ const BudgetEventMostExpensiveCard = () => {
                     format: 'dd/MM/yyyy',
                 },
             },
-            colors: [orangeDark]
+            colors: [orangeDark],
         };
         ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart);
     }, [navType, orangeDark]);
@@ -45,16 +45,8 @@ const BudgetEventMostExpensiveCard = () => {
                 <Grid item xs={12}>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="subtitle" sx={{ color: theme.palette.secondary.dark }}>
-                                Dépense la plus chère
-                            </Typography>
-                            <Typography variant="subtitle2" sx={{ color: theme.palette.secondary }}>
-                                Tous Les Dépenses
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant="h4" sx={{ color: theme.palette.grey[800] }}>
-                                en €
+                            <Typography variant="subtitle" sx={{ color: "#000" }}>
+                                Dépenses par jours
                             </Typography>
                         </Grid>
 

@@ -128,7 +128,7 @@ const TotalExpenseByMonth = ({ isLoading, expenses }) => {
                           sx={{
                             fontSize: '1rem',
                             fontWeight: 500,
-                            color: theme.palette.primary[200]
+                            color: "#fff"
                           }}
                         >
                           {timeValue ? "Dépense moyenne par mois de l'année en cours" : "Dépense total de l'année en cours"}

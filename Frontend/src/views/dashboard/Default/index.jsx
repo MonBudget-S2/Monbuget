@@ -4,14 +4,17 @@ import { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 
 // project imports
-import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-import TotalIncomeLightCard from './TotalIncomeLightCard';
 import { gridSpacing } from 'store/constant';
 import IncomeCard from 'views/pages/income/IncomeCard';
 import expenseChartData from 'views/pages/expense/expense-chart-data';
 import incomeChartData from 'views/pages/income/income-chart-data';
 import ExpenseCard from 'views/pages/expense/ExpenseCard';
 import IncomeExpenseChart from './IncomeExpenseChart';
+import AllBudgets from './AllBudgets';
+
+// services
+import eventService from '../../../service/eventService';
+import categoricalBudgetService from '../../../service/categoricalBudgetService';
 
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -20,8 +23,37 @@ const Dashboard = () => {
   const [totalRealExpenses, setTotalRealExpenses] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [totalIncome, setTotalIncome] = useState(0);
+  const [totalBudgetsCategorical, setTotalBudgetsCategorical] = useState(0);
+  const [totalBudgetsEvent, setTotalBudgetsEvent] = useState(0);
+  const [allBudgets, setAllBudgets] = useState(0);
+  
 
   useEffect(() => {
+
+    const fetchBudgetCategorical = async () => {
+      const response = await categoricalBudgetService.getBudgets();
+
+      if (response.status === 200) {
+        setTotalBudgetsCategorical(response.data.length);
+      } else {
+        console.log('Erreur lors de la récupération des budgets catégoriels');
+      }
+    };
+
+    const fetchEventBudget = async () => {
+      const response = await eventService.getEvents();
+
+      if (response.status === 200) {
+        setTotalBudgetsEvent(response.data.length);
+      } else {
+        console.log('Erreur lors de la récupération des budgets catégoriels');
+      }
+    };
+    fetchEventBudget();
+    fetchBudgetCategorical();
+
+
+
     setLoading(false);
 
     const incomes = incomeChartData.series[0].data.reduce((acc, value) => acc + value, 0);
@@ -29,7 +61,12 @@ const Dashboard = () => {
 
     const realExpenses = expenseChartData.series[0].data.reduce((acc, value) => acc + value, 0);
     setTotalRealExpenses(realExpenses);
-  }, []);
+
+    const allBudgetsTotal = totalBudgetsCategorical + totalBudgetsEvent;
+    setAllBudgets(allBudgetsTotal);
+
+
+  }, [totalBudgetsCategorical, totalBudgetsEvent]);
 
   return (
     <Grid container spacing={gridSpacing}>
@@ -48,14 +85,10 @@ const Dashboard = () => {
               total={totalRealExpenses} />
           </Grid>
           <Grid item lg={4} md={12} sm={12} xs={12}>
-            <Grid container spacing={gridSpacing}>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
-                <TotalIncomeDarkCard isLoading={isLoading} />
-              </Grid>
-              <Grid item sm={6} xs={12} md={6} lg={12}>
-                <TotalIncomeLightCard isLoading={isLoading} />
-              </Grid>
-            </Grid>
+          <AllBudgets 
+              isLoading={isLoading}
+              title="Total des budgets crées"
+              total={allBudgets} />
           </Grid>
         </Grid>
       </Grid>

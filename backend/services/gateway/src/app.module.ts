@@ -27,11 +27,11 @@ import {UserService} from "./users/user.service";
         },
       },
       {
-        name: "DEBT_SERVICE",
+        name: "MEETING_SERVICE",
         transport: Transport.TCP,
         options: {
-          host: "challenge-debts-service",
-          port: 3008,
+          host: "challenge-meetings-service",
+          port: 3011,
         },
       },
     ]),

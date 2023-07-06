@@ -69,7 +69,7 @@ const AddBudgetEvent = ({ setAlertMessage, setIsBudgetEventChanged, isAddFormOpe
       >
         {({ errors, handleBlur, handleChange, isSubmitting, handleSubmit, touched, values }) => (
           <DialogForm
-            title={isEditing ? 'Modifier un revenu' : 'Ajouter un revenu'}
+            title={isEditing ? 'Modifier un budget evenementiel' : 'Ajouter un budget evenementiel'}
             isOpen={isAddFormOpen}
             setIsOpen={setIsAddFormOpen}
             onSubmit={handleSubmit}

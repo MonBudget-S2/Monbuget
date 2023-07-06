@@ -17,7 +17,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           port: 3009,
         },
       },
+
+    ],
+    ),
+    ClientsModule.register([
+      {
+          name: "USER_SERVICE",
+          transport: Transport.TCP,
+          options: {
+            host: "challenge-users-service",
+            port: 3002,
+          },
+        },
     ]),
+    
+    
   ],
   controllers: [EventParticipateController],
   providers: [EventParticipateService],
