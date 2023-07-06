@@ -59,6 +59,19 @@ export class AppController {
   getAvailablityForAppointment(advisorId: string) {
     return this.appService.getAvailabilityForAppointment(advisorId);
   }
+
+  /****  video ***/
+  @MessagePattern({ service: 'meeting', action: 'generateToken' })
+  generateVideoToken(meetingId: string) {
+    return this.appService.generateVideoToken(meetingId);
+  }
+
+  @MessagePattern({ service: 'meeting', action: 'validateMeeting' })
+  validateMeeting(@Payload() payload: { meetingId: string; token: string }) {
+    const { meetingId, token } = payload;
+    return this.appService.validateMeeting(meetingId, token);
+  }
+
   /**** Schedules  ****/
 
   @MessagePattern({ service: 'meeting', action: 'createSchedule' })

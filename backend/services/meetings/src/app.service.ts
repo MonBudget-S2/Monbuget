@@ -33,6 +33,11 @@ import {
   startOfWeek,
 } from 'date-fns';
 import { enUS } from 'date-fns/locale';
+import * as jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
+
+dotenv.config();
 
 @Injectable()
 export class AppService {
@@ -42,6 +47,8 @@ export class AppService {
     @InjectRepository(Schedule)
     private scheduleRepository: Repository<Schedule>,
   ) {}
+  private readonly API_KEY = process.env.API_KEY;
+  private readonly SECRET_KEY = process.env.SECRET_KEY;
 
   async createMeeting(createMeetingDto: CreateMeetingDto): Promise<any> {
     const newMeeting = this.meetingRepository.create(createMeetingDto);
@@ -87,6 +94,47 @@ export class AppService {
   async deleteMeeting(id: string): Promise<boolean> {
     const result = await this.meetingRepository.delete(id);
     return result.affected > 0;
+  }
+
+  /***** Video *****/
+
+  async generateVideoToken(meetingId: string): Promise<any> {
+    const token = jwt.sign(
+      {
+        apikey: this.API_KEY,
+        permissions: ['allow_join'],
+      },
+      this.SECRET_KEY,
+      {
+        algorithm: 'HS256',
+        expiresIn: '24h',
+        jwtid: uuidv4(),
+      },
+    );
+
+    return token;
+  }
+
+  async validateMeeting(meetingId: string, token: string): Promise<any> {
+    const meeting = await this.getMeetingById(meetingId);
+    if (!meeting) {
+      throw new Error('Meeting not found');
+    }
+
+    const decodedToken: any = jwt.verify(token, this.SECRET_KEY);
+
+    if (decodedToken.apikey !== this.API_KEY) {
+      throw new Error('Invalid API key');
+    }
+
+    if (!decodedToken.permissions.includes('allow_join')) {
+      throw new Error('Insufficient permissions');
+    }
+
+    return {
+      meetingId: meeting.id,
+      isValid: true,
+    };
   }
 
   /**** Schedules  ****/
