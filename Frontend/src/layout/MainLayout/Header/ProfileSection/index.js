@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
+  Avatar,
   Box,
   Chip,
   ClickAwayListener,
@@ -34,6 +35,8 @@ import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
 import { authenticateUser, getUser } from 'store/authSlice';
 import { initialState } from 'store/customizationReducer';
 import BackgroundLetterAvatars from 'ui-component/avatar/BackgroundLetterAvatar';
+import userService from "../../../../service/userService";
+
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -43,7 +46,7 @@ const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-
+  const [avatarImg, setAvatarImg] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
@@ -56,6 +59,32 @@ const ProfileSection = () => {
 
     dispatch(authenticateUser(initialState));
     navigate('/login');
+  };
+
+  const fetchImage = async () => {
+    // Effectuez votre requête pour obtenir les données de l'image (par exemple, via Axios)
+    if (user.userInfo.avatarUrl)
+    {
+      const response = await userService.getAvatar(user.userInfo.avatarUrl);
+      // Convertissez les données binaires en une chaîne Base64
+      const base64Image = btoa(
+          new Uint8Array(response.data).reduce(
+              (data, byte) => data + String.fromCharCode(byte),
+              ''
+          )
+      );
+
+      // Créez l'URL d'objet à partir de la chaîne Base64
+      const imageUrl = `data:image/png;base64,${base64Image}`;
+      // Mettez à jour l'état avec l'URL de l'image
+      setAvatarImg(imageUrl);
+    }
+    else {
+      setAvatarImg(null);
+    }
+
+
+
   };
 
   const handleClose = (event) => {
@@ -76,6 +105,10 @@ const ProfileSection = () => {
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
+  useEffect(() => {
+    fetchImage();
+  },[]);
 
   const prevOpen = useRef(open);
   useEffect(() => {
@@ -109,7 +142,7 @@ const ProfileSection = () => {
           }
         }}
         icon={
-          <BackgroundLetterAvatars fullname={user?.userInfo?.firstName + ' ' + user.userInfo.lastName} anchorRef={anchorRef} open={open} />
+          avatarImg ? <Avatar src={avatarImg} /> : <BackgroundLetterAvatars fullname={user?.userInfo?.firstName + ' ' + user.userInfo.lastName} anchorRef={anchorRef} open={open} />
 
           // <Avatar
           //   sx={{

@@ -65,6 +65,7 @@ const CategoricalBudgetFinished = ({ isLoading, title, nbCategoricalBudgetFinish
                 <CardWrapper border={false} content={false}>
                     <BeenhereIconWrapper />
                     <Box sx={{ p: 2.25 }}>
+                    <Fade in={true} timeout={600}>
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container alignItems="center">
@@ -98,6 +99,7 @@ const CategoricalBudgetFinished = ({ isLoading, title, nbCategoricalBudgetFinish
                                 </Typography>
                             </Grid>
                         </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}

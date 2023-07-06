@@ -64,6 +64,7 @@ const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }
                 <CardWrapper border={false} content={false}>
                     <HourglassTopWrapper />
                     <Box sx={{ p: 2.25 }}>
+                    <Fade in={true} timeout={600}>
                         <Grid container direction="column">
                             
                             <Grid item>
@@ -98,6 +99,7 @@ const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }
                                 </Typography>
                             </Grid>
                         </Grid>
+                        </Fade>
                     </Box>
                 </CardWrapper>
             )}

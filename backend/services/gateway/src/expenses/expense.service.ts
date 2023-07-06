@@ -25,6 +25,12 @@ export class ExpenseService {
     );
   }
 
+  async uploadFacture(id,receiptImage){
+    return await firstValueFrom(
+        this.expenseService.send({ service:"expense", action:"uploadFacture"},{id,receiptImage})
+    )
+  }
+
   async getAllExpenses(user) {
     const isAdmin = user.role === Role.ADMIN;
     if (isAdmin) {

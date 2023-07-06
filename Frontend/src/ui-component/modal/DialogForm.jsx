@@ -17,6 +17,7 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
     setIsOpen(false);
     onCancel();
   };
+
   return (
     <Box component="form" onSubmit={handleSubmit}>
       <Dialog
@@ -25,7 +26,7 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
           setIsOpen(false);
         }}
         fullWidth={true}
-        maxWidth="md"
+        maxWidth="sm" // Réduire la largeur de la boîte de dialogue
       >
         <DialogTitle align="center" sx={{ fontSize: '1.4em', fontWeight: 500 }}>
           {title}
@@ -40,15 +41,22 @@ export default function DialogForm({ title, isOpen, setIsOpen, onSubmit = null, 
               flexDirection: 'column',
               m: 'auto',
               width: 'fit-content',
-              '& .MuiTextField-root': { my: 2, mx: 4, width: '18ch' },
-              '& .MuiSelectField-root': { my: 2, mx: 4, width: '18ch' }
+              '& .MuiTextField-root': { my: 2 }, 
+              '& .MuiSelectField-root': { my: 2 } 
             }}
           >
             {children}
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSubmit} size="large" type="submit" variant="contained" color="secondary">
+        <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
+          <Button
+            onClick={handleSubmit}
+            size="large"
+            type="submit"
+            variant="contained"
+            color="secondary"
+            sx={{ width: '150px' }}
+          >
             Valider
           </Button>
           <Button onClick={handleCancel} disabled={isSubmitting}>

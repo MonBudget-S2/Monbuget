@@ -1,5 +1,14 @@
 // assets
-import { IconKey, IconMoneybag, IconBusinessplan, IconBrightness, IconSettings, IconOlympics,  IconReportMoney } from '@tabler/icons';
+import {
+  IconKey,
+  IconMoneybag,
+  IconBusinessplan,
+  IconBrightness,
+  IconSettings,
+  IconOlympics,
+  IconReportMoney,
+  IconCalendarEvent
+} from '@tabler/icons';
 
 // constant
 const icons = {
@@ -9,7 +18,8 @@ const icons = {
   IconBrightness,
   IconSettings,
   IconOlympics,
-  IconReportMoney
+  IconReportMoney,
+  IconCalendarEvent
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -24,80 +34,21 @@ const pages = {
       title: 'Gestion des Revenus',
       type: 'item',
       url: 'income',
-      icon: icons.IconMoneybag,
-
-      // children: [
-      //   {
-      //     id: 'expense',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'income'
-      //   },
-      //   // {
-      //   //   id: 'listincomehistory',
-      //   //   title: 'Historique des revenus',
-      //   //   type: 'item',
-      //   //   url: 'listincomehistory'
-      //   // }
-      // ]
+      icon: icons.IconMoneybag
     },
     {
       id: 'ManageExpense',
       title: 'Gestion des Dépenses',
       type: 'item',
       url: 'expense',
-      icon: icons.IconBusinessplan,
-
-      // children: [
-      //   {
-      //     id: 'expense',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'expense'
-      //     // target: false -> ouvre nouvel onglet
-      //   },
-      //   {
-      //     id: 'addExpense',
-      //     title: 'Ajouter une dépense',
-      //     type: 'item',
-      //     url: 'addexpense'
-      //   },
-      //   {
-      //     id: 'listExpense',
-      //     title: 'Liste des dépenses',
-      //     type: 'item',
-      //     url: 'listexpense'
-      //   }
-      // ]
+      icon: icons.IconBusinessplan
     },
     {
       id: 'ManageCategoricalBudget',
       title: 'Gestion des Budgets catégoriels',
       type: 'item',
       url: 'categoricalbudget',
-      icon: icons.IconBrightness,
-
-      // children: [
-      //   {
-      //     id: 'categoricalBudget',
-      //     title: "Vue d'ensemble",
-      //     type: 'item',
-      //     url: 'categoricalbudget'
-      //     // target: false -> ouvre nouvel onglet
-      //   },
-      //   {
-      //     id: 'budgetAllocation',
-      //     title: 'Créer un budget catégoriel',
-      //     type: 'item',
-      //     url: 'budgetallocation'
-      //   },
-      //   {
-      //     id: 'detailCategoricalBudgetModal',
-      //     title: 'Budget catégoriel détaillé',
-      //     type: 'item',
-      //     url: 'detailcategoricalbudget'
-      //   }
-      // ]
+      icon: icons.IconBrightness
     },
     {
       id: 'ManageEvenementielBudget',
@@ -128,7 +79,7 @@ const pages = {
           id: 'BudgetEventPartagee',
           title: 'EventBudgets Partagée',
           type: 'item',
-          url: '/budgetEventPartagee',
+          url: '/budgetEventPartagee'
         },
         {
           id: 'AllEvenementielBudgetExpense',
@@ -143,7 +94,7 @@ const pages = {
       title: 'Gestion des Dettes',
       type: 'item',
       url: 'debt',
-      icon: icons.IconReportMoney,
+      icon: icons.IconReportMoney
       // children: [
       //   {
       //     id: 'Debt',
@@ -159,6 +110,14 @@ const pages = {
       type: 'item',
       url: 'settings',
       icon: icons.IconSettings,
+      breadcrumbs: false
+    },
+    {
+      id: 'appointments',
+      title: 'Mes Rendez-vous',
+      type: 'item',
+      url: 'clientCalendar',
+      icon: icons.IconCalendarEvent,
       breadcrumbs: false
     }
   ]

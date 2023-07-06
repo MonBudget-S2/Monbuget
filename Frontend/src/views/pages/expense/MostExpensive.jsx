@@ -196,10 +196,10 @@ const MostExpensive = () => {
             <Grid container alignItems="center" justifyContent="space-between">
               <Grid item>
                 <Typography variant="subtitle" sx={{ color: theme.palette.secondary.dark }}>
-                  statistiques
+                  Total des dépenses
                 </Typography>
                 <Typography variant="subtitle">
-                  Total: <Typography variant="h4"> {totalExpense}€ </Typography>
+                  <Typography variant="h4"> {totalExpense}€ </Typography>
                 </Typography>
               </Grid>
               <TextField id="view-mode-select" select value={period} onChange={(e) => setPeriod(e.target.value)}>

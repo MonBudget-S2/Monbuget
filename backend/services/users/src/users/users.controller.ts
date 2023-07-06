@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UpdateUserDto } from './user.request';
+import { CreateUserDto, UpdateUserDto } from './user.request';
 import { RemoveFieldsInterceptor } from './interceptors/remove-fields.interceptor';
+import { Role } from 'src/authentication/authentication.enum';
 
 @Controller()
 @UseInterceptors(new RemoveFieldsInterceptor(['password']))
@@ -25,6 +26,11 @@ export class UsersController {
   @MessagePattern({ service: 'user', cmd: 'getUserById' })
   async getUserById(id: string) {
     return this.usersService.getUserById(id);
+  }
+
+  @MessagePattern({ service: 'user', cmd: 'getUsersByRole' })
+  async getUsersByRole(role: Role) {
+    return this.usersService.getUsersByRole(role);
   }
 
   @MessagePattern({ service: 'user', cmd: 'getUserByUsername' })
@@ -44,11 +50,20 @@ export class UsersController {
     return this.usersService.deleteUser(id);
   }
 
+  @MessagePattern({service:'user', cmd:'uploadAvatar'})
+  uploadUserAvatar(@Payload() payload: {id: string; avatarUrl:string}) {
+    console.log('uploadImage', payload);
+    const {id, avatarUrl} = payload;
+    return this.usersService.uploadUserAvatar(id, avatarUrl);
+  }
+
+
   @MessagePattern({ service: 'user', cmd: 'updatePassword' })
   updatePassword(
     @Param('id') id: string,
     @Body() body: { oldPassword: string; newPassword: string },
   ) {
+    console.log('updatePassword', body);
     const { oldPassword, newPassword } = body;
     return this.usersService.updatePassword(id, oldPassword, newPassword);
   }

@@ -11,6 +11,7 @@ import IncomeHistory from './IncomeHistory';
 import IncomeTable from './IncomeTable';
 import AddIncome from './AddIncome';
 import CustomAlert from 'ui-component/alert/CustomAlert';
+import IncomeCard from './IncomeCard';
 // import CreateButton from 'ui-component/buttons/CreateButton';
 
 // ==============================|| INCOME PAGE ||============================== //
@@ -39,6 +40,13 @@ const Income = () => {
     <Grid container spacing={gridSpacing}>
       <CustomAlert open={alertMessage.open} message={alertMessage.message} type={alertMessage.type} setMessage={setAlertMessage} />
 
+      <Grid item xs={12}>
+        <Grid container spacing={gridSpacing}>
+          <Grid item lg={4} md={6} sm={6} xs={12}>
+            <IncomeCard isLoading={isLoading} title="Revenus cumulés" total={252} />
+          </Grid>
+        </Grid>
+      </Grid>
       <Grid item xs={12}>
         {/* <CreateButton to="/addexpense" title="Ajouter un revenu" /> */}
         <Button variant="contained" color="primary" onClick={handleClickOpen}>

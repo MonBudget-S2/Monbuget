@@ -8,8 +8,7 @@ spec:
     gateway: challenge-gateway-service
   ports:
     - protocol: TCP
-      port: 8000
-      targetPort: 3000
+      port: 3000
   type: LoadBalancer
 
 ---
@@ -21,8 +20,9 @@ metadata:
   namespace: challenge-service
   labels:
     gateway: challenge-gateway-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -39,17 +39,13 @@ spec:
       containers:
       - name: challenge-gateway-service
         image: ronantr/challenge-gateway-service:latest
-
         env:
         - name: NODE_ENV
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3000
         readinessProbe:
@@ -63,6 +59,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-alerts-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     alerts: challenge-alerts-service
@@ -75,11 +73,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-alerts-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     alerts: challenge-alerts-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -102,11 +103,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "256Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3006
         readinessProbe:
@@ -121,6 +119,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-budgets-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     budgets: challenge-budgets-service
@@ -134,11 +134,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-budgets-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     budgets: challenge-budgets-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -161,11 +164,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3005
         readinessProbe:
@@ -180,6 +180,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-debts-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     debts: challenge-debts-service
@@ -193,11 +195,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-debts-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     debts: challenge-debts-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -220,11 +225,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3008
         readinessProbe:
@@ -239,6 +241,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-events-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     events: challenge-events-service
@@ -252,11 +256,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-events-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     events: challenge-events-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -279,11 +286,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3009
         readinessProbe:
@@ -298,6 +302,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-expenses-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     expenses: challenge-expenses-service
@@ -311,11 +317,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-expenses-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     expenses: challenge-expenses-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -338,11 +347,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3004
         readinessProbe:
@@ -357,6 +363,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-incomes-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     incomes: challenge-incomes-service
@@ -370,11 +378,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-incomes-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     incomes: challenge-incomes-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -397,11 +408,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3010
         readinessProbe:
@@ -415,6 +423,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-users-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     users: challenge-users-service
@@ -427,11 +437,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-users-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     users: challenge-users-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -454,11 +467,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3002
         readinessProbe:
@@ -472,6 +482,8 @@ kind: Service
 metadata:
   namespace: challenge-service
   name: challenge-categories-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
 spec:
   selector:
     categories: challenge-categories-service
@@ -484,11 +496,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name : challenge-categories-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
     categories: challenge-categories-service
+
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -511,11 +526,8 @@ spec:
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3007
         readinessProbe:
@@ -528,22 +540,24 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: challenge-service
-  name: challenge-categories-service
+  name: challenge-meetings-service
 spec:
   selector:
-    app: challenge-categories-service
+    app: challenge-meetings-service
   ports:
     - protocol: TCP
-      port: 3007
+      port: 3011
   type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name : challenge-categories-service
+  name : challenge-meetings-service
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
   namespace: challenge-service
   labels:
-    app: challenge-categories-service
+    app: challenge-meetings-service
 spec:
   replicas: 1
   strategy:
@@ -553,26 +567,23 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: challenge-categories-service
+      app: challenge-meetings-service
   template:
     metadata:
       labels:
-        app: challenge-categories-service
+        app: challenge-meetings-service
     spec:
       containers:
-      - name: challenge-categories-service
-        image: ronantr/challenge-categories-service:latest
+      - name: challenge-meetings-service
+        image: ronantr/challenge-meetings-service:latest
 
         env:
         - name: NODE_ENV
           value: "production"
         resources:
           requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "300Mi"
+            cpu: "170m"
         ports:
         - containerPort: 3011
         readinessProbe:

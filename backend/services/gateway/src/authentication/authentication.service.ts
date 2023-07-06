@@ -69,6 +69,7 @@ export class AuthenticationService {
         firstname: user.firstname,
         lastname: user.lastname,
         balance: user.balance,
+        avatarUrl: user.avatarUrl
       },
     };
   }
@@ -91,7 +92,6 @@ export class AuthenticationService {
         Logger.log("Invalid user", "AuthenticationService");
         throw new BadRequestException("Invalid user");
       }
-
       return {
         isConnected: true,
         id: user.id,
@@ -103,6 +103,7 @@ export class AuthenticationService {
           firstname: user.firstname,
           lastname: user.lastname,
           balance: user.balance,
+          avatarUrl: user.avatarUrl
         },
       };
     } catch (error) {

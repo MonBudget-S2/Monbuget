@@ -12,7 +12,7 @@ import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // assets
-
+import LoginLogo from 'assets/logo/login.svg';
 // ================================|| AUTH3 - LOGIN ||================================ //
 
 const Login = () => {
@@ -29,6 +29,9 @@ const Login = () => {
                 <Grid container spacing={2} alignItems="center" justifyContent="center">
                   <Grid item sx={{ mb: 3 }}>
                       <Logo />
+                  </Grid>
+                  <Grid item sx={{ mb: 2,  display: 'flex', justifyContent: 'center' }}>
+                    <img src={LoginLogo} alt="LoginSvg" style={{ width: '80%', height: '80%' }}/>
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container direction={matchDownSM ? 'column-reverse' : 'row'} alignItems="center" justifyContent="center">
@@ -52,7 +55,7 @@ const Login = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                      <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }} textAlign={matchDownSM ? 'center' : 'inherit'}>
                         Vous n&apos;avez pas de compte ? Créer un compte
                       </Typography>
                     </Grid>
@@ -67,6 +70,7 @@ const Login = () => {
         </Grid>
       </Grid>
     </AuthWrapper1>
+    
   );
 };
 

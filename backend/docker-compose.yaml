@@ -138,7 +138,7 @@ services:
     volumes:
       - ./services/meetings:/home/node
     environment:
-      POSTGRES_DB: &challengeDatabaseNameMeetings challengemeeting
+      POSTGRES_DB: &challengeDatabaseNameMeetings challengemeetings
       POSTGRES_USER: *challengeDatabaseUser 
       POSTGRES_PASSWORD: *challengeDatabasePassword
       

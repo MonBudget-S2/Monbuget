@@ -3,10 +3,12 @@ import { ClientsModule, Transport } from "@nestjs/microservices";
 import { ExpenseController } from "./expense.controller";
 import { ExpenseService } from "./expense.service";
 import { AuthenticationModule } from "src/authentication/authentication.module";
+import {MulterModule} from "@nestjs/platform-express";
 
 @Module({
   imports: [
     AuthenticationModule,
+    MulterModule.register({dest:'./uploads'}),
     ClientsModule.register([
       {
         name: "USER_SERVICE",

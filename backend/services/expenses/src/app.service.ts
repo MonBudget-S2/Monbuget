@@ -68,6 +68,11 @@ export class AppService {
     return { message: 'Expense created successfully', newExpense };
   }
 
+  async upload(id:string,receiptImage:string){
+    const expense = await this.expenseRepository.findOneBy({ id });
+    expense.receiptImage=receiptImage;
+    return this.expenseRepository.save(expense);
+  }
   async getById(id: string): Promise<ExpenseResponse | null> {
     const expense = await this.expenseRepository.findOneBy({ id });
 
