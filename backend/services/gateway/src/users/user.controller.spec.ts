@@ -38,4 +38,12 @@ describe('UserController', () => {
             expect(controller.getAllUsers()).resolves.toEqual(userMock);
         });
     });
+
+    describe("getUserById", () => {
+        it('should return a single user', () => {
+            const id = "d4b69e8f-8bbd-406e-aa2c-e9982ea92da0";
+            const u = userMock.find(u => u.id === id)
+            expect(controller.getUserById("d4b69e8f-8bbd-406e-aa2c-e9982ea92da0",userMock[0])).resolves.toEqual(u);
+        });
+    });
 });
