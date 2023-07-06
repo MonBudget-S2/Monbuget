@@ -26,6 +26,22 @@ export class DebtService {
     }
   }
 
+  async getAllReceivedDebts(user) {
+    const isAdmin = user.role === Role.ADMIN;
+    if (isAdmin) {
+      return await firstValueFrom(
+        this.debtService.send({ service: "debt", action: "getAll" }, {})
+      );
+    } else {
+      return await firstValueFrom(
+        this.debtService.send(
+          { service: "debt", action: "getAllByCreditor" },
+          user.id
+        )
+      );
+    }
+  }
+
   async getDebtById(id: string, user) {
     const isAdmin = user.role === Role.ADMIN;
     const debt = await firstValueFrom(

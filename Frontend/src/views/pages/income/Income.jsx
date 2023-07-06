@@ -20,16 +20,30 @@ const Income = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, type: '', message: '' });
   const [isIncomeChanged, setIsIncomeChanged] = useState(false);
   const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-
+  const [incomes, setIncomes] = useState([]);
+  const [totalIncome, setTotalIncome] = useState(0);
+  console.log('incomes', incomes);
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    if (isIncomeChanged) {
-      setIsIncomeChanged(false);
-    }
+    const fetchData = async () => {
+      const response = await incomeService.getIncomes();
+
+      if (response.status === 200) {
+        console.log('test', response.data);
+        setIncomes(response.data);
+        const totalAmount = response.data.reduce((acc, value) => acc + value.amount, 0);
+        setTotalIncome(totalAmount);
+        setIsLoading(false);
+      } else {
+        console.log('Erreur lors de la récupération des revenus');
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, [isIncomeChanged]);
 
   const handleClickOpen = () => {
@@ -43,7 +57,7 @@ const Income = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={4} md={6} sm={6} xs={12}>
-            <IncomeCard isLoading={isLoading} title="Revenus cumulés" total={252} />
+            <IncomeCard isLoading={isLoading} title="Revenus cumulés" total={totalIncome} />
           </Grid>
         </Grid>
       </Grid>
