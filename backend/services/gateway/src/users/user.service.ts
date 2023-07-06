@@ -51,7 +51,8 @@ export class UserService {
   }
 
   async verifyUser(id){
-    return await firstValueFrom(this.userService.send({ service:"user", cmd:"verifyUser"},id))
+    console.log('did',id);
+    return await firstValueFrom(this.userService.send({ service:"user", cmd:"verifyUser"},id));
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto, user: any) {

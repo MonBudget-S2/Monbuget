@@ -93,6 +93,8 @@ export class UsersService {
   async verifyUser(id:string){
     const user = await this.userRepository.findOneByOrFail({id});
     user.isVerified = true;
+    console.log(user);
+    console.log("id",id);
     const upadte = await this.userRepository.save(user);
     return upadte;
   }

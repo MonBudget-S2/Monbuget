@@ -63,7 +63,8 @@ export class UsersController {
   }
 
   @MessagePattern({ service:'user', cmd:'verifyUser'})
-  verifyUser(@Param('id') id:string){
+  verifyUser(id){
+    console.log("partne",id);
     return this.usersService.verifyUser(id);
   }
 }
