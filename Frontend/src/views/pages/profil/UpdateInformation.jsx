@@ -66,7 +66,7 @@ const UpdateInformation = () => {
         try {
             const res = await userService.update(user?.id, {
                 firstname: editedUser.firstname,
-                lastName: editedUser.lastName,
+                lastname: editedUser.lastName,
                 username: editedUser.username,
                 email: editedUser.email,
             });
