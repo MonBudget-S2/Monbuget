@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useTheme, styled } from '@mui/material/styles';
+import {styled } from '@mui/material/styles';
 import { Box, Button, Grid, Typography, Fade } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard';
@@ -49,7 +49,6 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 }));
 
 const TotalExpenseByMonth = ({ isLoading, expenses }) => {
-  const theme = useTheme();
 
   const [averageExpenseByMonth, setAverageExpenseByMonth] = useState(0);
   const [totalExpenseByYear, setTotalExpenseByYear] = useState(0);

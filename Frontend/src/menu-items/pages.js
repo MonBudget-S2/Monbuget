@@ -104,14 +104,14 @@ const pages = {
       //   }
       // ]
     },
-    {
-      id: 'settings',
-      title: 'Paramètres',
-      type: 'item',
-      url: 'settings',
-      icon: icons.IconSettings,
-      breadcrumbs: false
-    },
+    // {
+    //   id: 'settings',
+    //   title: 'Paramètres',
+    //   type: 'item',
+    //   url: 'settings',
+    //   icon: icons.IconSettings,
+    //   breadcrumbs: false
+    // },
     {
       id: 'appointments',
       title: 'Mes Rendez-vous',

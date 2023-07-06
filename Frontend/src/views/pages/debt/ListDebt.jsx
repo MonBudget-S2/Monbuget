@@ -4,6 +4,7 @@ import { CardContent, Grid, Button, Chip } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
+import { format } from 'date-fns';
 
 import DataTable from 'ui-component/table/DataTable';
 import DebtPayment from './DebtPayment';
@@ -50,7 +51,12 @@ const ListDebt = ({ isLoading, debts, setAlertMessage, setIsDebtChanged }) => {
     
     { field: 'amount', headerName: 'Montant', width: 200, flex: 1 },
     { field: 'remainingAmount', headerName: 'Montant restant', width: 180, flex: 1 },
-    { field: 'dueDate', headerName: "Date d'échéance", width: 180, flex: 1 },
+    {
+      field: 'dueDate',
+      headerName: 'Date d\'échéance',
+      flex: 1,
+      valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
+    },
     {
       field: 'status',
       headerName: 'Statut',

@@ -49,15 +49,14 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
     {
       field: 'date',
       headerName: 'Date de réception',
-      headerAlign: 'center',
       flex: 1,
       valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
     },
-    { field: 'description', headerName: 'Description', headerAlign: 'center', flex: 1 },
-    { field: 'location', headerName: 'Lieu', headerAlign: 'center', flex: 1, },
-    { field: 'receiptImage', headerName: 'Image du reçu', headerAlign: 'center', flex: 1, },
-    { field: 'category', headerName: 'Catégorie', headerAlign: 'center', flex: 1,valueGetter: (params) => params.row.category?.name },
-    { field: 'eventBudget', headerName: 'Budget', headerAlign: 'center', flex: 1,valueGetter: (params) => params.row.eventBudget?.name }
+    { field: 'description', headerName: 'Description', flex: 1 },
+    { field: 'location', headerName: 'Lieu',  flex: 1, },
+    { field: 'receiptImage', headerName: 'Image du reçu',  flex: 1, },
+    { field: 'category', headerName: 'Catégorie',  flex: 1,valueGetter: (params) => params.row.category?.name },
+    { field: 'eventBudget', headerName: 'Budget', flex: 1,valueGetter: (params) => params.row.eventBudget?.name }
   ];
 
   const onEdit = (id) => {

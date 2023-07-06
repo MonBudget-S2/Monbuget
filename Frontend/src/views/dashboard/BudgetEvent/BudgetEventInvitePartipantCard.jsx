@@ -19,7 +19,7 @@ const BudgetInviteParticipantCard = ({ setAlertMessage, isAddFormOpen, setIsAddF
         setStatus({ success: true });
         setSubmitting(false);
         setIsAddFormOpen(false);
-        setAlertMessage({ open: true, type: 'success', message: 'Une Invitation Mail sera envoyée au User si le mail existe' });
+        setAlertMessage({ open: true, type: 'success', message: 'Une invitation sera envoyé si le nom d\'utilisateur existe' });
       }
     } catch (error) {
       // setStatus({ success: false });

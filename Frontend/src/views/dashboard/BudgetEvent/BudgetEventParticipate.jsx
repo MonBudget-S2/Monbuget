@@ -10,7 +10,7 @@ const BudgetEventParticipate = ({ isLoading, participants }) => {
                 <CardContent>
                     <Grid container spacing={gridSpacing}>
                             <Typography variant="h4" sx={{ mb: 2}}>
-                                Dépenses totaux des participants
+                                Dépenses total des participants
                             </Typography>
                         <Grid container direction="row">
                             {participants?.map((row) => (
