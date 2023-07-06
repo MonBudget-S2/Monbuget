@@ -61,12 +61,12 @@ export class AppController {
   }
 
   /****  video ***/
-  @MessagePattern({ service: 'meeting', action: 'generateToken' })
+  @MessagePattern({ service: 'meeting', action: 'generateMeetingToken' })
   generateVideoToken(meetingId: string) {
     return this.appService.generateVideoToken(meetingId);
   }
 
-  @MessagePattern({ service: 'meeting', action: 'validateMeeting' })
+  @MessagePattern({ service: 'meeting', action: 'validateMeetingToken' })
   validateMeeting(@Payload() payload: { meetingId: string; token: string }) {
     const { meetingId, token } = payload;
     return this.appService.validateMeeting(meetingId, token);

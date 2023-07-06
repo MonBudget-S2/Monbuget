@@ -15,17 +15,16 @@ const createMeeting = async (token) => {
   return roomId;
 };
 
-// const API_BASE_URL = process.env.REACT_APP_SERVER_URL;
-
 // // API call to generate authentication token
-// export const getToken = async () => {
-//   const res = await fetch(`${API_BASE_URL}/get-token`, {
-//     method: "GET",
-//   });
+export const getToken = async (meetingId) => {
+  const res = await axiosInstance.get(`/meetings/${meetingId}/token`);
+  return res;
+};
 
-//   const { token } = await res.json();
-//   return token;
-// };
+const validateToken = async (meetingId, data) => {
+  const res = await axiosInstance.post(`/meetings/${meetingId}/validateMeetingToken`, data);
+  return res;
+};
 
 // // API call to create meeting
 // export const createMeeting = async ({ token }) => {
@@ -87,5 +86,7 @@ export const meetingService = {
   requestMeeting,
   getMeetingDetails,
   getAdvisors,
-  acceptMeetingRequest
+  acceptMeetingRequest,
+  getToken,
+  validateToken
 };

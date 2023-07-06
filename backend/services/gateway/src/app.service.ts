@@ -205,6 +205,45 @@ export class AppService {
     return meeting;
   }
 
+  getMeetingToken = async (meetingId: string, user) => {
+    const meeting = await this.getMeetingById(meetingId, user);
+    if (meeting.status !== MeetingRequestStatus.ACCEPTED) {
+      throw new HttpException(
+        "Meeting is not approved yet",
+        HttpStatus.UNAUTHORIZED
+      );
+    }
+    //check meetig starttime is less than current time - 15 min
+    // const startTime = new Date(meeting.startTime);
+    // const currentTime = new Date();
+    // const diff = (startTime.getTime() - currentTime.getTime()) / 1000;
+    // const diffInMinutes = Math.abs(Math.round(diff / 60));
+    // if (diffInMinutes > 15) {
+    //   throw new HttpException(
+    //     "Meeting is not started yet",
+    //     HttpStatus.UNAUTHORIZED
+    //   );
+    // }
+
+    const token = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "generateMeetingToken" },
+        meetingId
+      )
+    );
+    return token;
+  };
+
+  validateMeetingToken = async (meetingId: string, token: string, user) => {
+    const meeting = await this.getMeetingById(meetingId, user);
+    return await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "validateMeetingToken" },
+        { meetingId, token }
+      )
+    );
+  };
+
   async approveMeeting(meetingId: string) {
     return await firstValueFrom(
       this.meetingService.send(

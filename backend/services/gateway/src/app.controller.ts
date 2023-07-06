@@ -95,6 +95,22 @@ export class AppController {
     return this.appService.getMeetingById(id, request.user);
   }
 
+  @Get("meetings/:id/token")
+  @AuthenticationRequired()
+  getMeetingToken(@Param("id") id: string, @Req() request: CustomRequest) {
+    return this.appService.getMeetingToken(id, request.user);
+  }
+
+  @Post("meetings/:id/validateMeetingToken")
+  @AuthenticationRequired()
+  validateMeetingToken(
+    @Param("id") id: string,
+    @Payload() data: { token: string },
+    @Req() request: CustomRequest
+  ) {
+    return this.appService.validateMeetingToken(id, data.token, request.user);
+  }
+
   @Patch("meetings/:id/approve")
   @AuthenticationRequired()
   @HasRole(Role.ADVISOR)
