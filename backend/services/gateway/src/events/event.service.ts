@@ -46,11 +46,12 @@ export class EventService {
     const isAdmin = user.role === Role.ADMIN;
     const event = await firstValueFrom(
       this.eventService.send({ service: "eventBudget", action: "getById" }, id)
-    );
-    if (!event) {
-      throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
-    }
-    if (!isAdmin && event.userId !== user.id) {
+      );
+      if (!event) {
+        throw new HttpException("Event not found", HttpStatus.NOT_FOUND);
+      }
+      
+    if (!isAdmin && !event.eventParticipants?.some((p) => p.userId === user.id)) {
       throw new HttpException(
         "You are not authorized to access this resource",
         HttpStatus.FORBIDDEN

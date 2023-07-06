@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
-import {  Box, Grid, Typography } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
+import { Avatar, Box, Grid, Typography } from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
 
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    background: 'linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12)',
+    background: 'linear-gradient(45deg, #1F1C2C, #928DAB)',
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
-    height: '160px',
+    height: '180px',
     '&:after': {
         content: '""',
         position: 'absolute',
@@ -44,17 +44,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     }
 }));
 
-const HourglassTopWrapper = styled(HourglassTopIcon)({
-    position: 'absolute',
-    top: '50%',
-    left: '55%',
-    transform: 'translate(-50%, -50%)',
-    fontSize: '8rem',
-    opacity: 0.3,
-  });
-  
-
-const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }) => {
+const AllBudgets = ({ isLoading, title, total }) => {
+    const theme = useTheme();
 
     return (
         <>
@@ -62,10 +53,8 @@ const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }
                 <SkeletonEarningCard />
             ) : (
                 <CardWrapper border={false} content={false}>
-                    <HourglassTopWrapper />
                     <Box sx={{ p: 2.25 }}>
                         <Grid container direction="column">
-                            
                             <Grid item>
                                 <Grid container alignItems="center">
                                     <Grid item>
@@ -80,20 +69,25 @@ const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }
                                                 color: '#fff'
                                             }}
                                         >
-                                            {nbCategoricalBudgetActive}
+                                            {total}
                                         </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Avatar
+                                            sx={{
+                                                cursor: 'pointer',
+                                                ...theme.typography.smallAvatar,
+                                                backgroundColor: theme.palette.secondary[200],
+                                                color: theme.palette.secondary.dark
+                                            }}
+                                        >
+                                            <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                                        </Avatar>
                                     </Grid>
                                 </Grid>
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
-                                <Typography
-                                    variant="h4"
-                                    sx={{
-                                        fontSize: '1rem',
-                                        fontWeight: 500,
-                                        color: '#fff'
-                                    }}
-                                >
+                                <Typography variant="h4" sx={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>
                                     {title}
                                 </Typography>
                             </Grid>
@@ -105,10 +99,10 @@ const CategoricalBudgetActive = ({ isLoading, title, nbCategoricalBudgetActive }
     );
 };
 
-CategoricalBudgetActive.propTypes = {
+AllBudgets.propTypes = {
     isLoading: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
-    nbCategoricalBudgetActive: PropTypes.number.isRequired
+    total: PropTypes.number.isRequired
 };
 
-export default CategoricalBudgetActive;
+export default AllBudgets;

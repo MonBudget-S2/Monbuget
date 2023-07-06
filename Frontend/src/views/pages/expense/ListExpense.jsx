@@ -19,6 +19,7 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
     {
       field: 'actions',
       sortable: false,
+      flex: 1,
       headerName: 'Actions',
       renderCell: (params) => (
         <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
@@ -31,21 +32,24 @@ const ListExpense = ({ expenses, isLoading, setAlertMessage, setIsExpenseChanged
         </Box>
       )
     },
-    { field: 'expenseCategory', headerName: 'Catégorie de dépense' },
     {
       field: 'amount',
       headerName: 'Montant',
+      flex: 1,
       valueFormatter: (params) => `- ${params.value}€`
     },
-    { field: 'date', headerName: 'Date de réception', headerAlign: 'center' },
-    { field: 'description', headerName: 'Description', headerAlign: 'center' },
-    { field: 'paymentMethod', headerName: 'Méthode de paiement', headerAlign: 'center' },
-    { field: 'location', headerName: 'Lieu', headerAlign: 'center' },
-    { field: 'receiptImage', headerName: 'Image du reçu', headerAlign: 'center' },
-    { field: 'createdAt', headerName: 'Créé le', headerAlign: 'center' },
-    { field: 'updatedAt', headerName: 'Mis à jour le', headerAlign: 'center' },
-    { field: 'category', headerName: 'Catégorie', headerAlign: 'center', valueGetter: (params) => params.row.category?.name },
-    { field: 'eventBudget', headerName: 'Budget', headerAlign: 'center', valueGetter: (params) => params.row.eventBudget?.name }
+    {
+      field: 'date',
+      headerName: 'Date de réception',
+      headerAlign: 'center',
+      flex: 1,
+      valueFormatter: (params) => format(new Date(params.value), 'dd/MM/yyyy'),
+    },
+    { field: 'description', headerName: 'Description', headerAlign: 'center', flex: 1 },
+    { field: 'location', headerName: 'Lieu', headerAlign: 'center', flex: 1, },
+    { field: 'receiptImage', headerName: 'Image du reçu', headerAlign: 'center', flex: 1, },
+    { field: 'category', headerName: 'Catégorie', headerAlign: 'center', flex: 1,valueGetter: (params) => params.row.category?.name },
+    { field: 'eventBudget', headerName: 'Budget', headerAlign: 'center', flex: 1,valueGetter: (params) => params.row.eventBudget?.name }
   ];
 
   const onEdit = (id) => {

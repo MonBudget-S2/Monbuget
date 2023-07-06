@@ -79,19 +79,25 @@ export class EventBudgetService {
   }
 
   async getAllByUser(userId: string): Promise<EventBudgetResponse[]> {
-    const eventBudgets = await this.eventBudgetRepository.find({
-      where: { userId },
-    });
+    const eventParticipants = await this.eventParticipateService.getAllByUser(
+      userId,
+    );
     const eventBudgetsResponse: EventBudgetResponse[] = [];
-
-    for (const eventBudget of eventBudgets) {
-      const eventParticipants =
-        await this.eventParticipateService.getByEventBudgetId(eventBudget.id);
-      eventBudgetsResponse.push({
-        ...eventBudget,
-        eventParticipants,
-      });
-    }
+      for(const participant of eventParticipants){
+        const eventBudget = await this.eventBudgetRepository.findOneBy({
+          id: participant.eventBudgetId,
+        });
+        if (!eventBudget) {
+          return null;
+        }
+        const eventParticipants = await this.eventParticipateService.getByEventBudgetId(
+          eventBudget.id,
+        );
+        eventBudgetsResponse.push({
+          ...eventBudget,
+          eventParticipants,
+        });
+      }
 
     return eventBudgetsResponse;
   }
