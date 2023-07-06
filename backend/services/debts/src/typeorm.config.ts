@@ -5,10 +5,11 @@ import {host , username ,password } from './env';
 
 const config: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: host,
+  host: process.env.DB_URL || host,
+
   port: 5432,
-  username: username,
-  password: password,
+  username: process.env.DB_USERNAME || username,
+  password: process.env.DB_PASSWORD || password,
   database: 'challengedebts',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: true,

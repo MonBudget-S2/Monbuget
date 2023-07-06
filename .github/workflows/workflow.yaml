@@ -24,6 +24,13 @@ jobs:
       - name: Docker login
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      - name: install crt
+        run: |
+          touche backend/services/gateway/src/PRIVATE_KEY.pem
+          echo"${{secrets.PRIVATE_KEY}}" >> backend/services/gateway/src/PRIVATE_KEY.pem
+          touche backend/services/gateway/src/PUBLIC_CERTIFICATE.pem
+          echo"${{secrets.PUBLIC_CERTIFICATE}}" >> backend/services/gateway/src/PUBLIC_CERTIFICATE.pem
+
       - name: rm and touch prod env
         run: |          
           rm -rf backend/services/users/src/env.ts
@@ -90,4 +97,7 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GKE_CLUSTER: ${{ secrets.CLUSTER_NAME }}
           GKE_LOCATION: ${{ secrets.ZONE_NAME }}
+      - name: Deploy to GKE
+        run: |
+          kubectl apply -f backend/challenge.yaml
 
