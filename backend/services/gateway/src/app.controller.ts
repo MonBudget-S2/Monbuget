@@ -78,7 +78,17 @@ export class AppController {
       data.clientId = request.user.id;
     }
 
-    return this.appService.createMeeting(data.startTime,data.advisorId,data.clientId);
+    return this.appService.createMeeting(
+      data.startTime,
+      data.advisorId,
+      data.clientId
+    );
+  }
+
+  @Get("meetings/:id")
+  @AuthenticationRequired()
+  getMeeting(@Param("id") id: string, @Req() request: CustomRequest) {
+    return this.appService.getMeetingById(id, request.user);
   }
 
   @Patch("meetings/:id/approve")

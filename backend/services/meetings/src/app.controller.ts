@@ -33,7 +33,7 @@ export class AppController {
     return this.appService.getAllMeetingsByClient(clientId);
   }
 
-  @MessagePattern({ service: 'meeting', action: 'getById' })
+  @MessagePattern({ service: 'meeting', action: 'getMeetingById' })
   getMeetingById(id: string) {
     return this.appService.getMeetingById(id);
   }

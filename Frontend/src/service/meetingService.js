@@ -59,6 +59,10 @@ const getMeetings = async () => {
   return res;
 };
 
+const getMeetingDetails = async (meetingId) => {
+  const res = await axiosInstance.get(`/meetings/${meetingId}`);
+  return res;
+};
 const requestMeeting = async (data) => {
   const res = await axiosInstance.post('/meetings', data);
   return res;
@@ -70,5 +74,6 @@ export const meetingService = {
   updateSchedule,
   getMeetings,
   getAvailableSlotsForAppointment,
-  requestMeeting
+  requestMeeting,
+  getMeetingDetails
 };

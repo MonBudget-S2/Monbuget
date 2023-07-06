@@ -1,4 +1,10 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  Logger,
+} from "@nestjs/common";
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -140,6 +146,25 @@ export class AppService {
     return await firstValueFrom(
       this.meetingService.send({ service: "meeting", action: "create" }, data)
     );
+  }
+
+  async getMeetingById(meetingId: string, user) {
+    const meeting = await firstValueFrom(
+      this.meetingService.send(
+        { service: "meeting", action: "getMeetingById" },
+        { meetingId, advisorId: user.id }
+      )
+    );
+    if (!meeting) {
+      throw new HttpException("Meeting not found", HttpStatus.NOT_FOUND);
+    }
+
+    if (meeting.clientId !== user.id && meeting.advisorId !== user.id) {
+      throw new HttpException(
+        "You are not authorized to view this meeting",
+        HttpStatus.UNAUTHORIZED
+      );
+    }
   }
 
   async approveMeeting(meetingId: string) {
