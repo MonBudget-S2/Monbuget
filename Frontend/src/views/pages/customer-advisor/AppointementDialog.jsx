@@ -36,10 +36,23 @@ export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage
     setSelectedSlot(slot);
   };
 
-  const handleRequestAppointment = () => {
+  const handleRequestAppointment = async () => {
     if (selectedSlot) {
       // Perform appointment booking logic here
       console.log('Selected slot:', selectedSlot);
+      const dataToSend = {
+        advisorId: 'eea473e1-f0d6-4d46-8306-7e8bee1dea86',
+        customerId: 'eea473e1-f0d6-4d46-8306-7e8bee1dea86',
+        startTime: selectedSlot
+      };
+      const res = await meetingService.requestMeeting(dataToSend);
+      if (res.status === 201) {
+        console.log('res.data', res.data);
+        handleClose();
+        setAlertMessage({ open: true, type: 'success', message: 'Votre demande de rendez-vous a été envoyée avec succès.' });
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la demande de rendez-vous.' });
+      }
       // ...
     } else {
       setAlertMessage('Please select a slot');

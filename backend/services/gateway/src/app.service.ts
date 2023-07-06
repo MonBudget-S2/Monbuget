@@ -128,12 +128,15 @@ export class AppService {
     }
   }
 
-  async createMeeting(data: {
-    startTime: Date;
-    endTime: Date;
-    advisorId: string;
-    clientId: string;
-  }) {
+  async createMeeting(startTime: Date, advisorId: string, clientId: string) {
+    const data: any = {
+      startTime,
+      advisorId,
+      clientId,
+    };
+    const endTime = new Date(data.startTime);
+    endTime.setHours(endTime.getHours() + 1);
+    data.endTime = endTime;
     return await firstValueFrom(
       this.meetingService.send({ service: "meeting", action: "create" }, data)
     );

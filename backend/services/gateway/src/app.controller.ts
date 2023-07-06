@@ -67,9 +67,8 @@ export class AppController {
     @Payload()
     data: {
       startTime: Date;
-      endTime: Date;
-      advisorId: string;
-      clientId: string;
+      advisorId?: string;
+      clientId?: string;
     },
     @Req() request: CustomRequest
   ): Promise<any> {
@@ -78,7 +77,8 @@ export class AppController {
     } else if (request.user.role == Role.USER) {
       data.clientId = request.user.id;
     }
-    return this.appService.createMeeting(data);
+
+    return this.appService.createMeeting(data.startTime,data.advisorId,data.clientId);
   }
 
   @Patch("meetings/:id/approve")
