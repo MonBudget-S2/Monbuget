@@ -46,6 +46,14 @@ export class UserService {
     );
   }
 
+  async getUserByUsername(username:string){
+    return await firstValueFrom(this.userService.send({ service:"user",cmd:"getUserByUsername"},username))
+  }
+
+  async verifyUser(id){
+    return await firstValueFrom(this.userService.send({ service:"user", cmd:"verifyUser"},id))
+  }
+
   async updateUser(id: string, updateUserDto: UpdateUserDto, user: any) {
     if (user.id !== id && user.role !== Role.ADMIN) {
       throw new HttpException(

@@ -13,6 +13,7 @@ import { EventModule } from "./events/event.module";
 import { DebtModule } from "./debts/debt.module";
 import { MailModule } from './mail/mail.module';
 import {MailService} from "./mail/mail.service";
+import {UserService} from "./users/user.service";
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import {MailService} from "./mail/mail.service";
   providers: [
       AppService,
       MailService,
+      UserService,
   ],
 })
 export class AppModule {}

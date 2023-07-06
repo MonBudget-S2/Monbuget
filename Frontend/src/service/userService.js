@@ -16,11 +16,16 @@ const getAvatar = async (id) => {
   return await axiosInstance.get('users/profile-image/'+id,{ responseType: 'arraybuffer' });
 }
 
+const verifyUser = async (token) =>{
+  return await axiosInstance.post('users/confirm/'+token);
+}
+
 const userService = {
   changePassword,
   update,
   uploadAvatar,
   getAvatar,
+  verifyUser,
 };
 
 export default userService;

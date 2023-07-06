@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UseGuards } from "@nestjs/common";
+import {Controller, Get, Param, Post, UseGuards} from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { AppService } from "./app.service";
 import {
@@ -28,6 +28,11 @@ export class AppController {
     createUserDto: CreateUserDto
   ) {
     return this.appService.register(createUserDto);
+  }
+
+  @Post('users/confirm/:token')
+  confirmEmailAddress(@Param('token') token:string){
+    return this.appService.confirmEmailAddress(token);
   }
 
   // Other API Gateway methods...

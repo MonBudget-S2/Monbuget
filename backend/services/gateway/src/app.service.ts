@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from "@nestjs/common";
+import {Inject, Injectable, Logger, NotFoundException, UnauthorizedException} from "@nestjs/common";
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -8,6 +8,7 @@ import { firstValueFrom } from "rxjs";
 import { CreateUserDto } from "./users/user.request";
 import {MailService} from "./mail/mail.service";
 import {JwtService} from "@nestjs/jwt";
+import {UserService as userServ} from "./users/user.service";
 
 @Injectable()
 export class AppService {
@@ -28,6 +29,7 @@ export class AppService {
     @Inject("USER_SERVICE") private readonly userService: ClientProxy,
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
+    private readonly userServ: userServ,
   ) // @Inject("BUDGET_SERVICE") private readonly budgetService: ClientProxy
 
   {}
@@ -65,6 +67,30 @@ export class AppService {
         await this.mailService.sendUserConfirmation(createUserDto.username,createUserDto.email,token);
     }
     return res;
+  }
+
+  async confirmEmailAddress(token:string){
+    try {
+      const result = await this.jwtService.verify(token);
+      if (typeof result !== "object" || !result.username || typeof result.username !== "string")
+      {
+        throw new UnauthorizedException('invalid token')
+      }
+      const user = await this.userServ.getUserByUsername(result.username);
+      if (user){
+        return this.userServ.verifyUser(user.id);
+      }
+      else {
+        throw new UnauthorizedException('invalid token')
+      }
+
+    }
+    catch (e)
+    {
+      throw new NotFoundException('Erreur de url');
+    }
+
+
   }
 
   // Other API Gateway methods...

@@ -89,4 +89,11 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async verifyUser(id:string){
+    const user = await this.userRepository.findOneByOrFail({id});
+    user.isVerified = true;
+    const upadte = await this.userRepository.save(user);
+    return upadte;
+  }
 }
