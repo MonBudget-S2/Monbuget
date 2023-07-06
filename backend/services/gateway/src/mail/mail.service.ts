@@ -6,7 +6,7 @@ export class MailService {
     constructor(private mailerService: MailerService) {}
 
     async sendUserConfirmation(username,email,token:string){
-        const url = `http://127.0.0.1:3000/user/confirm/${token}`;
+        const url = `http://127.0.0.1:3001/user/confirm/${token}`;
         await  this.mailerService.sendMail({
             to: email,
             subject:'Welcome to Mon Budget! Please Confirm your Email',
