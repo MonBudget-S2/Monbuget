@@ -56,7 +56,7 @@ const PlanningCalendar = () => {
       const endTime = moment(meeting.date).add(1, 'hour').toDate();
 
       events.push({
-        title: `Meeting with ${meeting.clientId}`,
+        title: `Meeting with ${meeting.advisor?.username}`,
         start: startTime,
         end: endTime,
         allDay: false,
@@ -64,7 +64,9 @@ const PlanningCalendar = () => {
         extendedProps: {
           meetingId: meeting.id,
           advisorId: meeting.advisorId,
-          clientId: meeting.clientId
+          clientId: meeting.clientId,
+          client: meeting.client,
+          advisor: meeting.advisor
         }
       });
     }

@@ -11,12 +11,26 @@ export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage
   const [isLoading, setIsLoading] = useState(false);
   const [availability, setAvailability] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState(null);
+  const [advisors, setAdvisors] = useState([]);
+
+  useEffect(() => {
+    const fetchAdvisors = async () => {
+      const res = await meetingService.getAdvisors();
+      if (res.status === 200) {
+        setAdvisors(res.data);
+      } else {
+        setAlertMessage({ open: true, type: 'error', message: 'Erreur lors de la récupération des conseillers.' });
+      }
+    };
+    fetchAdvisors();
+  }, []);
 
   useEffect(() => {
     // Simulating API call to fetch availability
     const fetchAvailability = async () => {
       setIsLoading(true);
-      const advisorId = 'eea473e1-f0d6-4d46-8306-7e8bee1dea86';
+      // const advisorId = 'eea473e1-f0d6-4d46-8306-7e8bee1dea86';
+      const advisorId = advisors[0].id;
       const res = await meetingService.getAvailableSlotsForAppointment(advisorId);
       if (res.status === 200) {
         setAvailability(res.data);
@@ -42,7 +56,6 @@ export default function AppointmentDialog({ isOpen, handleClose, setAlertMessage
       console.log('Selected slot:', selectedSlot);
       const dataToSend = {
         advisorId: 'eea473e1-f0d6-4d46-8306-7e8bee1dea86',
-        customerId: 'eea473e1-f0d6-4d46-8306-7e8bee1dea86',
         startTime: selectedSlot
       };
       const res = await meetingService.requestMeeting(dataToSend);

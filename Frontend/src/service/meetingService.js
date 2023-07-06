@@ -68,6 +68,11 @@ const requestMeeting = async (data) => {
   return res;
 };
 
+const getAdvisors = async () => {
+  const res = await axiosInstance.get('/advisors');
+  return res;
+};
+
 export const meetingService = {
   createMeeting,
   getSchedules,
@@ -75,5 +80,6 @@ export const meetingService = {
   getMeetings,
   getAvailableSlotsForAppointment,
   requestMeeting,
-  getMeetingDetails
+  getMeetingDetails,
+  getAdvisors
 };

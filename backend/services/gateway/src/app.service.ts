@@ -117,21 +117,40 @@ export class AppService {
   }
 
   async getAllMeetingsByUser(user) {
+    let meetings = [];
     if (user.role === Role.ADVISOR) {
-      return await firstValueFrom(
+      meetings = await firstValueFrom(
         this.meetingService.send(
           { service: "meeting", action: "getAllMeetingsByAdvisor" },
           user.id
         )
       );
     } else {
-      return await firstValueFrom(
+      meetings = await firstValueFrom(
         this.meetingService.send(
           { service: "meeting", action: "getAllMeetingsByClient" },
           user.id
         )
       );
     }
+    const meetingPromises = meetings.map(async (meeting) => {
+      const advisor = await firstValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          meeting.advisorId
+        )
+      );
+      const client = await firstValueFrom(
+        this.userService.send(
+          { service: "user", cmd: "getUserById" },
+          meeting.clientId
+        )
+      );
+      meeting.advisor = advisor;
+      meeting.client = client;
+      return meeting;
+    });
+    return await Promise.all(meetingPromises);
   }
 
   async createMeeting(startTime: Date, advisorId: string, clientId: string) {
@@ -165,6 +184,24 @@ export class AppService {
         HttpStatus.UNAUTHORIZED
       );
     }
+
+    const advisor = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        meeting.advisorId
+      )
+    );
+
+    const client = await firstValueFrom(
+      this.userService.send(
+        { service: "user", cmd: "getUserById" },
+        meeting.clientId
+      )
+    );
+
+    meeting.advisor = advisor;
+    meeting.client = client;
+
     return meeting;
   }
 
