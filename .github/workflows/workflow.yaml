@@ -30,7 +30,7 @@ jobs:
           HOST: ${{ secrets.HOST_FRONT }}
           USERNAME: ${{ secrets.USERNAME_FRONT }}
           PORT: ${{ secrets.PORT_FRONT }}
-          PASSWORD: ${{ secrets.PASSWORD_FRONT }}
+          key : ${{ secrets.SSH_KEY }}
         with:
           source: "frontend.zip"
           target: "/root"
